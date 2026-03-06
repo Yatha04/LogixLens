@@ -253,3 +253,264 @@ class TestExtractSTLines:
     def test_st_routine_has_no_rungs(self):
         routine = self._get_st_routine()
         assert routine.rungs == []
+
+
+# ---------------------------------------------------------------------------
+# SFC Fixtures
+# ---------------------------------------------------------------------------
+
+SFC_SIMPLE_XML = """
+<Programs>
+    <Program Name="SFCProgram" MainRoutineName="SFCMain" FaultRoutineName="" Disabled="false">
+        <Routines>
+            <Routine Name="SFCMain" Type="SFC">
+                <Description><![CDATA[Simple SFC routine]]></Description>
+                <SFCContent SheetSize="Letter" SheetOrientation="Landscape">
+                    <Step ID="0" X="400" Y="60" Operand="Step_001" InitialStep="true"
+                     PresetUsesExpr="false" LimitHighUsesExpr="false" LimitLowUsesExpr="false"
+                     ShowActions="false" HideDesc="false" DescX="0" DescY="0" DescWidth="0">
+                        <Action ID="1" Operand="Action_001" Qualifier="NonStored"
+                         IsBoolean="false" PresetUsesExpr="false">
+                            <Body>
+                                <STContent>
+                                    <Line Number="0"><![CDATA[StepNo := 1;]]></Line>
+                                    <Line Number="1"><![CDATA[Desc := 'Init';]]></Line>
+                                </STContent>
+                            </Body>
+                        </Action>
+                    </Step>
+                    <Step ID="2" X="400" Y="240" Operand="Step_002" InitialStep="false"
+                     PresetUsesExpr="false" LimitHighUsesExpr="false" LimitLowUsesExpr="false"
+                     ShowActions="false" HideDesc="false" DescX="0" DescY="0" DescWidth="0">
+                        <Action ID="3" Operand="Action_002" Qualifier="NonStored"
+                         IsBoolean="true" PresetUsesExpr="false">
+                            <Body>
+                                <STContent>
+                                    <Line Number="0"><![CDATA[StepNo := 2;]]></Line>
+                                </STContent>
+                            </Body>
+                        </Action>
+                        <Action ID="5" Operand="Action_002B" Qualifier="S"
+                         IsBoolean="false" PresetUsesExpr="false">
+                            <Body>
+                                <STContent>
+                                    <Line Number="0"><![CDATA[Motor := 1;]]></Line>
+                                </STContent>
+                            </Body>
+                        </Action>
+                    </Step>
+                    <Step ID="4" X="400" Y="440" Operand="Step_003" InitialStep="false"
+                     PresetUsesExpr="false" LimitHighUsesExpr="false" LimitLowUsesExpr="false"
+                     ShowActions="true" HideDesc="false" DescX="0" DescY="0" DescWidth="0"/>
+                    <Transition ID="10" X="400" Y="160" Operand="Tran_001" HideDesc="false"
+                     DescX="0" DescY="0" DescWidth="0">
+                        <Condition>
+                            <STContent>
+                                <Line Number="0"><![CDATA[Ready AND Step_001.DN;]]></Line>
+                            </STContent>
+                        </Condition>
+                    </Transition>
+                    <Transition ID="11" X="400" Y="340" Operand="Tran_002" HideDesc="false"
+                     DescX="0" DescY="0" DescWidth="0">
+                        <Condition>
+                            <STContent>
+                                <Line Number="0"><![CDATA[Done AND Step_002.DN;]]></Line>
+                            </STContent>
+                        </Condition>
+                    </Transition>
+                    <DirectedLink FromID="0" ToID="10" Show="true"/>
+                    <DirectedLink FromID="10" ToID="2" Show="true"/>
+                    <DirectedLink FromID="2" ToID="11" Show="true"/>
+                    <DirectedLink FromID="11" ToID="4" Show="true"/>
+                    <DirectedLink FromID="4" ToID="0" Show="false"/>
+                </SFCContent>
+            </Routine>
+        </Routines>
+    </Program>
+</Programs>
+"""
+
+SFC_BRANCH_XML = """
+<Programs>
+    <Program Name="BranchProg" MainRoutineName="BranchSFC" FaultRoutineName="" Disabled="false">
+        <Routines>
+            <Routine Name="BranchSFC" Type="SFC">
+                <SFCContent SheetSize="Letter" SheetOrientation="Landscape">
+                    <Step ID="0" X="200" Y="100" Operand="Step_A" InitialStep="true"
+                     PresetUsesExpr="false" LimitHighUsesExpr="false" LimitLowUsesExpr="false"
+                     ShowActions="false" HideDesc="false" DescX="0" DescY="0" DescWidth="0">
+                        <Action ID="1" Operand="Act_A" Qualifier="NonStored"
+                         IsBoolean="false" PresetUsesExpr="false">
+                            <Body>
+                                <STContent>
+                                    <Line Number="0"><![CDATA[x := 1;]]></Line>
+                                </STContent>
+                            </Body>
+                        </Action>
+                    </Step>
+                    <Branch ID="10" Y="200" BranchType="Selection" BranchFlow="Diverge"
+                     Priority="Default">
+                        <Leg ID="11"/>
+                        <Leg ID="12"/>
+                    </Branch>
+                    <Branch ID="20" Y="500" BranchType="Simultaneous" BranchFlow="Converge">
+                        <Leg ID="21"/>
+                        <Leg ID="22"/>
+                        <Leg ID="23"/>
+                    </Branch>
+                    <Transition ID="30" X="200" Y="300" Operand="Tran_X" HideDesc="false"
+                     DescX="0" DescY="0" DescWidth="0">
+                        <Condition>
+                            <STContent>
+                                <Line Number="0"><![CDATA[cond;]]></Line>
+                            </STContent>
+                        </Condition>
+                    </Transition>
+                    <DirectedLink FromID="0" ToID="10" Show="true"/>
+                    <DirectedLink FromID="10" ToID="30" Show="true"/>
+                </SFCContent>
+            </Routine>
+        </Routines>
+    </Program>
+</Programs>
+"""
+
+
+# ---------------------------------------------------------------------------
+# Tests: SFC extraction
+# ---------------------------------------------------------------------------
+
+class TestExtractSFC:
+    # --- Steps ---
+    def test_sfc_step_count(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        routine = extract_programs(project)[0].routines[0]
+        assert routine.sfc_content is not None
+        assert len(routine.sfc_content.steps) == 3
+
+    def test_sfc_step_operands(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        operands = [s.operand for s in sfc.steps]
+        assert operands == ["Step_001", "Step_002", "Step_003"]
+
+    def test_sfc_initial_step(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert sfc.steps[0].initial_step is True
+        assert sfc.steps[1].initial_step is False
+
+    def test_sfc_step_without_actions(self):
+        """Step_003 is self-closing with no <Action> children."""
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert len(sfc.steps[2].actions) == 0
+
+    # --- Actions ---
+    def test_sfc_action_count(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        # Step_001 has 1 action, Step_002 has 2 actions
+        assert len(sfc.steps[0].actions) == 1
+        assert len(sfc.steps[1].actions) == 2
+
+    def test_sfc_action_attributes(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        action = sfc.steps[0].actions[0]
+        assert action.operand == "Action_001"
+        assert action.qualifier == "NonStored"
+        assert action.is_boolean is False
+
+    def test_sfc_action_boolean(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        action = sfc.steps[1].actions[0]
+        assert action.is_boolean is True
+
+    def test_sfc_action_st_lines(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        lines = sfc.steps[0].actions[0].lines
+        assert len(lines) == 2
+        assert lines[0].text == "StepNo := 1;"
+        assert lines[1].text == "Desc := 'Init';"
+
+    def test_sfc_multiple_actions_on_step(self):
+        """Step_002 has two actions with different qualifiers."""
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        a1, a2 = sfc.steps[1].actions
+        assert a1.qualifier == "NonStored"
+        assert a2.qualifier == "S"
+        assert a2.operand == "Action_002B"
+
+    # --- Transitions ---
+    def test_sfc_transition_count(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert len(sfc.transitions) == 2
+
+    def test_sfc_transition_operand(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert sfc.transitions[0].operand == "Tran_001"
+
+    def test_sfc_transition_condition(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        cond = sfc.transitions[0].condition_lines
+        assert len(cond) == 1
+        assert cond[0].text == "Ready AND Step_001.DN;"
+
+    # --- Branches ---
+    def test_sfc_branch_count(self):
+        project = _make_project(SFC_BRANCH_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert len(sfc.branches) == 2
+
+    def test_sfc_branch_selection_diverge(self):
+        project = _make_project(SFC_BRANCH_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        b = sfc.branches[0]
+        assert b.branch_type == "Selection"
+        assert b.branch_flow == "Diverge"
+        assert b.leg_ids == [11, 12]
+
+    def test_sfc_branch_simultaneous_converge(self):
+        project = _make_project(SFC_BRANCH_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        b = sfc.branches[1]
+        assert b.branch_type == "Simultaneous"
+        assert b.branch_flow == "Converge"
+        assert b.leg_ids == [21, 22, 23]
+
+    # --- Directed Links ---
+    def test_sfc_link_count(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        assert len(sfc.directed_links) == 5
+
+    def test_sfc_link_values(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        sfc = extract_programs(project)[0].routines[0].sfc_content
+        first = sfc.directed_links[0]
+        assert first.from_id == 0
+        assert first.to_id == 10
+
+    # --- Routine-level ---
+    def test_sfc_routine_type(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        routine = extract_programs(project)[0].routines[0]
+        assert routine.routine_type == "SFC"
+
+    def test_sfc_routine_description(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        routine = extract_programs(project)[0].routines[0]
+        assert routine.description == "Simple SFC routine"
+
+    def test_sfc_routine_has_no_rungs_or_lines(self):
+        project = _make_project(SFC_SIMPLE_XML)
+        routine = extract_programs(project)[0].routines[0]
+        assert routine.rungs == []
+        assert routine.lines == []
