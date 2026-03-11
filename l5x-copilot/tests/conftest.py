@@ -18,6 +18,7 @@ from src.parser.l5x_loader import load_l5x, L5XProject
 from src.parser.module_extractor import extract_modules
 from src.parser.routine_extractor import extract_programs
 from src.parser.tag_extractor import extract_tags
+from src.parser.rung_parser import parse_all_rungs, Instruction
 
 
 # ---------------------------------------------------------------------------
@@ -131,6 +132,26 @@ def l5x_project(request) -> L5XProject:
         stats["sfc_total_transitions"] = 0
         stats["sfc_total_links"]       = 0
         stats["sfc_routine_names"]     = []
+
+    # Logic Parsing Detail
+    parsed_rungs = parse_all_rungs(programs)
+    stats["parsed_rungs_total"] = len(parsed_rungs)
+    
+    def iter_instr(elements):
+        for el in elements:
+            if isinstance(el, Instruction):
+                yield el.mnemonic
+            elif hasattr(el, 'legs'):
+                for leg in el.legs:
+                    yield from iter_instr(leg)
+
+    all_instrs = []
+    for pr in parsed_rungs.values():
+        all_instrs.extend(iter_instr(pr.elements))
+
+    stats["parsed_instr_total"] = len(all_instrs)
+    instr_counter = Counter(all_instrs)
+    stats["top_instructions"] = instr_counter.most_common(5)
 
     return project
 
@@ -253,6 +274,21 @@ def pytest_sessionfinish(session, exitstatus):
         for name in stats["sfc_routine_names"]:
             lines.append(f"| `{name}` |")
         lines.append("")
+
+    lines += [
+        "### Logic Parsing",
+        "",
+        f"**Parsed RLL rungs:** {stats['parsed_rungs_total']}",
+        f"**Total Instructions:** {stats['parsed_instr_total']}",
+        "",
+        "**Top 5 instructions used:**",
+        "",
+        "| Instruction | Occurrences |",
+        "|---|---|",
+    ]
+    for instr, count in stats["top_instructions"]:
+        lines.append(f"| `{instr}` | {count} |")
+    lines.append("")
 
     lines += [
         "---",
