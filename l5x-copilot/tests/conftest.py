@@ -19,6 +19,7 @@ from src.parser.module_extractor import extract_modules
 from src.parser.routine_extractor import extract_programs
 from src.parser.tag_extractor import extract_tags
 from src.parser.rung_parser import parse_all_rungs, Instruction
+from src.parser.aoi_extractor import extract_aois
 
 
 # ---------------------------------------------------------------------------
@@ -133,6 +134,11 @@ def l5x_project(request) -> L5XProject:
         stats["sfc_total_links"]       = 0
         stats["sfc_routine_names"]     = []
 
+    # AOI Detail
+    aois = extract_aois(project)
+    stats["aoi_count"] = len(aois)
+    stats["aoi_names"] = [aoi.name for aoi in aois]
+
     # Logic Parsing Detail
     parsed_rungs = parse_all_rungs(programs)
     stats["parsed_rungs_total"] = len(parsed_rungs)
@@ -229,6 +235,22 @@ def pytest_sessionfinish(session, exitstatus):
 
     lines += [
         "",
+        "---",
+        "",
+        "## Add-On Instructions",
+        "",
+        f"**Total AOIs found:** {stats['aoi_count']}",
+        "",
+    ]
+    
+    if stats["aoi_names"]:
+        lines.append("| # | AOI Name |")
+        lines.append("|---|---|")
+        for i, name in enumerate(stats["aoi_names"], 1):
+            lines.append(f"| {i} | `{name}` |")
+        lines.append("")
+
+    lines += [
         "---",
         "",
         "## Programs & Routines",
