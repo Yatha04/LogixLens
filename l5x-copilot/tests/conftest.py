@@ -20,6 +20,8 @@ from src.parser.routine_extractor import extract_programs
 from src.parser.tag_extractor import extract_tags
 from src.parser.rung_parser import parse_all_rungs, Instruction
 from src.parser.aoi_extractor import extract_aois
+from src.parser.udt_extractor import extract_udts
+from src.parser.cross_reference import build_cross_reference
 
 
 # ---------------------------------------------------------------------------
@@ -139,6 +141,11 @@ def l5x_project(request) -> L5XProject:
     stats["aoi_count"] = len(aois)
     stats["aoi_names"] = [aoi.name for aoi in aois]
 
+    # UDT Detail
+    udts = extract_udts(project)
+    stats["udt_count"] = len(udts)
+    stats["udt_names"] = [udt.name for udt in udts]
+
     # Logic Parsing Detail
     parsed_rungs = parse_all_rungs(programs)
     stats["parsed_rungs_total"] = len(parsed_rungs)
@@ -159,7 +166,29 @@ def l5x_project(request) -> L5XProject:
     instr_counter = Counter(all_instrs)
     stats["top_instructions"] = instr_counter.most_common(5)
 
+    # Cross Reference Detail
+    xref = build_cross_reference(parsed_rungs)
+    stats["xref_tags_count"] = len(xref)
+    stats["xref_read_only"] = sum(1 for t in xref.values() if t.is_read_only)
+    stats["xref_write_only"] = sum(1 for t in xref.values() if t.is_write_only)
+
     return project
+
+
+# ---------------------------------------------------------------------------
+# Additional Session-scoped fixtures
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="session")
+def parsed_rungs_data(l5x_project):
+    """Return all parsed rungs for the loaded project."""
+    programs = extract_programs(l5x_project)
+    return parse_all_rungs(programs)
+
+@pytest.fixture(scope="session")
+def cross_reference_index(parsed_rungs_data):
+    """Return the cross-reference index for the loaded project."""
+    return build_cross_reference(parsed_rungs_data)
 
 
 # ---------------------------------------------------------------------------
@@ -253,6 +282,22 @@ def pytest_sessionfinish(session, exitstatus):
     lines += [
         "---",
         "",
+        "## User-Defined Types",
+        "",
+        f"**Total UDTs found:** {stats['udt_count']}",
+        "",
+    ]
+    
+    if stats["udt_names"]:
+        lines.append("| # | UDT Name |")
+        lines.append("|---|---|")
+        for i, name in enumerate(stats["udt_names"], 1):
+            lines.append(f"| {i} | `{name}` |")
+        lines.append("")
+
+    lines += [
+        "---",
+        "",
         "## Programs & Routines",
         "",
         f"**Programs found:** {stats['program_count']}",
@@ -311,6 +356,15 @@ def pytest_sessionfinish(session, exitstatus):
     for instr, count in stats["top_instructions"]:
         lines.append(f"| `{instr}` | {count} |")
     lines.append("")
+
+    lines += [
+        "### Cross-Reference",
+        "",
+        f"**Tags Referenced in Logic:** {stats.get('xref_tags_count', 0)}",
+        f"**Read-Only Tags (e.g. Inputs):** {stats.get('xref_read_only', 0)}",
+        f"**Write-Only Tags (e.g. Outputs):** {stats.get('xref_write_only', 0)}",
+        "",
+    ]
 
     lines += [
         "---",
