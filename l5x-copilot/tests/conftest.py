@@ -22,6 +22,7 @@ from src.parser.rung_parser import parse_all_rungs, Instruction
 from src.parser.aoi_extractor import extract_aois
 from src.parser.udt_extractor import extract_udts
 from src.parser.cross_reference import build_cross_reference
+from src.parser.project_model import parse_project, ParsedProject
 
 
 # ---------------------------------------------------------------------------
@@ -71,46 +72,48 @@ def l5x_project(request) -> L5XProject:
             returncode=1,
         )
 
-    print(f"\n[LogixLens] Loading: {path}")
-    project = load_l5x(path)
+    print(f"\n[LogixLens] Parsing Project: {path}")
+    parsed = parse_project(path)
+    project = load_l5x(path) # We still need the raw L5XProject for some fixtures if needed, or we can just return parsed.
+    # Actually, many existing tests expect L5XProject (from load_l5x). 
+    # But conftest stats should come from 'parsed'.
 
     # ── Collect summary stats into the pytest config stash so the
     # session-finish hook can write the report ──────────────────────────
     stats = request.config._logixlens_stats = {}
 
-    m = project.metadata
+    m = parsed.metadata
     stats["file"]           = path
     stats["controller"]     = m.controller_name
     stats["processor"]      = m.processor_type
     stats["revision"]       = f"{m.major_revision}.{m.minor_revision}"
     stats["sw_revision"]    = m.software_revision
 
-    modules = extract_modules(project)
-    stats["module_count"]   = len(modules)
-    stats["module_names"]   = [mod.name for mod in modules]
+    stats["module_count"]   = len(parsed.modules)
+    stats["module_names"]   = [mod.name for mod in parsed.modules]
 
-    tags = extract_tags(project)
-    ctrl_tags = [t for t in tags if t.scope == "Controller"]
-    prog_tags = [t for t in tags if t.scope != "Controller"]
-    alias_tags = [t for t in tags if t.tag_type == "Alias"]
-    stats["tag_total"]      = len(tags)
-    stats["tag_controller"] = len(ctrl_tags)
-    stats["tag_program"]    = len(prog_tags)
-    stats["tag_alias"]      = len(alias_tags)
+    stats["tag_total"]      = len(parsed.tags)
+    stats["tag_controller"] = len([t for t in parsed.tags if t.scope == "Controller"])
+    stats["tag_program"]    = len([t for t in parsed.tags if t.scope != "Controller"])
+    stats["tag_alias"]      = len([t for t in parsed.tags if t.tag_type == "Alias"])
+    
+    # New metrics
+    stats["tag_undocumented"] = len(parsed.undocumented_tags)
+    stats["tag_coverage"]     = parsed.documentation_coverage
+    stats["tag_unused"]       = len(parsed.unused_tags)
 
     # Sample: most common data types
     from collections import Counter
-    type_counter = Counter(t.data_type for t in tags)
+    type_counter = Counter(t.data_type for t in parsed.tags)
     stats["top_data_types"] = type_counter.most_common(5)
 
-    programs = extract_programs(project)
-    all_routines = [r for p in programs for r in p.routines]
+    all_routines = [r for p in parsed.programs for r in p.routines]
     rll = [r for r in all_routines if r.routine_type == "RLL"]
     st  = [r for r in all_routines if r.routine_type == "ST"]
     sfc = [r for r in all_routines if r.routine_type == "SFC"]
 
-    stats["program_count"]      = len(programs)
-    stats["program_names"]      = [p.name for p in programs]
+    stats["program_count"]      = len(parsed.programs)
+    stats["program_names"]      = [p.name for p in parsed.programs]
     stats["routine_total"]      = len(all_routines)
     stats["routine_rll"]        = len(rll)
     stats["routine_st"]         = len(st)
@@ -137,18 +140,15 @@ def l5x_project(request) -> L5XProject:
         stats["sfc_routine_names"]     = []
 
     # AOI Detail
-    aois = extract_aois(project)
-    stats["aoi_count"] = len(aois)
-    stats["aoi_names"] = [aoi.name for aoi in aois]
+    stats["aoi_count"] = len(parsed.aois)
+    stats["aoi_names"] = [aoi.name for aoi in parsed.aois]
 
     # UDT Detail
-    udts = extract_udts(project)
-    stats["udt_count"] = len(udts)
-    stats["udt_names"] = [udt.name for udt in udts]
+    stats["udt_count"] = len(parsed.udts)
+    stats["udt_names"] = [udt.name for udt in parsed.udts]
 
     # Logic Parsing Detail
-    parsed_rungs = parse_all_rungs(programs)
-    stats["parsed_rungs_total"] = len(parsed_rungs)
+    stats["parsed_rungs_total"] = len(parsed.parsed_rungs)
     
     def iter_instr(elements):
         for el in elements:
@@ -159,7 +159,7 @@ def l5x_project(request) -> L5XProject:
                     yield from iter_instr(leg)
 
     all_instrs = []
-    for pr in parsed_rungs.values():
+    for pr in parsed.parsed_rungs.values():
         all_instrs.extend(iter_instr(pr.elements))
 
     stats["parsed_instr_total"] = len(all_instrs)
@@ -167,10 +167,9 @@ def l5x_project(request) -> L5XProject:
     stats["top_instructions"] = instr_counter.most_common(5)
 
     # Cross Reference Detail
-    xref = build_cross_reference(parsed_rungs)
-    stats["xref_tags_count"] = len(xref)
-    stats["xref_read_only"] = sum(1 for t in xref.values() if t.is_read_only)
-    stats["xref_write_only"] = sum(1 for t in xref.values() if t.is_write_only)
+    stats["xref_tags_count"] = len(parsed.cross_reference)
+    stats["xref_read_only"] = len(parsed.read_only_tags)
+    stats["xref_write_only"] = len(parsed.write_only_tags)
 
     return project
 
@@ -189,6 +188,12 @@ def parsed_rungs_data(l5x_project):
 def cross_reference_index(parsed_rungs_data):
     """Return the cross-reference index for the loaded project."""
     return build_cross_reference(parsed_rungs_data)
+
+
+@pytest.fixture(scope="session")
+def parsed_project(l5x_project) -> ParsedProject:
+    """Return the fully parsed project model."""
+    return parse_project(l5x_project.metadata.filepath)
 
 
 # ---------------------------------------------------------------------------
@@ -247,12 +252,15 @@ def pytest_sessionfinish(session, exitstatus):
     lines += [
         "## Tags",
         "",
-        f"| Scope | Count |",
+        f"| Metric | Count |",
         f"|---|---|",
         f"| Controller-scoped | {stats['tag_controller']} |",
         f"| Program-scoped    | {stats['tag_program']} |",
         f"| Alias tags        | {stats['tag_alias']} |",
-        f"| **Total**         | **{stats['tag_total']}** |",
+        f"| **Total Tags**    | **{stats['tag_total']}** |",
+        f"| Undocumented      | {stats['tag_undocumented']} |",
+        f"| Unused (in Logic) | {stats['tag_unused']} |",
+        f"| **Doc Coverage**  | **{stats['tag_coverage']:.1f}%** |",
         "",
         "**Top 5 data types used:**",
         "",
