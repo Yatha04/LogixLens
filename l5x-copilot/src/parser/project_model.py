@@ -29,6 +29,10 @@ class ParsedProject:
     aois: List[AddOnInstruction]
     parsed_rungs: Dict[Tuple[str, str, int], ParsedRung]
     cross_reference: Dict[str, TagUsage]
+    # Rungs whose text failed to parse, keyed like parsed_rungs; these are
+    # excluded from parsed_rungs/cross_reference rather than failing the
+    # whole project (real-world exports contain malformed rung text).
+    rung_parse_errors: Dict[Tuple[str, str, int], str] = field(default_factory=dict)
 
     # --- Convenience Lookups ---
 
@@ -132,12 +136,13 @@ def parse_project(filepath: str) -> ParsedProject:
     udts = extract_udts(project)
     aois = extract_aois(project)
     
-    # 3. Parse ladder logic rungs
-    parsed_rungs = parse_all_rungs(programs)
-    
+    # 3. Parse ladder logic rungs (tolerant: bad rungs are recorded, not fatal)
+    rung_parse_errors: Dict[Tuple[str, str, int], str] = {}
+    parsed_rungs = parse_all_rungs(programs, errors=rung_parse_errors)
+
     # 4. Build cross-reference index
     cross_reference = build_cross_reference(parsed_rungs)
-    
+
     return ParsedProject(
         metadata=project.metadata,
         tags=tags,
@@ -146,5 +151,6 @@ def parse_project(filepath: str) -> ParsedProject:
         udts=udts,
         aois=aois,
         parsed_rungs=parsed_rungs,
-        cross_reference=cross_reference
+        cross_reference=cross_reference,
+        rung_parse_errors=rung_parse_errors
     )

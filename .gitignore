@@ -2,6 +2,10 @@
 *.L5X
 *.l5x
 
+# Real-world corpus fetched from GitHub for parser hardening tests
+# (publicly posted files, fetched for local compatibility testing only, never redistributed)
+corpus/files/
+
 # Python
 __pycache__/
 *.pyc

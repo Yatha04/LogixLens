@@ -1,0 +1,8170 @@
+[
+ {
+  "file": "203012562bf9a422_LmExpX_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "7f9643025ad40e9f_ACDTestsEmptyRedundant.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "817d2af850dedcb4_basetest.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 5,
+     "rll_rungs": 7,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 7,
+    "parsed": 7,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "0eaadaaf06338ce1_FlowMeter_Tot_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "3ba53ef26c7b0807_Record_HandAdd.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "a21cbff7f0c6b0b9_Pump_Volume_Control_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 6,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "3f8aa35fb23bbc8a_CipIOLinkMasterPHY_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "006958126114581f_WPI_RecipeManager_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "bfda9181508803c5_XFV_100_Module.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 2,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "287debce37bb4d98_A_07001.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "a6b91cd89b0ff3f9_T_DST_1_0-00_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "8079c9812ae9c4e6_DateTime2.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "3041e5825774e9bd_ES_AOI_FLW_TOT.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "7d71e91899e57965_Pump_Control_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 9,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "0b2c35a89990a2c7_FIT_07649.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "1fb2537f1f93759b_Sys_AlarmClass_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 3,
+     "udts": 12
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "3289caf5dc1718ef_Banner_K50_Pro_Advanced_Mode_Full_V1_2.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "ba78d56a83c4e7fd_HMI_DIG_Sensor_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "599cd8338f7abf22_YV_07623.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 10,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "4fe51e8ca3146fc8_FIT_2001_Module.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "28433dabf765b953_FMCP_Multi_EVO3_CPX_E_SP12_CPX_E_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "bd2622e84b02f932_ST_Dvc_Stratix5800_I_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3e464e3dd7fdfa7a_Turck_IOL_Universal_Discrete_Hub_V1_2.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "0aa0a5f969ed41c7_IO_RA_1426_A882_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "dcdf8f8932dde6f0_Ex_2_13.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 5,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d5a55198a85812e6_Treater_Product_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "52c4caf1a3e63891_lab_logic_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "78deaa0bb3b982a0_EM_AOI_FVM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "4d5fb38a40e3aa5a_IO_RA_1783_A1_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "a245edf25e79c6fd_Ex_2_04.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 3,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "8ef4b857feced0a7_IO_RA_1426_A822_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "40396f0e8162a658_IO_RA_1426_A849_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "9fe4274a704f2afc_IO_RA_1609_A100_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "7e867cf4740ffdae_IO_RA_1426_A830_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "b594bd2b08735d58_IO_RA_1609_A101_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "fde0d876e2f0b146_IO_RA_1426_A853_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "3467ab4ebd7b9fb9_IO_RA_1732E_A110_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "e122288eb844d478_AOI_Cycle_Time.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "ab1a2e7c42d588a5_SAI_CheckAlive_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "cd21629a08f52a75_RA_RUNGS_CROUT.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "8bfcbbea21d0e4bc_ST_Sys_EthernetLink_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "b612b2e95c1ea875_Pump_Speed_Calc_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3698e37f9b841d72_STRING25.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "63f050886c446989_Lattice_Cut_4215.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 8,
+     "modules": 2,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 8,
+    "parsed": 8,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "17cc5adc641fff94_DUTY_CYCLE.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 3,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "7aa3cda35590dc53_pyMachine.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "752fd1ea0b030132_T_DT_ShortDate_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 4
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "b2cf6ea036dad5bc_IO_RA_1426_A823_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "f8eb4cba0ace086f_Main.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 15,
+     "rll_rungs": 5,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "cbbce360a4444be2_GenFile.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "2556bf4ddccbf27a_main_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "845566c93e4393ae_main_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 12,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 12,
+    "parsed": 12,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "e5e01acf28b90b09_main_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 7,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 7,
+    "parsed": 7,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "805446129f7c85d2_N_INT_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "905d266dda9f7352_N_UINT_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "4b6846f0b267415b_Str_Size_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "55cecee68c61c13a_N_UDINT_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "37bc204c68b7dadc_N_USINT_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "371aef11d519b3ef_C06F2CUT5166_PNT.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 6,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "4132711f23059faf_Par_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 5
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "7224a0f24ee85676_Str_Clear_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "c1beb57742f00d12_PUMP_ALTERNATE.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "ba9fa53ef20e19e4_CipClass_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "1b7916720aab05eb_CipTCPIPInterface_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "031db012de8d7a96_MaxAbsSinSweep_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 7,
+     "rll_rungs": 26,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 26,
+    "parsed": 26,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "385d192a0bcfad68_IO_RA_1426_A883_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "adf244b6405b54d1_Reset_Pump_Cal_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "f22e16d6a6562562_Sys_USB_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 6,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "f26d0efbb9ff2ffe__501CS100_-_DATATYPE-O2O.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "775d89a740781bfa_Str_ToUpper_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "ffbe4cb276bf518c_Str_ToLower_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d6ca66f1b3c408dc_T_DOW_FullDay_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "dd5ab5c80bd45668_IO_RA_1426_HarmonicResultsH1_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "350b6f4777ed95ff_Math_SetRange_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "081ff0c2a30ee002_Sys_SDCard_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 5,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "c1f3d37067279690_FinalPLC_Code.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 27,
+     "programs": 1,
+     "routines": 3,
+     "rll_rungs": 15,
+     "modules": 5,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 15,
+    "parsed": 15,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "66b0dc7265232534_Str_SintToHex_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "5284aac44d8a3218_Op_PID_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.005
+ },
+ {
+  "file": "c58eab4779acd25e_Array_RAVG_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "08a046fb22c9afbf_Array_RMIN_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "f2f670ea6e80c776_sample_no_dependencies.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "3381349dad9dbf7c_MainProgram.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 37,
+     "programs": 1,
+     "routines": 5,
+     "rll_rungs": 68,
+     "modules": 7,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 68,
+    "parsed": 68,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.005
+ },
+ {
+  "file": "36f3fb015bdf4e42_Filter_HighPass_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "2c84511700591009_Math_RTD_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "51309bd9fe1b4d46_Math_VxNEQ_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "ac5af60f413c3ede_Math_GrayToBinary_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d8f675a6167f7862_Test.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "b3c4c2ce0380eb7c_Active_Treater_Pump_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 7
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "67ccff21b9fbeb73_DN55_IOLink.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 16,
+     "programs": 1,
+     "routines": 2,
+     "rll_rungs": 2,
+     "modules": 0,
+     "aois": 1,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "f303b20d0021ef17_Analog_Buffer_Retainer_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "77308886f9d78fd2__501CS100_-_AddOns_-_O2M-AllDiffNodes.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "eae701fd661f5b42__501CS100_-_TAGS_-_O2O_-_FacePlateMemberMoveRule_14.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "f69ac3de547dc291__501CS100_-_TAGS_-_O2O_-_FacePlateMemberMove.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "42981e034ed267c2__501CS100_-_Programs_-_O2M.l5x",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 58,
+     "programs": 1,
+     "routines": 45,
+     "rll_rungs": 435,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 435,
+    "parsed": 435,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.022
+ },
+ {
+  "file": "b557e43a2cc29152__501CS100_-_TAGS_-_O2O_-_FacePlateMemberMoveMapBy.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "cde3b19153477f24__501CS100_-_TAGS_-_DEL.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "a56389a3b4797209__501CS100_-_TAGS_-_O2O_-_DiffPlusSameDataType.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "9b18db2c498e8763__501CS100_-_TAGS_-_O2M-SameNode.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "dad67548e89e7751__501CS100_-_TAGS_-_O2O.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "58621b9a3327dc06__501CS100_-_TAGS_-_O2M-DiffNode.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "bf7a8663d4b02979__501CS100_-_AddOns_-_O2O.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "58c02dd9930c164e__501CS100_-_AddOns_-_DEL.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "4a4e3193eea6552e__501CS100_-_AddOns_-_O2OD.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "b8d84800bf8dcd3f__501CS100_-_DATATYPE-O2O-DiffPlusSame.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "e5db3bdcba4f9c32_UDT_new_test_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 5
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "5405c047b449dfe6_UDT_test_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 4
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "59d2b27106609da4_Process.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "f56fac37be4d7b9b_Process_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "02ba070af509c3a0_Recipe_Ctrl.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3c01062a36457970_RecipeEdit.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 5
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3d9c49e101751dea_RecipeStepList.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 5
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "49e3bc9b4aed4fb3_RecipeIndex.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "437df73af86b3213_RecipeOpcodes.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 4
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "7bd782d38f0bb4a4_Process_Recipe.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "b9d75f69b00f679a_DateTime.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "2e2abcee89086051_BlenderRecipe.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "5aef65a155a76134_TumblerRecipe.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "de6ca1aa2d80482f_RecipeStep.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "454dfdd452240f62_pyConsume.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "566a2aff28a55ce6_TemplateProjectV1.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 3,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 2,
+     "aois": 3,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "04e5a52a2f256e21_TemplateProjectV1.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 3,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 2,
+     "aois": 3,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "b922bf2ea935ab81_BasicControllertags.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "628a3710d56a7760_UnnamedModule.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "8bfb43e976860c5c_BrokenXML.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "26c45dc8dc1c3b4a_EmptyTemplate.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d096066270382ceb_EM_AOI_VSM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "35a12bae2c8070e5_SIM_AOI_VSM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "1622b800ea35169b_SIM_AOI_FVNR.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "acf9d796abb46661_EM_AOI_MVM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "9a1c4f1ca4d7a604_EM_AOI_TSV.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "42d22e6c5e8fcc35_EM_AOI_AIM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3daa1a0a8cc0212f_AOI_LD_LG.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "f4e87f58504b9a59_ES_AOI_WALL_CLOCK.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "2c05a30ac9df1b45_EM_AOI_DIM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "737310ac587775ad_AOI_LD_ALT.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "df4368153ca78264_Pumps_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 33,
+     "programs": 1,
+     "routines": 11,
+     "rll_rungs": 63,
+     "modules": 25,
+     "aois": 9,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 63,
+    "parsed": 63,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.055
+ },
+ {
+  "file": "ecaf1915693debcb_MainProgram_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 61,
+     "programs": 1,
+     "routines": 6,
+     "rll_rungs": 106,
+     "modules": 26,
+     "aois": 13,
+     "udts": 8
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 106,
+    "parsed": 106,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.054
+ },
+ {
+  "file": "692d23bce203533b_ColorBlending_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 40,
+     "programs": 1,
+     "routines": 3,
+     "rll_rungs": 25,
+     "modules": 0,
+     "aois": 0,
+     "udts": 7
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 25,
+    "parsed": 25,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.044
+ },
+ {
+  "file": "3efd35671468795b_Zero_Scales_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 23,
+     "modules": 23,
+     "aois": 1,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 23,
+    "parsed": 23,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.042
+ },
+ {
+  "file": "b48621a7cbddbb73_SetScaleValues_Routine_RLL.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 12,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 34,
+     "modules": 25,
+     "aois": 0,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 34,
+    "parsed": 34,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.041
+ },
+ {
+  "file": "21247ae30f965952_Pump_Control_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 6,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "28e635006b284a9a_Pump_Scale_Control_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 6,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "ce474b4fb75f1870_Scale_Values_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 45,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 80,
+     "modules": 2,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 80,
+    "parsed": 80,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.007
+ },
+ {
+  "file": "383020c46bdb8dca_ColorBlending_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 7
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "23850a8c28d16045_PumpRate_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "2548396dd9a77cfb_Get_Active_Pumps_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 7
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "5f8223a1b85958d4_Calc_Fluid_To_Lbs_Rate_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "5f120ed2e48c27fc_Calc_Lbs_To_Fluid_Rate_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "e66fbe5fde2c6dcb_Water_Input_Module.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "61eaddc8ae3a0d6a_Treater_Pump_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 6
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "b9e06124c3cae83d_PUMP_CONTROL.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "e688450f675065f7_PUMP_ALARM.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3bc6d31babfd3ee4_FLOAT_IE2C.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "e253e857ce55f193_LEAD_LAG_CFF.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "856ad75e8d40c80b_RUNTIME_TOTALIZER.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "ff0f6501becb12b3_DINT_HIGH_COUNT.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "da979f48f4aa4de2_Dev_PF525_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 16,
+     "programs": 1,
+     "routines": 6,
+     "rll_rungs": 85,
+     "modules": 3,
+     "aois": 15,
+     "udts": 19
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 85,
+    "parsed": 85,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 8,
+    "ok": 8,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.145
+ },
+ {
+  "file": "c967a7b8d88e84ef_Dev_Dvc_CiscoIE4000_Program.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 13,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 5,
+     "modules": 2,
+     "aois": 10,
+     "udts": 20
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.096
+ },
+ {
+  "file": "54a5200b613e7e63_Dev_MoxaEDS_Program.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 8,
+     "udts": 11
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.086
+ },
+ {
+  "file": "ec6870fb00671bb7_Dev_Stacklight_Program.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 10,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 20,
+     "modules": 0,
+     "aois": 4,
+     "udts": 17
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 20,
+    "parsed": 20,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.086
+ },
+ {
+  "file": "6cd3b6ce3e743bc3_System_Program.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 25,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 9,
+     "modules": 0,
+     "aois": 14,
+     "udts": 32
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 9,
+    "parsed": 9,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.065
+ },
+ {
+  "file": "85af46c3af834223_Dvc_PF525_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 9,
+     "udts": 16
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.023
+ },
+ {
+  "file": "986ca78cddd99b55_Dvc_PF755_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 9,
+     "udts": 14
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.02
+ },
+ {
+  "file": "1cfb5fb15c5baafa_IO_RA_1426_A_DataType.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 80
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.019
+ },
+ {
+  "file": "54d9992f33c88e08_Dvc_SMCFlex_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 9,
+     "udts": 14
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.017
+ },
+ {
+  "file": "523621db5510ca5f_Dvc_SMC50_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 8,
+     "udts": 14
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.016
+ },
+ {
+  "file": "168caaf6980f7e47_Dev_MBTCP_Client_Program.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 10,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 0,
+     "aois": 2,
+     "udts": 11
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.015
+ },
+ {
+  "file": "2cc35b111ff7d571_Dev_PackML_State_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 18,
+     "rll_rungs": 614,
+     "modules": 0,
+     "aois": 5,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 614,
+    "parsed": 614,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 2,
+    "ok": 2,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.02
+ },
+ {
+  "file": "e535bdf5b062ffed_Dvc_CiscoIE4000_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 10,
+     "udts": 20
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.013
+ },
+ {
+  "file": "adada019bff19e0e_Dvc_DiscreteOut_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 7,
+     "udts": 10
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.01
+ },
+ {
+  "file": "a8f16ea9215f14a0_Dvc_AnalogOut_AOI.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 5,
+     "udts": 10
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.009
+ },
+ {
+  "file": "ee268d765168ce26_StatusMonitoring.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 25,
+     "programs": 1,
+     "routines": 4,
+     "rll_rungs": 3,
+     "modules": 39,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.005
+ },
+ {
+  "file": "1bd2eb26bad726be_Temp.L5X",
+  "classification": "routine",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 6,
+     "programs": 1,
+     "routines": 2,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 2,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "2b0989ffde8172b9_P_PF755_Inp.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "9617158311ee3545_WeighBelt.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "a9555d1dc2aff697_P_Motor_Ctrl.L5X",
+  "classification": "udt",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "f0de85955246a710_raC_Opr_HTTP_Client_deps.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 16
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "3aea4c10691bd871_raC_Opr_HTTP_Client_no_deps.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 16
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "3189f2d2380be1db_sample_with_aoi_dependencies.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "e37506c55e0581d9_sample_implicit_deps_no_export_option.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "9168205099d38e73_sample_with_dependencies.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "c5d6e733f2035026_minimal.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "f12dc4434f794bb5_RA_RUNGS_ALM.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 37,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 37,
+    "parsed": 37,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "5d55083a93cd6b8c_RA_RUNGS_FRQ.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 20,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 20,
+    "parsed": 20,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "7b6a1c7fb66a2b02_RA_RUNGS_ModuleSts.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 14,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 14,
+    "parsed": 14,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "00eb53cf6a8e9a14_RA_RUNGS_MES.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 17,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 17,
+    "parsed": 17,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "9f7c6ead229f24da_RA_RUNGS_STO_AOI.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 10,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 10,
+    "parsed": 10,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "009a1a1167e55bd4_RA_RUNGS_DIN.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 5,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "0d6feae9272a2307_RA_RUNGS_VLV.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d6d01e956b9673a0_RA_RUNGS_MTR.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "4057a0cd3ebe36bf_RA_RUNGS_AOUT.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "4fc7dc77a33899a3_RA_RUNGS_AIN.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "ce804986f96f42f2_RA_RUNGS_PID.l5x",
+  "classification": "rung",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "9ba519f6ed816dc5_ModbusSlaveTCP.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 117,
+     "programs": 1,
+     "routines": 14,
+     "rll_rungs": 171,
+     "modules": 0,
+     "aois": 0,
+     "udts": 10
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 171,
+    "parsed": 171,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.032
+ },
+ {
+  "file": "24b85f0a81a5ec98_Turck_TBEN_Lx_8IOLA_AOI_V1_0.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "676853c57f4bca49_Turck_TBEN_Lx_8IOL_AOI_V1_3.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "949c9c4abf53a791_TBEN_Lx_8IOL_AOI_V1_2.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "3035ce2a5c781081_Turck_Universal_PSplus_V1_1.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "512726ef5c935370_Turck_Universal_PSplus_V1_0.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "31169763661e76aa_TBEN_Lx_8IOL_AOI_V1_1.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "006fd81c10e30765_TBEN_Lx_8IOL_AOI_V1_0.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "076fd66b0a9ec16e_TBEN_Lx_8IOL_AOI_V0_3.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "dde52ea671dd84c0_Turck_IOL_Universal_Discrete_Hub_V1_1.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "a3a210675006465b_Turck_PS510_10V_Full_V1_3.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "68686bfe907e4a04_Turck_PS510_10V_Full_V1_2.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "a44313edab30d7de_Turck_PS510_10V_Full_V1_1.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "b0615aede6d83ede_IO_Link_Universal_Device_Info_V1_3.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "63a670e4bf0a8b32_IO_Link_Universal_Device_Info_V1_2.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "f5620bb9e17798cf_IO_Link_Universal_Device_Info_V1_1.L5X",
+  "classification": "aoi",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 1,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "20767fb0ba666e16_Unit4_EM01_XYZ_Program.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 78,
+     "programs": 2,
+     "routines": 25,
+     "rll_rungs": 264,
+     "modules": 8,
+     "aois": 11,
+     "udts": 19
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 264,
+    "parsed": 264,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.063
+ },
+ {
+  "file": "89265a5ff85bc7bc_ACDTestsWithAOI.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 33,
+     "programs": 1,
+     "routines": 4,
+     "rll_rungs": 3,
+     "modules": 2,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "5c9db78b5cecbc41_L5x_Creation.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "e8221a954af09b1d_PLC100_Mashing01-1.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "5bc1b131140fed47_PLC100_Mashing_Enhanced.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "191c0a374c8addeb_Example.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 4,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d39622b04aa02c0c_ExampleForCICD_L85E.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 33,
+     "programs": 4,
+     "routines": 6,
+     "rll_rungs": 13,
+     "modules": 1,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 13,
+    "parsed": 13,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "aba6dd0bf484c32e_CarWash.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 17,
+     "programs": 2,
+     "routines": 2,
+     "rll_rungs": 10,
+     "modules": 8,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 10,
+    "parsed": 10,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "b1512ab23e962586_MER_Name.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 33,
+     "programs": 2,
+     "routines": 4,
+     "rll_rungs": 11,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 11,
+    "parsed": 11,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.003
+ },
+ {
+  "file": "7f59e7d49e7f977f_L5x_Creation_Populated.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 3,
+     "routines": 4,
+     "rll_rungs": 5,
+     "modules": 4,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "4cfcdf17073dcdc6_PLC100_Mashing.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 106,
+     "programs": 10,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 50
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.012
+ },
+ {
+  "file": "c722c268fb37e136_complete_with_modules.l5x",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 100,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 100,
+    "parsed": 100,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.012
+ },
+ {
+  "file": "5eadab0bca680254_ALD_miami.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 48,
+     "programs": 2,
+     "routines": 2,
+     "rll_rungs": 38,
+     "modules": 6,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 38,
+    "parsed": 38,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.005
+ },
+ {
+  "file": "c4beda0ab99a0f9f_special_xml.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 2,
+     "routines": 2,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "409f06678d9d70c6_PLC100_Mashing.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "8869a5cf3b0fb6a5_FBDTest.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 24,
+     "programs": 1,
+     "routines": 3,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 1,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.002
+ },
+ {
+  "file": "60fb973f4aedc01a_LogixAlarmEx.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 5,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "551a1f619639f4c0_sample_project.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 2,
+     "routines": 3,
+     "rll_rungs": 6,
+     "modules": 0,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 6,
+    "parsed": 6,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "34fe47fe366bfb5c_Tags_v33_5480.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 11,
+     "programs": 2,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 2,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "6bdb6484f905d68e_swat_PLC1.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 5,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 0,
+     "modules": 2,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "cd9c3ef83782774f_Assembly_Controls_Robot.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 46,
+     "programs": 2,
+     "routines": 3,
+     "rll_rungs": 87,
+     "modules": 4,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 87,
+    "parsed": 87,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.011
+ },
+ {
+  "file": "f9ff776efdc8b1c9_Ex_2_12.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 6,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "10018939b99abe4e_WaterTreatment_Main.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 37,
+     "programs": 2,
+     "routines": 7,
+     "rll_rungs": 36,
+     "modules": 6,
+     "aois": 2,
+     "udts": 3
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 36,
+    "parsed": 36,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.004
+ },
+ {
+  "file": "8f2563b9f81dfd7b_LearnPLC_NoHardware.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 16,
+     "programs": 1,
+     "routines": 7,
+     "rll_rungs": 12,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 12,
+    "parsed": 12,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "32bfd0147b12e188_Beginner_Guide.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 53,
+     "programs": 2,
+     "routines": 8,
+     "rll_rungs": 65,
+     "modules": 1,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 65,
+    "parsed": 65,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.005
+ },
+ {
+  "file": "44a780d19db08875_MyFirstPLCProject.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 16,
+     "programs": 1,
+     "routines": 8,
+     "rll_rungs": 20,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 20,
+    "parsed": 20,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "01f1a4247e618bed_Ex_2_10.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "31d99b3575d59128_Ex_2_11.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 6,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 3,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "a3298e879fc0b106_Ex_2_01.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "70b3ac8bd7d061fa_Ex_2_03.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "5664bfd38cc91bb8_Ex_2_02.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 3,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "65127bce1c767478_Beginner_Guide_Annotated.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 65,
+     "programs": 2,
+     "routines": 8,
+     "rll_rungs": 67,
+     "modules": 1,
+     "aois": 1,
+     "udts": 2
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 67,
+    "parsed": 67,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.007
+ },
+ {
+  "file": "2deee96fd8600c66_Ex_2_14.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 4,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "20fa1a276e4a71b2_Ex_2_15.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 17,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 5,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "ed050c2cf17e671e_Ex_2_05.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 3,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "5c25b20b912f4718_Ex_2_06.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 3,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 2,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 2,
+    "parsed": 2,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "00205137abf444b2_Ex_2_17.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 8,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 3,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "d41f4023dcc2d9b9_Ex_2_07.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 3,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "56ca18968c79a693_Ex_2_08.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 5,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 3,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "a69a139ccc1f2d4b_Ex_2_09.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 3,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "2a6a611442318c2d_Ex_2_18.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 9,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 4,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 4,
+    "parsed": 4,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "33ad02e7ea487f75_Ex_2_16.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 10,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 4,
+     "modules": 1,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 4,
+    "parsed": 4,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "1c906928ed42b859_Empty.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "beec16eb680db457_test.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 2,
+     "programs": 3,
+     "routines": 3,
+     "rll_rungs": 0,
+     "modules": 4,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "8d0f3a3083e1cae5_Simple.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 1010,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 1,
+     "modules": 3,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 1,
+    "parsed": 1,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.014
+ },
+ {
+  "file": "19f6a7910f8cd02a_test.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 5,
+     "programs": 1,
+     "routines": 1,
+     "rll_rungs": 5,
+     "modules": 2,
+     "aois": 1,
+     "udts": 4
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": true,
+    "total": 5,
+    "parsed": 2,
+    "coverage": 0.4,
+    "fail_sigs": {
+     "RungParseError(recorded): Unexpected end of text inside branch": 2,
+     "RungParseError(recorded): Unexpected character <id> at position <n> in rung: \u2026ONE[]]\u2026": 1
+    },
+    "fail_examples": {
+     "RungParseError(recorded): Unexpected end of text inside branch": "dancer/INITIATE_DANCE_SEQUENCE#2",
+     "RungParseError(recorded): Unexpected character <id> at position <n> in rung: \u2026ONE[]]\u2026": "dancer/INITIATE_DANCE_SEQUENCE#4"
+    }
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "3d9c8dc68c68a00c_sample_controller.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 1,
+     "routines": 2,
+     "rll_rungs": 3,
+     "modules": 2,
+     "aois": 1,
+     "udts": 1
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 3,
+    "parsed": 3,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "76edd55da1ec51bc_L5x_Creation_Pretty_Print_Test.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 7,
+     "programs": 3,
+     "routines": 4,
+     "rll_rungs": 5,
+     "modules": 4,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 5,
+    "parsed": 5,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.001
+ },
+ {
+  "file": "134cd4670ad63baa_Random_AOI_Test_01042020.L5X",
+  "classification": "controller",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 46,
+     "programs": 4,
+     "routines": 10,
+     "rll_rungs": 24,
+     "modules": 4,
+     "aois": 3,
+     "udts": 4
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 24,
+    "parsed": 24,
+    "coverage": 1.0,
+    "fail_sigs": {},
+    "fail_examples": {}
+   },
+   "diagnosis": {
+    "targets": 10,
+    "ok": 10,
+    "failures": {},
+    "all_ok": true
+   }
+  },
+  "elapsed_s": 0.009
+ },
+ {
+  "file": "983acdb7da776597__501CS100_-_AddOns_-_MAN.l5x",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ },
+ {
+  "file": "84ee6cc859e55c4d__501CS100_-_DATATYPE-MAN.L5X",
+  "classification": "other",
+  "stages": {
+   "load": {
+    "ok": true
+   },
+   "parse": {
+    "ok": true,
+    "counts": {
+     "tags": 0,
+     "programs": 0,
+     "routines": 0,
+     "rll_rungs": 0,
+     "modules": 0,
+     "aois": 0,
+     "udts": 0
+    }
+   },
+   "rungs": {
+    "ok": true,
+    "degraded": false,
+    "total": 0,
+    "parsed": 0,
+    "coverage": null,
+    "fail_sigs": {},
+    "fail_examples": {}
+   }
+  },
+  "elapsed_s": 0.0
+ }
+]

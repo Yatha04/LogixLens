@@ -75,10 +75,21 @@ def load_l5x(filepath: str) -> L5XProject:
             f"expected <RSLogix5000Content>"
         )
 
-    # Find Controller element
+    # Find Controller element. Some component exports (e.g.
+    # TargetType="Module") legitimately have no <Controller> — the exported
+    # component sits directly under the root. Rather than failing, synthesize
+    # an empty Controller wrapper so downstream extractors see a valid (if
+    # mostly empty) project, and re-home any root-level <Module Use="Target">
+    # under Controller/Modules so module exports still yield their module.
     controller = root.find("Controller")
     if controller is None:
-        raise L5XValidationError("No <Controller> element found in L5X file")
+        controller = etree.SubElement(root, "Controller")
+        controller.set("Name", root.get("TargetName", "Unknown"))
+        root_modules = [el for el in root if el.tag == "Module"]
+        if root_modules:
+            modules_el = etree.SubElement(controller, "Modules")
+            for mod in root_modules:
+                modules_el.append(mod)  # moves the element
 
     # Extract metadata
     metadata = L5XMetadata(

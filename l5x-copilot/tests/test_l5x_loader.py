@@ -41,12 +41,19 @@ class TestLoaderErrorHandling:
         with pytest.raises(L5XValidationError):
             load_l5x(str(f))
 
-    def test_load_missing_controller_raises(self, tmp_path):
-        """Loader raises L5XValidationError when there is no <Controller> element."""
+    def test_load_missing_controller_degrades_gracefully(self, tmp_path):
+        """No <Controller> element (e.g. TargetType='Module' component
+        exports, found in real-world corpus files) loads as an empty
+        synthesized-controller project instead of raising."""
         f = tmp_path / "no_controller.L5X"
-        f.write_text('<?xml version="1.0"?><RSLogix5000Content/>')
-        with pytest.raises(L5XValidationError):
-            load_l5x(str(f))
+        f.write_text(
+            '<?xml version="1.0"?>'
+            '<RSLogix5000Content TargetType="Module" TargetName="ModX"/>'
+        )
+        project = load_l5x(str(f))
+        assert project.metadata.controller_name == "ModX"
+        assert project.metadata.target_type == "Module"
+        assert project.xpath("Tags/Tag") == []
 
     def test_namespace_stripping(self, tmp_path):
         """Namespace is stripped so plain XPath like Tags/Tag works."""

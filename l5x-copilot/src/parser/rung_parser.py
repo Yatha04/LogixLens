@@ -207,10 +207,18 @@ def _parse_instruction(text: str, pos: int) -> Tuple[Instruction, int]:
             f"Expected mnemonic at position {start}, got {text[start:start+10]!r}"
         )
 
-    # Expect '('
+    # Expect '(' — but Rockwell emits some zero-operand instructions bare
+    # (real exports contain e.g. ``NOP;`` with no parentheses). A mnemonic
+    # not followed by '(' is treated as a zero-operand instruction.
     if pos >= len(text) or text[pos] != "(":
-        raise RungParseError(
-            f"Expected '(' after mnemonic {mnemonic!r} at position {pos}"
+        cat, is_cond = INSTRUCTION_CATALOG.get(
+            mnemonic, (_DEFAULT_CATEGORY, _DEFAULT_IS_CONDITION)
+        )
+        return (
+            Instruction(
+                mnemonic=mnemonic, operands=[], category=cat, is_condition=is_cond
+            ),
+            pos,
         )
     pos += 1  # skip '('
 
@@ -348,6 +356,7 @@ def parse_rung(text: str) -> ParsedRung:
 
 def parse_all_rungs(
     programs: List[Program],
+    errors: Optional[Dict[Tuple[str, str, int], str]] = None,
 ) -> Dict[Tuple[str, str, int], ParsedRung]:
     """Parse every rung in every RLL routine across all programs.
 
@@ -355,6 +364,12 @@ def parse_all_rungs(
     ----------
     programs : list[Program]
         Output of :func:`routine_extractor.extract_programs`.
+    errors : dict, optional
+        When provided, rungs that fail to parse are recorded here as
+        ``key -> error message`` and parsing continues (real-world exports
+        contain malformed/legacy rung text; one bad rung must not fail the
+        whole project). When ``None``, a :class:`RungParseError` propagates
+        (strict mode, the historical behavior).
 
     Returns
     -------
@@ -370,6 +385,11 @@ def parse_all_rungs(
                 continue
             for rung in routine.rungs:
                 key = (prog.name, routine.name, rung.number)
-                results[key] = parse_rung(rung.text)
+                try:
+                    results[key] = parse_rung(rung.text)
+                except RungParseError as exc:
+                    if errors is None:
+                        raise
+                    errors[key] = str(exc)
 
     return results
