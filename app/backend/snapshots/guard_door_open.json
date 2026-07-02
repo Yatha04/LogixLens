@@ -1,0 +1,33 @@
+{
+  "description": "Guard door opened. The PLC recomputes Safety_OK -> FALSE, which blocks Press_Cycle_Start. Consistent-values snapshot: GuardDoor_Closed=false AND Safety_OK=false.",
+  "values": {
+    "Mode_Auto": true,
+    "Cycle_Active": true,
+    "Part_Present": true,
+    "Transfer_Clear": true,
+    "Press_At_Top": true,
+    "Hydraulics_OK": true,
+    "Clamp_Closed": true,
+    "Lube_OK": true,
+    "Safety_OK": false,
+    "Cycle_Start_PB": true,
+    "Auto_Sequence_Run": true,
+    "Press_Cycle_Fault": false,
+
+    "Estop_Chain_OK": true,
+    "GuardDoor_Closed": false,
+    "LightCurtain_Clear": true,
+    "SafetyRelay_CH1": true,
+    "SafetyRelay_CH2": true,
+    "Safety_Reset_Done": true,
+
+    "Estop_Active": false,
+    "System_Running": true,
+    "Fault_InfeedJam": false,
+    "Fault_PressOvertemp": false,
+    "Fault_HydLowPressure": false,
+    "Fault_DriveFault": false,
+    "Hyd_Pump_Running": true,
+    "Press_Overtemp": false
+  }
+}

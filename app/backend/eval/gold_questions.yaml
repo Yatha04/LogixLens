@@ -1,0 +1,93 @@
+# Gold Q&A eval set for PressLine_3. Assertions are expected-EVIDENCE, not exact
+# wording. `tools_any` = at least one of these tools must be called. `snapshot`
+# selects a live-value snapshot. `mock_runnable: true` marks questions whose
+# tool + answer assertions the deterministic --mock model can satisfy; the rest
+# are skipped in mock mode and only checked against the real model.
+
+questions:
+  - id: why_press_not_cycling
+    question: "Why is the press not cycling?"
+    snapshot: guard_door_open
+    mock_runnable: true
+    expect:
+      tools_any: [trace_blockers]
+      answer_contains: ["GuardDoor_Closed"]
+      cites_routine: R92_SafetyOK
+
+  - id: why_safety_ok_false
+    question: "Why is Safety_OK false right now?"
+    snapshot: guard_door_open
+    mock_runnable: true
+    expect:
+      tools_any: [trace_blockers]
+      answer_contains: ["GuardDoor"]
+      cites_routine: R92_SafetyOK
+
+  - id: what_machine_does
+    question: "What does this machine do?"
+    mock_runnable: true
+    expect:
+      tools_any: [get_project_summary]
+      answer_contains: ["press"]
+
+  - id: press_healthy_ok
+    question: "Why won't the press cycle?"
+    snapshot: healthy
+    mock_runnable: true
+    expect:
+      tools_any: [trace_blockers]
+
+  - id: what_writes_safety_ok
+    question: "What writes Safety_OK?"
+    expect:
+      tools_any: [find_writers]
+      answer_contains: ["R92_SafetyOK"]
+      cites_routine: R92_SafetyOK
+
+  - id: what_is_fb_valve
+    question: "What is FB_VALVE?"
+    expect:
+      tools_any: [get_aoi]
+      answer_contains: ["valve"]
+
+  - id: what_is_fb_cylinder
+    question: "What does the FB_CYLINDER AOI do?"
+    expect:
+      tools_any: [get_aoi]
+      answer_contains: ["cylinder"]
+
+  - id: explain_rung9_presscycle
+    question: "Explain rung 9 of R30_PressCycle."
+    expect:
+      tools_any: [get_rung]
+      answer_contains: ["permissive"]
+
+  - id: explain_r92_safetyok
+    question: "Explain what routine R92_SafetyOK does."
+    expect:
+      tools_any: [explain_context_pack, get_routine]
+      answer_contains: ["Safety_OK"]
+
+  - id: readers_of_safety_ok
+    question: "Where is Safety_OK used in the program?"
+    expect:
+      tools_any: [find_readers]
+      answer_contains: ["Safety_OK"]
+
+  - id: tag_guarddoor
+    question: "Tell me about the GuardDoor_Closed tag."
+    expect:
+      tools_any: [get_tag]
+      answer_contains: ["guard"]
+
+  - id: search_hydraulics
+    question: "Which tags relate to hydraulics?"
+    expect:
+      tools_any: [search_tags]
+      answer_contains: ["Hyd"]
+
+  - id: writers_press_cycle_active
+    question: "What writes Press_Cycle_Active?"
+    expect:
+      tools_any: [find_writers]
+      cites_routine: R30_PressCycle
