@@ -1,0 +1,6 @@
+# Ask the PLC -- Stage 4 live simulator dependencies.
+# Install into the existing l5x-copilot venv:
+#   ./l5x-copilot/.venv/bin/pip install -r app/simulator/requirements.txt
+asyncua>=1.0      # OPC UA server (simulator) + client (OpcUaProvider)
+aiohttp>=3.9      # chaos / status HTTP API
+pyyaml>=6.0       # reads demo_cell/pressline3.yaml (shared source of truth)

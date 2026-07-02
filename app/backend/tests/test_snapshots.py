@@ -40,8 +40,12 @@ def test_static_snapshot_filter():
     assert set(v.keys()) == {"Safety_OK"}
 
 
-def test_opcua_placeholder():
-    p = OpcUaProvider("opc.tcp://x")
+def test_opcua_unavailable_is_graceful():
+    # Stage-4: OpcUaProvider is implemented. With no server at the endpoint it
+    # must degrade gracefully -- available() False, empty values, a note, and
+    # NO exception leaking.
+    p = OpcUaProvider("opc.tcp://127.0.0.1:1/pressline3/", connect_timeout=1.0)
     assert p.available() is False
-    with pytest.raises(NotImplementedError):
-        p.get_values()
+    assert p.get_values() == {}
+    assert p.get_values(["Safety_OK"]) == {}
+    assert isinstance(p.note, str) and p.note

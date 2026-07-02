@@ -95,20 +95,143 @@ class StaticSnapshotProvider(LiveValueProvider):
 
 
 class OpcUaProvider(LiveValueProvider):
-    """Placeholder OPC UA live-value provider — wired up in Stage 4."""
+    """Live-value provider backed by the Stage-4 PressLine_3 OPC UA server.
+
+    ``asyncua`` is async-only, but :class:`LiveValueProvider` is a synchronous
+    interface, so this bridges cleanly: a single background thread runs a private
+    asyncio loop that owns the OPC UA :class:`~asyncua.Client`; the sync methods
+    marshal coroutines onto it via ``run_coroutine_threadsafe``. The server
+    exposes every tag as a Variable node under a ``PressLine_3`` folder with
+    string NodeIds equal to the tag name, in the ``urn:logixlens:pressline3``
+    namespace; on connect we browse that folder once and cache a
+    ``{tag: node}`` map, then batch-read on each ``get_values`` call.
+
+    An unavailable server is handled gracefully: :meth:`available` returns
+    ``False``, :meth:`get_values` returns ``{}`` and records a human-readable
+    ``note`` — no exception ever escapes.
+    """
 
     name = "opcua"
 
-    def __init__(self, endpoint: Optional[str] = None):
-        self.endpoint = endpoint
+    # Kept in sync (by documentation) with app/simulator/cell.py.
+    _NAMESPACE_URI = "urn:logixlens:pressline3"
+    _ROOT_FOLDER = "PressLine_3"
+
+    def __init__(self, endpoint: Optional[str] = None, connect_timeout: float = 5.0):
+        self.endpoint = endpoint or "opc.tcp://127.0.0.1:4840/pressline3/"
+        self._connect_timeout = connect_timeout
+        self._loop = None
+        self._thread = None
+        self._client = None
+        self._nodes: Dict[str, tuple] = {}   # tag.lower() -> (orig_name, node)
+        self._connected = False
+        self.note = ""
+        import threading
+        self._lock = threading.Lock()
+
+    # -- async loop plumbing ------------------------------------------------
+    def _ensure_loop(self):
+        import asyncio
+        import threading
+        if self._loop is None:
+            self._loop = asyncio.new_event_loop()
+            self._thread = threading.Thread(
+                target=self._loop.run_forever, daemon=True,
+                name="opcua-provider-loop")
+            self._thread.start()
+
+    def _run(self, coro, timeout: Optional[float] = None):
+        import asyncio
+        self._ensure_loop()
+        fut = asyncio.run_coroutine_threadsafe(coro, self._loop)
+        return fut.result(timeout=timeout or (self._connect_timeout + 5.0))
+
+    async def _aconnect(self) -> None:
+        from asyncua import Client
+        client = Client(url=self.endpoint, timeout=self._connect_timeout)
+        await client.connect()
+        objects = client.nodes.objects
+        folder = None
+        for child in await objects.get_children():
+            bn = await child.read_browse_name()
+            if bn.Name == self._ROOT_FOLDER:
+                folder = child
+                break
+        if folder is None:
+            await client.disconnect()
+            raise RuntimeError(f"'{self._ROOT_FOLDER}' folder not found on server")
+        nodes: Dict[str, tuple] = {}
+        for var in await folder.get_children():
+            bn = await var.read_browse_name()
+            nodes[bn.Name.lower()] = (bn.Name, var)
+        self._client = client
+        self._nodes = nodes
+        self._connected = True
+
+    def _connect_sync(self) -> bool:
+        with self._lock:
+            if self._connected:
+                return True
+            try:
+                self._run(self._aconnect())
+                self.note = f"connected to {self.endpoint} ({len(self._nodes)} tags)"
+                return True
+            except Exception as exc:  # noqa: BLE001 - never leak
+                self._connected = False
+                self.note = f"OPC UA server unavailable at {self.endpoint}: {exc}"
+                return False
+
+    async def _aread(self, tags: Optional[List[str]]):
+        import asyncio
+        if tags is None:
+            items = list(self._nodes.values())
+        else:
+            want = {t.lower() for t in tags}
+            items = [self._nodes[t] for t in want if t in self._nodes]
+        if not items:
+            return {}
+        names = [orig for orig, _ in items]
+        node_objs = [node for _, node in items]
+        vals = await asyncio.gather(*[n.read_value() for n in node_objs])
+        out: Dict[str, object] = {}
+        for name, val in zip(names, vals):
+            if isinstance(val, bool):
+                out[name] = val
+            elif isinstance(val, int):
+                out[name] = int(val)
+            elif isinstance(val, float):
+                out[name] = float(val)
+            else:
+                out[name] = val
+        return out
+
+    # -- LiveValueProvider interface ---------------------------------------
+    def available(self) -> bool:
+        if self._connected:
+            return True
+        return self._connect_sync()
 
     def get_values(self, tags: Optional[List[str]] = None) -> Dict[str, object]:
-        raise NotImplementedError(
-            "OpcUaProvider is a Stage-4 placeholder; connect a live cell to use it."
-        )
+        if not self.available():
+            return {}
+        try:
+            return self._run(self._aread(tags))
+        except Exception as exc:  # noqa: BLE001 - never leak
+            self._connected = False
+            self.note = f"OPC UA read failed: {exc}"
+            return {}
 
-    def available(self) -> bool:
-        return False
+    def close(self) -> None:
+        """Best-effort disconnect + loop teardown (safe to call multiple times)."""
+        import asyncio
+        try:
+            if self._connected and self._client is not None:
+                self._run(self._client.disconnect(), timeout=3.0)
+        except Exception:  # noqa: BLE001
+            pass
+        self._connected = False
+        if self._loop is not None:
+            self._loop.call_soon_threadsafe(self._loop.stop)
 
 
 # ──────────────────────────────────────────────────────────────────────
