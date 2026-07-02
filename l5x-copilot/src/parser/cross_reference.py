@@ -19,6 +19,7 @@ class UsageEntry:
     rung_number: int
     instruction: str
     access: str  # "read", "write", "read+write"
+    full_path: str = ""  # original, un-normalized operand text (e.g. "Station3.CycleActive")
 
 
 @dataclass
@@ -141,12 +142,73 @@ def build_cross_reference(
                     routine=rout_name,
                     rung_number=rung_num,
                     instruction=instr.mnemonic,
-                    access=access
+                    access=access,
+                    full_path=op.value,
                 )
 
                 if base_tag not in index:
                     index[base_tag] = TagUsage(tag_name=base_tag)
-                
+
                 index[base_tag].usages.append(entry)
+
+    return index
+
+
+def build_member_cross_reference(
+    parsed_rungs: Dict[Tuple[str, str, int], ParsedRung]
+) -> Dict[str, TagUsage]:
+    """Build a *member-level* cross-reference index.
+
+    Unlike :func:`build_cross_reference`, which collapses every operand to its
+    base tag (``Station3.CycleActive`` → ``Station3``), this index keys on the
+    **full, un-normalized operand path** exactly as it appears in the rung
+    (``Station3.CycleActive``, ``data[5]``, ``Timer1.DN``). This is what the
+    diagnosis engine needs to locate the precise coil that drives a specific
+    member/bit rather than the whole structure.
+
+    The base-tag index from :func:`build_cross_reference` is unchanged and
+    remains the public default; this is an additive, parallel structure.
+
+    Parameters
+    ----------
+    parsed_rungs:
+        Keyed by (program, routine, rung_number), value is ParsedRung.
+
+    Returns
+    -------
+    dict:
+        Mapping of full operand path -> TagUsage (whose ``tag_name`` is the
+        full path). Each ``UsageEntry.full_path`` carries the same original
+        operand text.
+    """
+    index: Dict[str, TagUsage] = {}
+
+    for (prog_name, rout_name, rung_num), prung in parsed_rungs.items():
+        instructions = walk_elements(prung.elements)
+
+        for instr in instructions:
+            for idx, op in enumerate(instr.operands):
+                if op.is_literal:
+                    continue
+
+                full_path = op.value
+                if not full_path:
+                    continue
+
+                access = classify_usage(instr, idx)
+
+                entry = UsageEntry(
+                    program=prog_name,
+                    routine=rout_name,
+                    rung_number=rung_num,
+                    instruction=instr.mnemonic,
+                    access=access,
+                    full_path=full_path,
+                )
+
+                if full_path not in index:
+                    index[full_path] = TagUsage(tag_name=full_path)
+
+                index[full_path].usages.append(entry)
 
     return index

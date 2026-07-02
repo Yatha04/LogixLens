@@ -1,0 +1,728 @@
+# =============================================================================
+# PressLine_3 -- declarative cell specification (single source of truth)
+# =============================================================================
+# This file drives generate_l5x.py (emits PressLine_3.L5X) and is designed to
+# ALSO drive a future asyncio simulator: device types, I/O points, and interlock
+# conditions are expressed as data, never embedded XML.
+#
+# Cell layout (physical flow, left to right):
+#   infeed conveyor -> transfer arm (pick/place) -> hydraulic press
+#   (guard door + light curtain + dual-channel E-stop) -> outfeed conveyor
+#   with reject gate.
+#
+# The "money-shot" diagnostic chain (must trace Press_Cycle_Start -> GuardDoor_Closed
+# in <= 3 hops): see interlocks: Press_Cycle_Start and Safety_OK below.
+# =============================================================================
+
+controller:
+  name: PressLine_3
+  processor: 5069-L320ER
+  major_rev: 33
+  minor_rev: 11
+  software_revision: "33.00"
+  project_creation_date: "Mon Jan 06 08:14:22 2025"
+  last_modified_date: "Wed Jul 01 16:52:10 2026"
+  description: >-
+    Station 3 hydraulic press cell. Infeed conveyor stages parts to a pick/place
+    transfer arm that loads a guarded hydraulic press; good parts exit on the
+    outfeed conveyor, rejects are diverted by a gate. Safety is dual-channel.
+
+# -----------------------------------------------------------------------------
+# Semantic model (consumed by the simulator; documentation-as-data for the L5X)
+# -----------------------------------------------------------------------------
+stations:
+  - id: infeed
+    program: P100_Infeed
+    status_tag: Station_Infeed
+    devices: [Motor_Infeed]
+    sensors: [PartPresent_Eye1, PartPresent_Eye2, Infeed_Running]
+  - id: transfer
+    program: P200_Transfer
+    status_tag: Station_Transfer
+    devices: [Cyl_TransferArm]
+    sensors: [TransferArm_Extended, TransferArm_Retracted, Vac_OK]
+  - id: press
+    program: P300_Press
+    status_tag: Station_Press
+    devices: [Valve_PressClamp, Valve_Lube, Cyl_PressRam]
+    sensors: [Press_At_Top, Press_At_Bottom, Clamp_Closed_LS, Hyd_Pump_Running, Press_Overtemp]
+  - id: outfeed
+    program: P400_Outfeed
+    status_tag: Station_Outfeed
+    devices: [Motor_Outfeed, Cyl_RejectGate]
+    sensors: [Part_At_Outfeed, Reject_Gate_Open, Drive_Ready]
+
+# Fault registry -- each maps to a chaos-injection fault in the design doc (S4).
+faults:
+  - {tag: Fault_InfeedJam,       chaos: infeed_jam,      latch_in: Infeed_Jam_Detected}
+  - {tag: Fault_TransferTimeout, chaos: eye_blocked,     latch_in: Transfer_Timeout}
+  - {tag: Fault_PressOvertemp,   chaos: press_overtemp,  latch_in: Press_Overtemp}
+  - {tag: Fault_HydLowPressure,  chaos: press_overtemp,  latch_in: Hyd_LowPressure}
+  - {tag: Fault_GuardOpen,       chaos: guard_door_stuck, latch_in: Guard_Open_Detected}
+  - {tag: Fault_LightCurtain,    chaos: eye_blocked,     latch_in: LightCurtain_Broken}
+  - {tag: Fault_DriveFault,      chaos: drive_fault,     latch_in: Drive_Fault_In}
+
+# =============================================================================
+# UDTs
+# =============================================================================
+udts:
+  # ALARM_TYPE MUST have exactly 7 members (parser integration test asserts this).
+  - name: ALARM_TYPE
+    description: Standard alarm/fault record used across all stations.
+    members:
+      - {name: Active,    data_type: BOOL, description: Alarm condition currently present}
+      - {name: Acked,     data_type: BOOL, description: Operator has acknowledged}
+      - {name: Latched,   data_type: BOOL, description: Alarm latched until reset}
+      - {name: ResetReq,  data_type: BOOL, description: Reset requested}
+      - {name: Code,      data_type: DINT, description: Numeric fault code}
+      - {name: Severity,  data_type: SINT, description: 0=info 1=warn 2=fault 3=critical}
+      - {name: Count,     data_type: DINT, description: Occurrence count since power-up}
+
+  - name: udtStation
+    description: Per-station status/handshake structure.
+    members:
+      - {name: Ready,       data_type: BOOL, description: Station ready to run}
+      - {name: CycleActive, data_type: BOOL, description: Station cycle in progress}
+      - {name: Fault,       data_type: BOOL, description: Station has an active fault}
+      - {name: Home,        data_type: BOOL, description: Station actuators at home}
+      - {name: Step,        data_type: DINT, description: Sequencer step register}
+      - {name: CycleCount,  data_type: DINT, description: Completed cycles this shift}
+
+  - name: udtRecipe
+    description: Press recipe parameters selected from the HMI.
+    members:
+      - {name: Number,     data_type: DINT, description: Selected recipe number}
+      - {name: Pressure,   data_type: REAL, description: Target hydraulic pressure (PSI)}
+      - {name: DwellTime,  data_type: DINT, description: Bottom dwell time (ms)}
+      - {name: Tonnage,    data_type: REAL, description: Target press tonnage}
+
+# =============================================================================
+# Modules (hardware)
+# =============================================================================
+modules:
+  - name: Local
+    catalog: 5069-L320ER
+    vendor: 1
+    product_type: 14
+    product_code: 210
+    major: 33
+    minor: 11
+    ports:
+      - {id: 1, type: Ethernet, address: "192.168.1.10", upstream: false}
+      - {id: 2, type: ICP,      address: "0",            upstream: false}
+  - name: DI_Infeed
+    catalog: 5069-IB16
+    vendor: 1
+    product_type: 7
+    product_code: 137
+    major: 3
+    minor: 1
+    parent: Local
+    parent_port: 2
+    ports:
+      - {id: 1, type: ICP, address: "1", upstream: true}
+  - name: DI_Press
+    catalog: 5069-IB16
+    vendor: 1
+    product_type: 7
+    product_code: 137
+    major: 3
+    minor: 1
+    parent: Local
+    parent_port: 2
+    ports:
+      - {id: 1, type: ICP, address: "2", upstream: true}
+  - name: DO_Main
+    catalog: 5069-OB16
+    vendor: 1
+    product_type: 7
+    product_code: 140
+    major: 3
+    minor: 1
+    parent: Local
+    parent_port: 2
+    ports:
+      - {id: 1, type: ICP, address: "3", upstream: true}
+  - name: Safety_In
+    catalog: 5069-IB8S
+    vendor: 1
+    product_type: 7
+    product_code: 5011
+    major: 3
+    minor: 1
+    parent: Local
+    parent_port: 2
+    ports:
+      - {id: 1, type: ICP, address: "4", upstream: true}
+  - name: PressDrive
+    catalog: PowerFlex 525-EENET
+    vendor: 1
+    product_type: 121
+    product_code: 1096
+    major: 5
+    minor: 1
+    parent: Local
+    parent_port: 1
+    ports:
+      - {id: 1, type: Ethernet, address: "192.168.1.21", upstream: true}
+
+# =============================================================================
+# Add-On Instructions (device function blocks)
+# =============================================================================
+aois:
+  - name: FB_VALVE
+    revision: "1.1"
+    description: Dual-solenoid valve control with open/close feedback and timeout fault.
+    parameters:
+      - {name: EnableIn, data_type: BOOL, usage: Input,  required: true,  visible: false, default_data: "1", description: AOI enable input}
+      - {name: Open,     data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Command valve open}
+      - {name: Close,    data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Command valve close}
+      - {name: Opened,   data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Open limit switch feedback}
+      - {name: Closed,   data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Closed limit switch feedback}
+      - {name: CmdOpen,  data_type: BOOL, usage: Output, required: true,  visible: true,  description: Energize open solenoid}
+      - {name: CmdClose, data_type: BOOL, usage: Output, required: true,  visible: true,  description: Energize close solenoid}
+      - {name: Fault,    data_type: BOOL, usage: Output, required: true,  visible: true,  description: Valve failed to reach commanded position}
+      - {name: EnableOut,data_type: BOOL, usage: Output, required: false, visible: false, description: AOI enable output}
+    local_tags:
+      - {name: MoveTmr, data_type: TIMER, description: Valve travel timeout timer}
+    routines:
+      - name: Logic
+        type: RLL
+        rungs:
+          - {comment: "Command open when requested and not commanded closed", text: "XIC(EnableIn)XIC(Open)XIO(Close)OTE(CmdOpen);"}
+          - {comment: "Command close when requested and not commanded open",  text: "XIC(EnableIn)XIC(Close)XIO(Open)OTE(CmdClose);"}
+          - {comment: "Run travel timeout while commanded but not confirmed",  text: "[XIC(CmdOpen)XIO(Opened),XIC(CmdClose)XIO(Closed)]TON(MoveTmr,?,?);"}
+          - {comment: "Latch fault on travel timeout", text: "XIC(MoveTmr.DN)OTL(Fault);"}
+          - {comment: "Clear fault once a limit is confirmed", text: "[XIC(Opened),XIC(Closed)]OTU(Fault);"}
+          - {text: "XIC(EnableIn)OTE(EnableOut);"}
+
+  - name: FB_MOTOR_STARTER
+    revision: "1.2"
+    description: Across-the-line motor starter with 3-wire seal-in and run-feedback fault.
+    parameters:
+      - {name: EnableIn, data_type: BOOL, usage: Input,  required: true,  visible: false, default_data: "1", description: AOI enable input}
+      - {name: Start,    data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Momentary start request}
+      - {name: Stop,     data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Stop request (normally closed)}
+      - {name: Running,  data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Motor running feedback (aux contact)}
+      - {name: Run,      data_type: BOOL, usage: Output, required: true,  visible: true,  description: Contactor run output}
+      - {name: Fault,    data_type: BOOL, usage: Output, required: true,  visible: true,  description: Motor failed to confirm running}
+      - {name: EnableOut,data_type: BOOL, usage: Output, required: false, visible: false, description: AOI enable output}
+    local_tags:
+      - {name: FaultTmr, data_type: TIMER, description: Run-feedback timeout timer}
+    routines:
+      - name: Logic
+        type: RLL
+        rungs:
+          - {comment: "3-wire seal-in start/stop with fault drop-out", text: "XIC(EnableIn)[XIC(Start),XIC(Run)]XIC(Stop)XIO(Fault)OTE(Run);"}
+          - {comment: "Run feedback timeout", text: "XIC(Run)XIO(Running)TON(FaultTmr,?,?);"}
+          - {comment: "Latch motor fault", text: "XIC(FaultTmr.DN)OTL(Fault);"}
+          - {comment: "Fault clears when stopped", text: "XIO(Stop)OTU(Fault);"}
+          - {text: "XIC(EnableIn)OTE(EnableOut);"}
+
+  - name: FB_CYLINDER
+    revision: "1.0"
+    description: Double-acting pneumatic cylinder with extend/retract limits and motion timeout.
+    parameters:
+      - {name: EnableIn,  data_type: BOOL, usage: Input,  required: true,  visible: false, default_data: "1", description: AOI enable input}
+      - {name: Extend,    data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Command cylinder extend}
+      - {name: Retract,   data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Command cylinder retract}
+      - {name: Extended,  data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Extended limit switch}
+      - {name: Retracted, data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Retracted limit switch}
+      - {name: CmdExtend, data_type: BOOL, usage: Output, required: true,  visible: true,  description: Energize extend solenoid}
+      - {name: CmdRetract,data_type: BOOL, usage: Output, required: true,  visible: true,  description: Energize retract solenoid}
+      - {name: Fault,     data_type: BOOL, usage: Output, required: true,  visible: true,  description: Cylinder motion timeout}
+      - {name: EnableOut, data_type: BOOL, usage: Output, required: false, visible: false, description: AOI enable output}
+    local_tags:
+      - {name: MoveTmr, data_type: TIMER, description: Motion timeout timer}
+    routines:
+      - name: Logic
+        type: RLL
+        rungs:
+          - {comment: "Extend command", text: "XIC(EnableIn)XIC(Extend)XIO(Retract)XIO(Extended)OTE(CmdExtend);"}
+          - {comment: "Retract command", text: "XIC(EnableIn)XIC(Retract)XIO(Extend)XIO(Retracted)OTE(CmdRetract);"}
+          - {comment: "Motion timeout while moving", text: "[XIC(CmdExtend),XIC(CmdRetract)]TON(MoveTmr,?,?);"}
+          - {comment: "Latch fault if neither limit made in time", text: "XIC(MoveTmr.DN)XIO(Extended)XIO(Retracted)OTL(Fault);"}
+          - {comment: "Clear fault when a limit is reached", text: "[XIC(Extended),XIC(Retracted)]OTU(Fault);"}
+          - {text: "XIC(EnableIn)OTE(EnableOut);"}
+
+  - name: FB_DEBOUNCE
+    revision: "1.0"
+    description: On-delay debounce for a noisy discrete input (photo-eye / limit switch).
+    parameters:
+      - {name: EnableIn, data_type: BOOL, usage: Input,  required: true,  visible: false, default_data: "1", description: AOI enable input}
+      - {name: Input,    data_type: BOOL, usage: Input,  required: true,  visible: true,  description: Raw discrete input}
+      - {name: DebTime,  data_type: DINT, usage: Input,  required: true,  visible: true,  description: Debounce time (ms)}
+      - {name: Output,   data_type: BOOL, usage: Output, required: true,  visible: true,  description: Debounced output}
+      - {name: EnableOut,data_type: BOOL, usage: Output, required: false, visible: false, description: AOI enable output}
+    local_tags:
+      - {name: DbTmr, data_type: TIMER, description: Debounce timer}
+    routines:
+      - name: Logic
+        type: RLL
+        rungs:
+          - {comment: "On-delay the raw input", text: "XIC(EnableIn)XIC(Input)TON(DbTmr,?,?);"}
+          - {comment: "Publish debounced state", text: "XIC(DbTmr.DN)OTE(Output);"}
+          - {text: "XIC(EnableIn)OTE(EnableOut);"}
+
+# =============================================================================
+# Tags  (~30% intentionally left undocumented for the auto-doc demo)
+# =============================================================================
+tags:
+  # --- Mode / master control (controller scope) ---------------------------
+  - {name: Mode_Auto,        data_type: BOOL, description: Auto mode selected at the HMI}
+  - {name: Mode_Manual,      data_type: BOOL, description: Manual/jog mode selected at the HMI}
+  - {name: Master_Start_PB,  data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.0", description: Master start pushbutton (panel)}
+  - {name: Master_Stop_PB,   data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.1", description: Master stop pushbutton (normally closed)}
+  - {name: System_Running,   data_type: BOOL, description: Master seal-in -- cell energized and running}
+  - {name: Cycle_Start_PB,   data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.2", description: Cycle start pushbutton}
+  - {name: Cycle_Stop_PB,    data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.3", description: Cycle stop pushbutton}
+  - {name: Cycle_Active,     data_type: BOOL, description: Automatic cycle active latch}
+  - {name: Reset_PB,         data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.4", description: Fault reset pushbutton}
+  - {name: Auto_Sequence_Run,data_type: BOOL, description: Auto sequencer requesting a press stroke}
+  - {name: ONS_CycleStart,   data_type: BOOL}
+  - {name: ONS_Reset,        data_type: BOOL}
+  - {name: HMI_Auto_Req,     data_type: BOOL, description: HMI auto-mode request bit}
+  - {name: HMI_Manual_Req,   data_type: BOOL}
+  - {name: HMI_Heartbeat,    data_type: DINT}
+  - {name: Heartbeat_1s,     data_type: BOOL}
+
+  # --- Safety (P900) ------------------------------------------------------
+  - {name: Safety_OK,        data_type: BOOL, description: Master safety OK -- every safety condition satisfied}
+  - {name: Estop_Chain_OK,   data_type: BOOL, description: E-stop chain healthy (both channels closed)}
+  - {name: Estop_PB1,        data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.0", description: E-stop pushbutton channel A}
+  - {name: Estop_PB2,        data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.1", description: E-stop pushbutton channel B}
+  - {name: Estop_Active,     data_type: BOOL, description: E-stop currently pressed}
+  - {name: GuardDoor_Closed, data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.4", description: Press guard door closed limit switch}
+  - {name: LightCurtain_Clear,data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.5", description: Press light curtain clear (beam not broken)}
+  - {name: SafetyRelay_CH1,  data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.2", description: Safety relay feedback channel 1}
+  - {name: SafetyRelay_CH2,  data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.3", description: Safety relay feedback channel 2}
+  - {name: Safety_Reset_PB,  data_type: BOOL, tag_type: Alias, alias_for: "Safety_In:1:I.Data.6", description: Safety circuit reset pushbutton}
+  - {name: Safety_Reset_Done,data_type: BOOL, description: Safety reset handshake complete}
+  - {name: Guard_Open_Detected, data_type: BOOL, description: Guard door opened during cycle}
+  - {name: LightCurtain_Broken, data_type: BOOL}
+  - {name: Fault_GuardOpen,  data_type: BOOL, description: "LATCHED: guard door opened during a press cycle"}
+  - {name: Fault_LightCurtain,data_type: BOOL, description: "LATCHED: light curtain interrupted"}
+  - {name: Alarm_GuardOpen,  data_type: ALARM_TYPE, description: Guard-door alarm record}
+  - {name: Alarm_LightCurtain,data_type: ALARM_TYPE}
+
+  # --- Infeed (P100) ------------------------------------------------------
+  - {name: Motor_Infeed,     data_type: FB_MOTOR_STARTER, description: Infeed conveyor motor starter}
+  - {name: Infeed_Start_Cmd, data_type: BOOL, description: Infeed conveyor start request}
+  - {name: Infeed_Stop_Cmd,  data_type: BOOL, description: Infeed conveyor stop request}
+  - {name: Infeed_Run_Cmd,   data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.0", description: Infeed conveyor contactor output}
+  - {name: Infeed_Running,   data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.5"}
+  - {name: Motor_Infeed_Fault,data_type: BOOL, description: Infeed motor starter fault}
+  - {name: PartPresent_Eye1, data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.8", description: Infeed part-present photo-eye 1}
+  - {name: PartPresent_Eye2, data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.9", description: Infeed part-present photo-eye 2}
+  - {name: Part_Present,     data_type: BOOL, description: Part present at infeed (debounced)}
+  - {name: Debounce_PartEye, data_type: FB_DEBOUNCE, description: Photo-eye debounce block}
+  - {name: Infeed_Jam_Detected, data_type: BOOL, description: Infeed jam detected (part dwell timeout)}
+  - {name: Infeed_Speed,     data_type: REAL, description: Infeed conveyor speed setpoint (mm/s)}
+  - {name: T_InfeedJam,      data_type: TIMER, description: Infeed jam-detect dwell timer}
+  - {name: Station_Infeed,   data_type: udtStation, description: Infeed station status}
+  - {name: Fault_InfeedJam,  data_type: BOOL, description: "LATCHED: infeed conveyor jam"}
+  - {name: Alarm_InfeedJam,  data_type: ALARM_TYPE, description: Infeed jam alarm record}
+  - {name: Infeed_Ready,     data_type: BOOL}
+
+  # --- Transfer (P200) ----------------------------------------------------
+  - {name: Cyl_TransferArm,  data_type: FB_CYLINDER, description: Transfer arm extend/retract cylinder}
+  - {name: Arm_Extend_Cmd,   data_type: BOOL, description: Transfer arm extend command}
+  - {name: Arm_Retract_Cmd,  data_type: BOOL, description: Transfer arm retract command}
+  - {name: Arm_Ext_Out,      data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.1"}
+  - {name: Arm_Ret_Out,      data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.2"}
+  - {name: Arm_Fault,        data_type: BOOL, description: Transfer arm cylinder fault}
+  - {name: TransferArm_Extended,  data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.10", description: Transfer arm extended limit}
+  - {name: TransferArm_Retracted, data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.11", description: Transfer arm retracted limit}
+  - {name: Transfer_Clear,   data_type: BOOL, description: Transfer arm clear of the press envelope}
+  - {name: Vac_Gripper_Cmd,  data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.3", description: Vacuum gripper solenoid}
+  - {name: Vac_OK,           data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.12"}
+  - {name: Pick_Complete,    data_type: BOOL, description: Pick operation complete}
+  - {name: Place_Complete,   data_type: BOOL, description: Place operation complete}
+  - {name: Transfer_Timeout, data_type: BOOL, description: Transfer motion did not complete in time}
+  - {name: T_TransferTimeout,data_type: TIMER, description: Transfer arm motion timeout}
+  - {name: Station_Transfer, data_type: udtStation, description: Transfer station status}
+  - {name: Fault_TransferTimeout, data_type: BOOL, description: "LATCHED: transfer arm motion timeout"}
+  - {name: Alarm_TransferTimeout, data_type: ALARM_TYPE}
+  - {name: Transfer_Ready,   data_type: BOOL}
+
+  # --- Press (P300) -------------------------------------------------------
+  - {name: Press_Cycle_Start,data_type: BOOL, description: "Press cycle start permissive result (the diagnostic target)"}
+  - {name: Press_At_Top,     data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.0", description: Press ram at top-of-stroke limit}
+  - {name: Press_At_Bottom,  data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.1", description: Press ram at bottom-of-stroke limit}
+  - {name: Press_Cycle_Active,data_type: BOOL, description: Press cycle in progress}
+  - {name: Press_Cycle_Fault,data_type: BOOL, description: Press cycle fault present}
+  - {name: Cyl_PressRam,     data_type: FB_CYLINDER, description: Press ram advance/return cylinder}
+  - {name: Ram_Extend_Cmd,   data_type: BOOL, description: Press ram advance command}
+  - {name: Ram_Retract_Cmd,  data_type: BOOL, description: Press ram return command}
+  - {name: Ram_Ext_Out,      data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.4"}
+  - {name: Ram_Ret_Out,      data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.5"}
+  - {name: Ram_Fault,        data_type: BOOL}
+  - {name: Valve_PressClamp, data_type: FB_VALVE, description: Press clamp hydraulic valve}
+  - {name: Valve_Lube,       data_type: FB_VALVE, description: Press lubrication valve}
+  - {name: Clamp_Open_Cmd,   data_type: BOOL, description: Clamp open command}
+  - {name: Clamp_Close_Cmd,  data_type: BOOL, description: Clamp close command}
+  - {name: Clamp_Open_Out,   data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.6"}
+  - {name: Clamp_Close_Out,  data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.7"}
+  - {name: Valve_Clamp_Fault,data_type: BOOL, description: Clamp valve fault}
+  - {name: Clamp_Opened,     data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.2"}
+  - {name: Clamp_Closed_LS,  data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.3", description: Clamp closed limit switch}
+  - {name: Clamp_Closed,     data_type: BOOL, description: Press clamp confirmed closed}
+  - {name: Lube_Open_Cmd,    data_type: BOOL}
+  - {name: Lube_Close_Cmd,   data_type: BOOL}
+  - {name: Lube_Opened,      data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.4"}
+  - {name: Lube_Closed,      data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.5"}
+  - {name: Lube_Valve_Fault, data_type: BOOL}
+  - {name: Hydraulics_OK,    data_type: BOOL, description: Hydraulic power unit within pressure limits}
+  - {name: Hyd_Pressure,     data_type: REAL, description: Measured hydraulic system pressure (PSI)}
+  - {name: Hyd_Pressure_SP,  data_type: REAL, description: Hydraulic pressure setpoint (PSI)}
+  - {name: Hyd_Pressure_LowLimit,  data_type: REAL, constant: true, description: Minimum acceptable hydraulic pressure (PSI)}
+  - {name: Hyd_Pressure_HighLimit, data_type: REAL, constant: true, description: Maximum acceptable hydraulic pressure (PSI)}
+  - {name: Hyd_Pump_Run,     data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.8", description: Hydraulic pump run command}
+  - {name: Hyd_Pump_Running, data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.6", description: Hydraulic pump running feedback}
+  - {name: Hyd_LowPressure,  data_type: BOOL, description: Hydraulic pressure below low limit}
+  - {name: Press_Overtemp,   data_type: BOOL, tag_type: Alias, alias_for: "DI_Press:1:I.Data.7", description: Hydraulic oil over-temperature switch}
+  - {name: Press_Tonnage,    data_type: REAL, description: Measured press tonnage (tons)}
+  - {name: Lube_OK,          data_type: BOOL, description: Lubrication system healthy}
+  - {name: Lube_Cycle_Req,   data_type: BOOL, description: Lube cycle requested}
+  - {name: Lube_Done,        data_type: BOOL, description: Lube cycle complete}
+  - {name: Fault_Lube,       data_type: BOOL}
+  - {name: T_PressDwell,     data_type: TIMER, description: Press dwell-at-bottom timer}
+  - {name: T_LubeCycle,      data_type: TIMER, description: Lube cycle timer}
+  - {name: Fault_PressOvertemp, data_type: BOOL, description: "LATCHED: hydraulic over-temperature"}
+  - {name: Fault_HydLowPressure,data_type: BOOL, description: "LATCHED: hydraulic low pressure during cycle"}
+  - {name: Alarm_PressOvertemp, data_type: ALARM_TYPE, description: Press over-temp alarm record}
+  - {name: Alarm_HydLowPressure,data_type: ALARM_TYPE}
+  - {name: Station_Press,    data_type: udtStation, description: Press station status}
+  - {name: Recipe,           data_type: udtRecipe, description: Active press recipe parameters}
+  - {name: Recipe_Number,    data_type: DINT, description: Selected recipe number (from HMI)}
+  - {name: Press_Ready,      data_type: BOOL}
+
+  # --- Outfeed (P400) -----------------------------------------------------
+  - {name: Motor_Outfeed,    data_type: FB_MOTOR_STARTER, description: Outfeed conveyor motor starter}
+  - {name: Outfeed_Start_Cmd,data_type: BOOL, description: Outfeed conveyor start request}
+  - {name: Outfeed_Stop_Cmd, data_type: BOOL, description: Outfeed conveyor stop request}
+  - {name: Outfeed_Run_Cmd,  data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.9", description: Outfeed conveyor contactor output}
+  - {name: Outfeed_Running,  data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.18"}
+  - {name: Motor_Outfeed_Fault, data_type: BOOL, description: Outfeed motor starter fault}
+  - {name: Cyl_RejectGate,   data_type: FB_CYLINDER, description: Reject gate diverter cylinder}
+  - {name: Gate_Extend_Cmd,  data_type: BOOL, description: Reject gate divert command}
+  - {name: Gate_Retract_Cmd, data_type: BOOL, description: Reject gate home command}
+  - {name: Gate_Ext_Out,     data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.10"}
+  - {name: Gate_Ret_Out,     data_type: BOOL, tag_type: Alias, alias_for: "DO_Main:1:O.Data.11"}
+  - {name: Gate_Fault,       data_type: BOOL}
+  - {name: Reject_Gate_Open, data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.19", description: Reject gate extended (diverting) limit}
+  - {name: Reject_Gate_Home, data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.20"}
+  - {name: Part_At_Outfeed,  data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.21", description: Part present at outfeed photo-eye}
+  - {name: Part_Reject,      data_type: BOOL, description: Current part flagged for reject}
+  - {name: Quality_Fail,     data_type: BOOL, description: Quality check failed for current part}
+  - {name: C_PartCount,      data_type: COUNTER, description: Good part production counter}
+  - {name: C_RejectCount,    data_type: COUNTER, description: Reject part counter}
+  - {name: Good_Part_Total,  data_type: DINT, description: Good parts produced this shift}
+  - {name: Station_Outfeed,  data_type: udtStation, description: Outfeed station status}
+  - {name: Drive_Ready,      data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.22", description: PowerFlex drive ready}
+  - {name: Drive_Fault_In,   data_type: BOOL, tag_type: Alias, alias_for: "Local:1:I.Data.23"}
+  - {name: Drive_Speed_Ref,  data_type: REAL, description: Outfeed drive speed reference (Hz)}
+  - {name: Fault_DriveFault, data_type: BOOL, description: "LATCHED: outfeed drive fault"}
+  - {name: Alarm_DriveFault, data_type: ALARM_TYPE}
+  - {name: Outfeed_Ready,    data_type: BOOL}
+
+  # --- Spare / commissioning tags (undocumented on purpose) ---------------
+  - {name: Spare_BOOL_01, data_type: BOOL}
+  - {name: Spare_BOOL_02, data_type: BOOL}
+  - {name: Spare_BOOL_03, data_type: BOOL}
+  - {name: Spare_DINT_01, data_type: DINT}
+  - {name: Spare_DINT_02, data_type: DINT}
+  - {name: Spare_REAL_01, data_type: REAL}
+  - {name: Test_Override, data_type: BOOL}
+  - {name: Maint_Mode,    data_type: BOOL}
+
+  # --- Program-scoped working tags ---------------------------------------
+  - {name: Seq_Step,       data_type: DINT, scope: P200_Transfer, description: Transfer arm sequencer step}
+  - {name: Seq_StepTimer,  data_type: TIMER, scope: P200_Transfer, description: Per-step watchdog timer}
+  - {name: Seq_FirstScan,  data_type: BOOL, scope: P200_Transfer}
+  - {name: Pick_ONS,       data_type: BOOL, scope: P200_Transfer}
+  - {name: Local_Fault,    data_type: BOOL, scope: P200_Transfer}
+  - {name: Press_Step,     data_type: DINT, scope: P300_Press, description: Press cycle step register}
+  - {name: Dwell_Done,     data_type: BOOL, scope: P300_Press}
+  - {name: Stroke_ONS,     data_type: BOOL, scope: P300_Press}
+  - {name: Recipe_Scratch, data_type: REAL, scope: P300_Press}
+  - {name: Reject_ONS,     data_type: BOOL, scope: P400_Outfeed}
+  - {name: Count_ONS,      data_type: BOOL, scope: P400_Outfeed}
+  - {name: Outfeed_Local,  data_type: BOOL, scope: P400_Outfeed}
+  - {name: Estop_ONS,      data_type: BOOL, scope: P900_Safety}
+  - {name: Reset_ONS,      data_type: BOOL, scope: P900_Safety}
+  - {name: Main_Scratch,   data_type: DINT, scope: MainProgram}
+
+# =============================================================================
+# Interlocks (compiled to ladder by generate_l5x.py)
+#   These two form the money-shot chain:
+#     Press_Cycle_Start --(reads Safety_OK)--> Safety_OK --(reads GuardDoor_Closed)-->
+#     GuardDoor_Closed  (a physical safety input alias)
+# =============================================================================
+interlocks:
+  Press_Cycle_Start:
+    output: Press_Cycle_Start
+    program: P300_Press
+    routine: R30_PressCycle
+    comment: >-
+      PRESS CYCLE START PERMISSIVE -- every condition must be satisfied before the
+      press will stroke. Auto mode + part staged + transfer clear + press at top +
+      hydraulics OK + clamp closed + lube OK + master Safety_OK, initiated by the
+      cycle-start PB or the auto sequencer, with no active cycle fault.
+    all_of:
+      - Mode_Auto
+      - Cycle_Active
+      - Part_Present
+      - Transfer_Clear
+      - Press_At_Top
+      - Hydraulics_OK
+      - Clamp_Closed
+      - Lube_OK
+      - Safety_OK
+    any_of:
+      - Cycle_Start_PB
+      - Auto_Sequence_Run
+    none_of:
+      - Press_Cycle_Fault
+
+  Safety_OK:
+    output: Safety_OK
+    program: P900_Safety
+    routine: R92_SafetyOK
+    comment: >-
+      MASTER SAFETY OK -- dual-channel E-stop chain healthy, guard door closed,
+      light curtain clear, safety relay both channels confirmed, and the safety
+      circuit reset completed. Feeds every station's run permissive.
+    all_of:
+      - Estop_Chain_OK
+      - GuardDoor_Closed
+      - LightCurtain_Clear
+      - SafetyRelay_CH1
+      - SafetyRelay_CH2
+      - Safety_Reset_Done
+
+# =============================================================================
+# Programs & routines (explicit ladder / structured text)
+# =============================================================================
+programs:
+  # ---------------------------------------------------------------- MainProgram
+  - name: MainProgram
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        description: Cell mode logic, master seal-in, and dispatch to station logic.
+        rungs:
+          - {comment: "Dispatch mode + cycle control logic", text: "JSR(R01_ModeLogic,0);"}
+          - {text: "JSR(R02_CycleControl,0);"}
+          - {comment: "1 Hz heartbeat to the HMI watchdog", text: "XIC(Heartbeat_1s)ADD(HMI_Heartbeat,1,HMI_Heartbeat);"}
+      - name: R01_ModeLogic
+        type: RLL
+        description: Auto/Manual mode selection (interlocked, mutually exclusive).
+        rungs:
+          - {comment: "Auto mode -- selectable only when not in manual", text: "XIC(HMI_Auto_Req)XIO(HMI_Manual_Req)XIO(Estop_Active)OTE(Mode_Auto);"}
+          - {comment: "Manual mode", text: "XIC(HMI_Manual_Req)XIO(HMI_Auto_Req)OTE(Mode_Manual);"}
+          - {comment: "Reset one-shot", text: "XIC(Reset_PB)ONS(ONS_Reset)OTE(Main_Scratch.0);"}
+      - name: R02_CycleControl
+        type: RLL
+        description: Master start/stop seal-in and automatic cycle latch.
+        rungs:
+          - {comment: "Master seal-in: start latches System_Running, sealed by itself, dropped by stop or loss of safety", text: "[XIC(Master_Start_PB),XIC(System_Running)]XIC(Master_Stop_PB)XIC(Safety_OK)OTE(System_Running);"}
+          - {comment: "Latch automatic cycle on cycle-start PB in auto mode", text: "XIC(System_Running)XIC(Mode_Auto)XIC(Cycle_Start_PB)ONS(ONS_CycleStart)OTL(Cycle_Active);"}
+          - {comment: "Unlatch cycle on stop, loss of run, or loss of safety", text: "[XIC(Cycle_Stop_PB),XIO(System_Running),XIO(Safety_OK)]OTU(Cycle_Active);"}
+          - {text: "XIC(Cycle_Active)OTE(Station_Press.CycleActive);"}
+
+  # ---------------------------------------------------------------- P100_Infeed
+  - name: P100_Infeed
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        rungs:
+          - {text: "JSR(R11_PartDetect,0);"}
+          - {text: "JSR(R10_InfeedConveyor,0);"}
+      - name: R10_InfeedConveyor
+        type: RLL
+        description: Infeed conveyor motor starter and jam detection.
+        rungs:
+          - {comment: "Run infeed in auto when running and no jam", text: "XIC(System_Running)XIC(Mode_Auto)XIO(Fault_InfeedJam)XIO(Part_Present)OTE(Infeed_Start_Cmd);"}
+          - {text: "XIC(Cycle_Stop_PB)OTE(Infeed_Stop_Cmd);"}
+          - {comment: "Infeed conveyor starter AOI", text: "FB_MOTOR_STARTER(Motor_Infeed,Infeed_Start_Cmd,Infeed_Stop_Cmd,Infeed_Running,Infeed_Run_Cmd,Motor_Infeed_Fault);"}
+          - {comment: "Jam detect: part sits under eye too long", text: "XIC(Part_Present)XIC(Infeed_Run_Cmd)TON(T_InfeedJam,?,?);"}
+          - {text: "XIC(T_InfeedJam.DN)OTE(Infeed_Jam_Detected);"}
+          - {comment: "Latch infeed jam fault", text: "XIC(Infeed_Jam_Detected)OTL(Fault_InfeedJam);"}
+          - {comment: "Reset infeed jam fault", text: "XIC(Reset_PB)OTU(Fault_InfeedJam);"}
+          - {text: "XIC(Fault_InfeedJam)OTE(Station_Infeed.Fault);"}
+      - name: R11_PartDetect
+        type: RLL
+        description: Debounced part-present detection at the infeed.
+        rungs:
+          - {comment: "Debounce the leading photo-eye", text: "FB_DEBOUNCE(Debounce_PartEye,PartPresent_Eye1,50,Part_Present);"}
+          - {comment: "Either eye seen confirms a staged part", text: "[XIC(Part_Present),XIC(PartPresent_Eye2)]OTE(Station_Infeed.Ready);"}
+          - {text: "XIC(Station_Infeed.Ready)XIO(Fault_InfeedJam)OTE(Infeed_Ready);"}
+
+  # ---------------------------------------------------------------- P200_Transfer
+  - name: P200_Transfer
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        rungs:
+          - {text: "JSR(R21_Sequence,0);"}
+          - {text: "JSR(R20_TransferArm,0);"}
+      - name: R20_TransferArm
+        type: RLL
+        description: Transfer arm cylinder and vacuum gripper control.
+        rungs:
+          - {comment: "Transfer arm cylinder AOI", text: "FB_CYLINDER(Cyl_TransferArm,Arm_Extend_Cmd,Arm_Retract_Cmd,TransferArm_Extended,TransferArm_Retracted,Arm_Ext_Out,Arm_Ret_Out,Arm_Fault);"}
+          - {comment: "Grip while extended and picking", text: "XIC(TransferArm_Extended)XIC(Pick_Complete)XIO(Place_Complete)OTE(Vac_Gripper_Cmd);"}
+          - {comment: "Transfer clear when fully retracted and no cyl fault", text: "XIC(TransferArm_Retracted)XIO(Arm_Fault)OTE(Transfer_Clear);"}
+          - {comment: "Motion timeout arms the transfer fault", text: "[XIC(Arm_Extend_Cmd),XIC(Arm_Retract_Cmd)]TON(T_TransferTimeout,?,?);"}
+          - {text: "XIC(T_TransferTimeout.DN)OTE(Transfer_Timeout);"}
+          - {comment: "Latch transfer timeout fault", text: "XIC(Transfer_Timeout)OTL(Fault_TransferTimeout);"}
+          - {comment: "Reset transfer fault", text: "XIC(Reset_PB)OTU(Fault_TransferTimeout);"}
+      - name: R21_Sequence
+        type: RLL
+        description: Pick/place step sequencer (integer Step register + EQU comparisons).
+        rungs:
+          - {comment: "Initialize sequencer to step 0 on first scan / reset", text: "[XIC(Seq_FirstScan),XIC(Reset_PB)]MOV(0,Seq_Step);"}
+          - {text: "OTL(Seq_FirstScan);"}
+          - {comment: "Step 0 -> 10: begin pick when a part is staged and clear", text: "EQU(Seq_Step,0)XIC(Infeed_Ready)XIC(Transfer_Clear)XIC(Cycle_Active)MOV(10,Seq_Step);"}
+          - {comment: "Step 10: extend to pick", text: "EQU(Seq_Step,10)OTE(Arm_Extend_Cmd);"}
+          - {comment: "Step 10 -> 20: extended, grip complete", text: "EQU(Seq_Step,10)XIC(TransferArm_Extended)XIC(Vac_OK)MOV(20,Seq_Step);"}
+          - {text: "EQU(Seq_Step,20)XIC(Vac_OK)ONS(Pick_ONS)OTE(Pick_Complete);"}
+          - {comment: "Step 20 -> 30: retract with part", text: "EQU(Seq_Step,20)XIC(Pick_Complete)MOV(30,Seq_Step);"}
+          - {comment: "Step 30: retract to place", text: "EQU(Seq_Step,30)OTE(Arm_Retract_Cmd);"}
+          - {comment: "Step 30 -> 0: placed and homed, request press stroke", text: "EQU(Seq_Step,30)XIC(TransferArm_Retracted)MOV(0,Seq_Step);"}
+          - {text: "EQU(Seq_Step,30)XIC(TransferArm_Retracted)OTE(Place_Complete);"}
+          - {comment: "Auto sequencer requests a stroke once the arm is clear", text: "XIC(Place_Complete)XIC(Transfer_Clear)OTE(Auto_Sequence_Run);"}
+          - {text: "GRT(Seq_Step,0)OTE(Station_Transfer.CycleActive);"}
+
+  # ---------------------------------------------------------------- P300_Press
+  - name: P300_Press
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        rungs:
+          - {text: "JSR(R32_Recipe,0);"}
+          - {text: "JSR(R31_Hydraulics,0);"}
+          - {comment: "R30 contains the press-cycle-start permissive (money shot)", text: "JSR(R30_PressCycle,0);"}
+      - name: R30_PressCycle
+        type: RLL
+        description: Press stroke sequence gated by the cycle-start permissive.
+        rungs:
+          - {comment: "Ram advance cylinder AOI", text: "FB_CYLINDER(Cyl_PressRam,Ram_Extend_Cmd,Ram_Retract_Cmd,Press_At_Bottom,Press_At_Top,Ram_Ext_Out,Ram_Ret_Out,Ram_Fault);"}
+          - {comment: "Advance ram on a validated cycle start", text: "XIC(Press_Cycle_Start)ONS(Stroke_ONS)OTL(Press_Cycle_Active);"}
+          - {text: "XIC(Press_Cycle_Active)XIO(Press_At_Bottom)OTE(Ram_Extend_Cmd);"}
+          - {comment: "Dwell at bottom for the recipe time", text: "XIC(Press_At_Bottom)TON(T_PressDwell,?,?);"}
+          - {text: "XIC(T_PressDwell.DN)OTE(Dwell_Done);"}
+          - {comment: "Return ram after dwell", text: "XIC(Dwell_Done)OTE(Ram_Retract_Cmd);"}
+          - {comment: "End cycle when returned to top", text: "XIC(Press_At_Top)XIC(Dwell_Done)OTU(Press_Cycle_Active);"}
+          - {comment: "Cycle fault if ram faults or overtemp latched", text: "[XIC(Ram_Fault),XIC(Fault_PressOvertemp),XIC(Fault_HydLowPressure)]OTE(Press_Cycle_Fault);"}
+          - {text: "XIC(Press_Cycle_Active)OTE(Station_Press.CycleActive);"}
+          # (the Press_Cycle_Start permissive rung is appended here from interlocks:)
+      - name: R31_Hydraulics
+        type: RLL
+        description: Hydraulic power unit, clamp/lube valves, pressure supervision (GRT/LES).
+        rungs:
+          - {comment: "Run the hydraulic pump in auto", text: "XIC(System_Running)XIC(Mode_Auto)XIO(Fault_PressOvertemp)OTE(Hyd_Pump_Run);"}
+          - {comment: "Clamp valve AOI", text: "FB_VALVE(Valve_PressClamp,Clamp_Open_Cmd,Clamp_Close_Cmd,Clamp_Opened,Clamp_Closed_LS,Clamp_Open_Out,Clamp_Close_Out,Valve_Clamp_Fault);"}
+          - {comment: "Lube valve AOI", text: "FB_VALVE(Valve_Lube,Lube_Open_Cmd,Lube_Close_Cmd,Lube_Opened,Lube_Closed,Lube_Open_Out,Lube_Close_Out,Lube_Valve_Fault);"}
+          - {comment: "Close clamp before stroke", text: "XIC(Press_Cycle_Active)XIO(Transfer_Clear)OTE(Clamp_Close_Cmd);"}
+          - {text: "XIC(Clamp_Closed_LS)XIO(Valve_Clamp_Fault)OTE(Clamp_Closed);"}
+          - {comment: "Hydraulics OK: pump running and pressure within band, no overtemp", text: "XIC(Hyd_Pump_Running)GRT(Hyd_Pressure,Hyd_Pressure_LowLimit)LES(Hyd_Pressure,Hyd_Pressure_HighLimit)XIO(Fault_PressOvertemp)OTE(Hydraulics_OK);"}
+          - {comment: "Low pressure detection", text: "XIC(Hyd_Pump_Running)LES(Hyd_Pressure,Hyd_Pressure_LowLimit)OTE(Hyd_LowPressure);"}
+          - {comment: "Latch low-pressure fault only while pumping", text: "XIC(Hyd_LowPressure)XIC(Hyd_Pump_Run)OTL(Fault_HydLowPressure);"}
+          - {text: "XIC(Reset_PB)OTU(Fault_HydLowPressure);"}
+          - {comment: "Over-temp latch/reset pair", text: "XIC(Press_Overtemp)OTL(Fault_PressOvertemp);"}
+          - {text: "XIC(Reset_PB)XIO(Press_Overtemp)OTU(Fault_PressOvertemp);"}
+          - {comment: "Lube OK when a completed lube cycle is fresh and no lube fault", text: "[XIC(Lube_Done),XIO(Lube_Cycle_Req)]XIO(Fault_Lube)OTE(Lube_OK);"}
+          - {comment: "Lube cycle timer", text: "XIC(Lube_Cycle_Req)TON(T_LubeCycle,?,?);"}
+          - {text: "XIC(T_LubeCycle.DN)OTE(Lube_Done);"}
+      - name: R32_Recipe
+        type: ST
+        description: Recipe scaling -- derive pressure/dwell/tonnage setpoints from the selected recipe.
+        lines:
+          - "(* Select recipe parameters based on the HMI recipe number *)"
+          - "IF Recipe_Number = 1 THEN"
+          - "    Recipe.Pressure := 1800.0;"
+          - "    Recipe.DwellTime := 500;"
+          - "ELSIF Recipe_Number = 2 THEN"
+          - "    Recipe.Pressure := 2200.0;"
+          - "    Recipe.DwellTime := 750;"
+          - "ELSE"
+          - "    Recipe.Pressure := 1500.0;"
+          - "    Recipe.DwellTime := 300;"
+          - "END_IF;"
+          - "Recipe.Number := Recipe_Number;"
+          - "(* Scale target tonnage from pressure: tons = PSI * ram_area / 2000 *)"
+          - "Recipe.Tonnage := Recipe.Pressure * 0.0075;"
+          - "Hyd_Pressure_SP := Recipe.Pressure;"
+          - "Press_Tonnage := Recipe.Tonnage;"
+
+  # ---------------------------------------------------------------- P400_Outfeed
+  - name: P400_Outfeed
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        rungs:
+          - {text: "JSR(R40_OutfeedConveyor,0);"}
+          - {text: "JSR(R41_RejectGate,0);"}
+      - name: R40_OutfeedConveyor
+        type: RLL
+        description: Outfeed conveyor motor starter and drive-fault latching.
+        rungs:
+          - {text: "XIC(System_Running)XIC(Mode_Auto)XIO(Fault_DriveFault)OTE(Outfeed_Start_Cmd);"}
+          - {text: "XIC(Cycle_Stop_PB)OTE(Outfeed_Stop_Cmd);"}
+          - {comment: "Outfeed conveyor starter AOI", text: "FB_MOTOR_STARTER(Motor_Outfeed,Outfeed_Start_Cmd,Outfeed_Stop_Cmd,Outfeed_Running,Outfeed_Run_Cmd,Motor_Outfeed_Fault);"}
+          - {comment: "Latch drive fault", text: "[XIC(Drive_Fault_In),XIC(Motor_Outfeed_Fault)]OTL(Fault_DriveFault);"}
+          - {comment: "Reset drive fault", text: "XIC(Reset_PB)XIO(Drive_Fault_In)OTU(Fault_DriveFault);"}
+          - {text: "XIC(Drive_Ready)XIO(Fault_DriveFault)OTE(Outfeed_Ready);"}
+      - name: R41_RejectGate
+        type: RLL
+        description: Reject diverter gate and production counters (CTU).
+        rungs:
+          - {comment: "Reject gate diverter AOI", text: "FB_CYLINDER(Cyl_RejectGate,Gate_Extend_Cmd,Gate_Retract_Cmd,Reject_Gate_Open,Reject_Gate_Home,Gate_Ext_Out,Gate_Ret_Out,Gate_Fault);"}
+          - {comment: "Flag reject on a failed quality check", text: "XIC(Part_At_Outfeed)XIC(Quality_Fail)OTE(Part_Reject);"}
+          - {comment: "Divert rejects, otherwise stay home", text: "XIC(Part_Reject)OTE(Gate_Extend_Cmd);"}
+          - {text: "XIO(Part_Reject)OTE(Gate_Retract_Cmd);"}
+          - {comment: "Count good parts leaving the outfeed", text: "XIC(Part_At_Outfeed)XIO(Part_Reject)ONS(Count_ONS)CTU(C_PartCount,?,?);"}
+          - {comment: "Count rejects", text: "XIC(Part_At_Outfeed)XIC(Part_Reject)ONS(Reject_ONS)CTU(C_RejectCount,?,?);"}
+          - {text: "MOV(C_PartCount.ACC,Good_Part_Total);"}
+          - {comment: "Reset counters on shift reset", text: "XIC(Reset_PB)RES(C_PartCount);"}
+
+  # ---------------------------------------------------------------- P900_Safety
+  - name: P900_Safety
+    main_routine: MainRoutine
+    routines:
+      - name: MainRoutine
+        type: RLL
+        rungs:
+          - {text: "JSR(R90_EstopChain,0);"}
+          - {text: "JSR(R91_GuardLightCurtain,0);"}
+          - {comment: "R92 computes the master Safety_OK (money-shot source)", text: "JSR(R92_SafetyOK,0);"}
+      - name: R90_EstopChain
+        type: RLL
+        description: Dual-channel E-stop chain evaluation and reset handshake.
+        rungs:
+          - {comment: "E-stop active if either channel is open", text: "[XIO(Estop_PB1),XIO(Estop_PB2)]OTE(Estop_Active);"}
+          - {comment: "E-stop chain OK when both channels closed and relay confirms", text: "XIC(Estop_PB1)XIC(Estop_PB2)XIO(Estop_Active)OTE(Estop_Chain_OK);"}
+          - {comment: "Reset handshake: reset PB while chain healthy and estop clear", text: "XIC(Safety_Reset_PB)XIC(Estop_Chain_OK)XIO(Estop_Active)ONS(Reset_ONS)OTE(Safety_Reset_Done);"}
+      - name: R91_GuardLightCurtain
+        type: RLL
+        description: Guard door and light curtain supervision + latched safety faults.
+        rungs:
+          - {comment: "Guard opened during a cycle latches a fault", text: "XIO(GuardDoor_Closed)XIC(Cycle_Active)OTE(Guard_Open_Detected);"}
+          - {text: "XIC(Guard_Open_Detected)OTL(Fault_GuardOpen);"}
+          - {text: "XIC(Safety_Reset_PB)XIC(GuardDoor_Closed)OTU(Fault_GuardOpen);"}
+          - {comment: "Light curtain broken during a cycle latches a fault", text: "XIO(LightCurtain_Clear)XIC(Cycle_Active)OTE(LightCurtain_Broken);"}
+          - {text: "XIC(LightCurtain_Broken)OTL(Fault_LightCurtain);"}
+          - {text: "XIC(Safety_Reset_PB)XIC(LightCurtain_Clear)OTU(Fault_LightCurtain);"}
+      - name: R92_SafetyOK
+        type: RLL
+        description: Master safety-OK coil (dual-channel result feeding all run permissives).
+        rungs:
+          - {text: "XIC(Safety_OK)OTE(Station_Press.Home);"}
+          # (the Safety_OK permissive rung is appended here from interlocks:)
