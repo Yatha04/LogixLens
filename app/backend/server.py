@@ -3,13 +3,16 @@ server.py – FastAPI chat backend for Ask the PLC.
 
 Endpoints
 ---------
-POST /api/session                       create a session (L5X + optional snapshot); returns id + summary
+POST /api/session                       create a session (L5X + optional snapshot, or {live:true}); returns id + summary
 WS   /api/chat/{session_id}             streaming chat; client sends {message, audience}
 GET  /api/dossier/{session_id}          project summary + aoi_instances + health stats
 GET  /api/routine/{session_id}/{program}/{routine}   direct routine read for the UI
 GET  /api/trace/{session_id}/{tag}?snapshot=NAME     interlock trace, optionally live-evaluated
 GET  /api/rung/{session_id}/{program}/{routine}/{number}?snapshot=NAME
                                         nested rung parse structure (+ values) for the ladder renderer
+GET  /api/live/{session_id}/status      proxy the simulator /state (machine state + key values)
+POST /api/live/{session_id}/chaos       proxy the simulator /chaos {"fault": NAME}
+POST /api/live/{session_id}/chaos/clear proxy the simulator /chaos/clear (clear + reset handshake)
 POST /api/autodoc/{session_id}          propose descriptions for undocumented tags (optional {tags:[...]} scope)
 GET  /api/autodoc/{session_id}/export.csv   CSV of the reviewed autodoc table (tag, current, proposed, confidence)
 
@@ -25,6 +28,9 @@ import os
 import uuid
 from pathlib import Path
 from typing import Dict, List, Optional
+from urllib.parse import urlparse
+
+import httpx
 
 try:
     from dotenv import load_dotenv
@@ -39,6 +45,7 @@ from pydantic import BaseModel
 from .plc_tools import (
     PLCToolbox,
     StaticSnapshotProvider,
+    OpcUaProvider,
     DEFAULT_L5X,
     SNAPSHOT_DIR,
 )
@@ -59,12 +66,43 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# session_id -> {"toolbox", "l5x", "snapshot"}
+# session_id -> {"toolbox", "l5x", "snapshot", "live", "provider", "sim_http"}
 _SESSIONS: Dict[str, Dict] = {}
-# (l5x, snapshot) -> PLCToolbox  (parse cache)
+# (l5x, snapshot) -> PLCToolbox  (parse cache; static/snapshot sessions only)
 _TOOLBOX_CACHE: Dict[tuple, PLCToolbox] = {}
 # session_id -> {tag_name: proposal_row}  (accumulates across /api/autodoc calls)
 _AUTODOC_STATE: Dict[str, Dict[str, Dict]] = {}
+
+# Defaults for a locally-run PressLine_3 simulator (OPC UA :4840, chaos :8090).
+# Overridable via env for non-standard deployments / parallel test stacks.
+DEFAULT_OPCUA_URL = os.environ.get(
+    "ASKPLC_OPCUA_URL", "opc.tcp://127.0.0.1:4840/pressline3/")
+DEFAULT_SIM_HTTP_URL = os.environ.get("ASKPLC_SIM_HTTP_URL") or None
+_DEFAULT_SIM_HTTP_PORT = 8090
+
+
+def _derive_sim_http(opcua_url: str, override: Optional[str]) -> str:
+    """Chaos/status HTTP base for the sim. Explicit override wins; otherwise
+    the env default, otherwise the OPC UA host + the sim's default HTTP port."""
+    if override:
+        return override.rstrip("/")
+    if DEFAULT_SIM_HTTP_URL:
+        return DEFAULT_SIM_HTTP_URL.rstrip("/")
+    host = urlparse(opcua_url).hostname or "127.0.0.1"
+    return f"http://{host}:{_DEFAULT_SIM_HTTP_PORT}"
+
+
+def _close_live_providers() -> None:
+    """Close every open OPC UA provider (one live session at a time — a new
+    live session replaces the old one, per the demo's single-cell model)."""
+    for sess in _SESSIONS.values():
+        prov = sess.get("provider")
+        if prov is not None:
+            try:
+                prov.close()
+            except Exception:  # pragma: no cover - best-effort teardown
+                pass
+            sess["provider"] = None
 
 
 def _snapshot_path(name: Optional[str]) -> Optional[Path]:
@@ -104,6 +142,15 @@ def _session(session_id: str) -> Dict:
 class SessionRequest(BaseModel):
     l5x: Optional[str] = None
     snapshot: Optional[str] = None
+    # Live mode: back the session with an OPC UA connection to the running
+    # PressLine_3 simulator instead of a static snapshot.
+    live: bool = False
+    opcua_url: Optional[str] = None
+    sim_http_url: Optional[str] = None
+
+
+class ChaosRequest(BaseModel):
+    fault: str
 
 
 class AutodocRequest(BaseModel):
@@ -119,13 +166,49 @@ def create_session(req: SessionRequest):
     l5x = req.l5x or str(DEFAULT_L5X)
     if not Path(l5x).exists():
         raise HTTPException(status_code=400, detail=f"L5X file not found: {l5x}")
-    toolbox = _get_toolbox(l5x, req.snapshot)
+
     session_id = uuid.uuid4().hex[:12]
-    _SESSIONS[session_id] = {"toolbox": toolbox, "l5x": l5x, "snapshot": req.snapshot}
+
+    if req.live:
+        # One live cell at a time: retire any previous OPC UA connection first.
+        _close_live_providers()
+        opcua_url = req.opcua_url or DEFAULT_OPCUA_URL
+        provider = OpcUaProvider(opcua_url)
+        if not provider.available():
+            note = provider.note or "connection failed"
+            provider.close()
+            raise HTTPException(
+                status_code=503,
+                detail=f"OPC UA simulator unreachable at {opcua_url}: {note}. "
+                       f"Start it with `make sim`.",
+            )
+        toolbox = PLCToolbox(l5x, live_provider=provider)
+        sim_http = _derive_sim_http(opcua_url, req.sim_http_url)
+        _SESSIONS[session_id] = {
+            "toolbox": toolbox, "l5x": l5x, "snapshot": None,
+            "live": True, "provider": provider,
+            "opcua_url": opcua_url, "sim_http": sim_http,
+        }
+        return {
+            "session_id": session_id,
+            "l5x": l5x,
+            "snapshot": None,
+            "live": True,
+            "opcua_url": opcua_url,
+            "mock": os.environ.get("ASKPLC_MOCK") == "1",
+            "summary": toolbox.get_project_summary(),
+        }
+
+    toolbox = _get_toolbox(l5x, req.snapshot)
+    _SESSIONS[session_id] = {
+        "toolbox": toolbox, "l5x": l5x, "snapshot": req.snapshot,
+        "live": False, "provider": None,
+    }
     return {
         "session_id": session_id,
         "l5x": l5x,
         "snapshot": req.snapshot,
+        "live": False,
         "mock": os.environ.get("ASKPLC_MOCK") == "1",
         "summary": toolbox.get_project_summary(),
     }
@@ -172,12 +255,16 @@ def get_rung_render(session_id: str, program: str, routine: str, number: int,
     sess = _session(session_id)
     tb: PLCToolbox = sess["toolbox"]
     values = None
+    # An explicit ?snapshot= always wins; otherwise a live session reads fresh
+    # values off its OPC UA provider, and a snapshot session uses its snapshot.
     snap = snapshot or sess.get("snapshot")
     if snap:
         sp = _snapshot_path(snap)
         if sp is None:
             raise HTTPException(status_code=404, detail=f"snapshot '{snap}' not found")
         values = StaticSnapshotProvider(sp).get_values()
+    elif sess.get("live") and tb.live_provider is not None and tb.live_provider.available():
+        values = tb.live_provider.get_values()
     result = rung_payload(tb, program, routine, number, snapshot_values=values)
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
@@ -195,6 +282,60 @@ def get_trace(session_id: str, tag: str, snapshot: Optional[str] = None):
         if sp is not None:
             live_values = StaticSnapshotProvider(sp).get_values()
     return tb.trace_blockers(tag, live_values=live_values)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Live cell — status + chaos proxy (one origin for the browser)
+# ──────────────────────────────────────────────────────────────────────
+
+def _live_session(session_id: str) -> Dict:
+    sess = _session(session_id)
+    if not sess.get("live") or not sess.get("sim_http"):
+        raise HTTPException(status_code=400,
+                            detail=f"session '{session_id}' is not a live session")
+    return sess
+
+
+async def _proxy_sim(sim_http: str, method: str, path: str, json_body=None) -> Dict:
+    url = f"{sim_http}{path}"
+    try:
+        async with httpx.AsyncClient(timeout=3.0) as client:
+            resp = await client.request(method, url, json=json_body)
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"simulator chaos/status API unreachable at {sim_http}: {exc}",
+        )
+    if resp.status_code >= 400:
+        # surface the sim's own error (e.g. unknown fault) as a 400
+        try:
+            detail = resp.json()
+        except Exception:
+            detail = {"error": resp.text}
+        raise HTTPException(status_code=resp.status_code, detail=detail)
+    return resp.json()
+
+
+@app.get("/api/live/{session_id}/status")
+async def live_status(session_id: str):
+    """Proxy the simulator's /state (machine state, cycling, active fault,
+    good/reject counts, key tag values) so the UI polls a single origin."""
+    sess = _live_session(session_id)
+    return await _proxy_sim(sess["sim_http"], "GET", "/state")
+
+
+@app.post("/api/live/{session_id}/chaos")
+async def live_chaos(session_id: str, req: ChaosRequest):
+    """Inject a fault into the live cell (proxy to the simulator /chaos)."""
+    sess = _live_session(session_id)
+    return await _proxy_sim(sess["sim_http"], "POST", "/chaos", {"fault": req.fault})
+
+
+@app.post("/api/live/{session_id}/chaos/clear")
+async def live_chaos_clear(session_id: str):
+    """Clear the active fault + run the reset handshake (proxy /chaos/clear)."""
+    sess = _live_session(session_id)
+    return await _proxy_sim(sess["sim_http"], "POST", "/chaos/clear")
 
 
 @app.post("/api/autodoc/{session_id}")

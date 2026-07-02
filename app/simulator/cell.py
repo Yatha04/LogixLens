@@ -78,7 +78,7 @@ BOOL_TAGS = [
     "Fault_DriveFault", "Fault_GuardOpen", "Fault_LightCurtain",
     "Fault_TransferTimeout",
     # --- Physical / field inputs (chaos actuates these) ----------------------
-    "Estop_PB1", "Estop_PB2", "Safety_Reset_PB", "Reset_PB",
+    "Estop_PB1", "Estop_PB2", "Master_Stop_PB", "Safety_Reset_PB", "Reset_PB",
     "Press_Overtemp", "Drive_Fault_In", "Drive_Ready",
     "Hyd_Pump_Running", "PartPresent_Eye1",
     "TransferArm_Extended", "TransferArm_Retracted", "Part_At_Outfeed",
@@ -152,6 +152,10 @@ class Cell:
         # physical inputs -- healthy defaults
         self.v.update({
             "Estop_PB1": True, "Estop_PB2": True,
+            # Master_Stop_PB is a normally-closed stop button: True == not
+            # pressed. The sim never presses it, so it stays True (the R02
+            # master seal-in reads it, and healthy.json asserts it True).
+            "Master_Stop_PB": True,
             "GuardDoor_Closed": True, "LightCurtain_Clear": True,
             "SafetyRelay_CH1": True, "SafetyRelay_CH2": True,
             "Safety_Reset_PB": False, "Reset_PB": False,

@@ -1,7 +1,7 @@
-import { SNAPSHOTS, useApp } from "../state/store";
+import { SOURCES, LIVE_SOURCE, useApp } from "../state/store";
 import type { Audience } from "../lib/types";
 import { cx } from "./ui";
-import { Cpu, Activity, Camera } from "lucide-react";
+import { Cpu, Activity, Camera, Radio } from "lucide-react";
 
 const AUDIENCES: { id: Audience; label: string }[] = [
   { id: "operator", label: "Operator" },
@@ -14,8 +14,9 @@ export function Topbar() {
     dossier,
     mock,
     openDossier,
-    snapshot,
-    switchSnapshot,
+    sourceId,
+    switchSource,
+    live,
     loading,
     audience,
     setAudience,
@@ -58,20 +59,28 @@ export function Topbar() {
             </span>
           </div>
         )}
-        {/* snapshot selector */}
+        {/* value-source selector: static snapshots + the live OPC UA cell */}
         <label
-          className="flex items-center gap-1.5 rounded border border-line bg-surface2 px-2 py-1"
-          title="Live-value snapshot used for power flow and interlock evaluation"
+          className={cx(
+            "flex items-center gap-1.5 rounded border px-2 py-1",
+            live ? "border-live/50 bg-live/10" : "border-line bg-surface2"
+          )}
+          title="Value source for power flow and interlock evaluation (static snapshot or the live OPC UA cell)"
         >
-          <Camera size={12} className="text-faint" />
+          {live ? (
+            <Radio size={12} className="text-live" />
+          ) : (
+            <Camera size={12} className="text-faint" />
+          )}
           <select
-            value={snapshot ?? ""}
+            value={sourceId}
             disabled={loading}
-            onChange={(e) => switchSnapshot(e.target.value || null)}
+            onChange={(e) => switchSource(e.target.value)}
             className="bg-transparent font-mono text-[11px] text-ink outline-none disabled:opacity-50"
           >
-            {SNAPSHOTS.map((s) => (
-              <option key={s.label} value={s.id ?? ""} className="bg-surface text-ink">
+            {SOURCES.map((s) => (
+              <option key={s.id || "none"} value={s.id} className="bg-surface text-ink">
+                {s.id === LIVE_SOURCE ? "● " : ""}
                 {s.label}
               </option>
             ))}

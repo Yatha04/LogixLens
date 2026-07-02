@@ -108,6 +108,8 @@ export interface SessionResponse {
   session_id: string;
   l5x: string;
   snapshot: string | null;
+  live?: boolean;
+  opcua_url?: string;
   mock: boolean;
   summary: {
     controller: Controller;
@@ -182,6 +184,31 @@ export interface TracePayload {
   root_satisfied?: Satisfied;
   failing_paths?: FailingPath[];
   failing_count?: number;
+}
+
+// ── Live cell (GET /api/live/{sid}/status, POST .../chaos) ──────────────
+/** The chaos fault vocabulary the simulator accepts (mirrors cell.CHAOS_FAULTS). */
+export const CHAOS_FAULTS = [
+  "guard_door_open",
+  "light_curtain_break",
+  "estop",
+  "infeed_jam",
+  "press_overtemp",
+  "drive_fault",
+  "hydraulic_low",
+] as const;
+export type ChaosFault = (typeof CHAOS_FAULTS)[number];
+
+export interface LiveStatus {
+  state: "STOPPED" | "STARTING" | "RUNNING" | "FAULTED" | string;
+  cycling: boolean;
+  active_fault: string | null;
+  elapsed_s: number;
+  good_parts: number;
+  reject_parts: number;
+  press_step: number;
+  key_values: Record<string, boolean | number>;
+  faults: string[];
 }
 
 // ── Auto-doc (POST /api/autodoc/..., GET /api/autodoc/.../export.csv) ────

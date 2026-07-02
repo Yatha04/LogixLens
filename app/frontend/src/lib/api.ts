@@ -14,6 +14,8 @@ import type {
   Audience,
   ChatFrame,
   AutodocResponse,
+  LiveStatus,
+  ChaosFault,
 } from "./types";
 
 let API_BASE = "";
@@ -50,15 +52,50 @@ const enc = encodeURIComponent;
 export async function createSession(opts: {
   l5x?: string;
   snapshot?: string | null;
+  live?: boolean;
+  opcua_url?: string;
 } = {}): Promise<SessionResponse> {
   const res = await fetch(`${API_BASE}/api/session`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ l5x: opts.l5x, snapshot: opts.snapshot ?? undefined }),
+    body: JSON.stringify({
+      l5x: opts.l5x,
+      snapshot: opts.snapshot ?? undefined,
+      live: opts.live ?? undefined,
+      opcua_url: opts.opcua_url ?? undefined,
+    }),
   });
-  if (!res.ok) throw new ApiError(res.status, `/api/session -> ${res.status}`);
+  if (!res.ok) {
+    let detail = res.statusText;
+    try {
+      detail = (await res.json()).detail ?? detail;
+    } catch {
+      /* ignore */
+    }
+    throw new ApiError(res.status, `/api/session -> ${res.status}: ${detail}`);
+  }
   return res.json();
 }
+
+// ── Live cell (status + chaos proxy) ─────────────────────────────────────
+export const getLiveStatus = (sid: string) =>
+  getJSON<LiveStatus>(`/api/live/${enc(sid)}/status`);
+
+async function postJSON<T>(path: string, body?: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!res.ok) throw new ApiError(res.status, `${path} -> ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
+export const injectChaos = (sid: string, fault: ChaosFault) =>
+  postJSON<LiveStatus>(`/api/live/${enc(sid)}/chaos`, { fault });
+
+export const clearChaos = (sid: string) =>
+  postJSON<LiveStatus>(`/api/live/${enc(sid)}/chaos/clear`);
 
 export const getDossier = (sid: string) => getJSON<Dossier>(`/api/dossier/${enc(sid)}`);
 

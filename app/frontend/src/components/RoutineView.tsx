@@ -5,6 +5,7 @@ import type { RoutinePayload, RungPayload } from "../lib/types";
 import { Ladder } from "./Ladder";
 import { cx, RoutineTypeTag } from "./ui";
 import { energizeRung } from "../lib/powerflow";
+import { usePolling } from "../lib/poll";
 import { Code2, Hash } from "lucide-react";
 
 interface RoutineViewProps {
@@ -19,7 +20,7 @@ const STATE_LABEL: Record<string, { text: string; cls: string }> = {
 };
 
 export function RoutineView({ view }: RoutineViewProps) {
-  const { sid, snapshot, openTrace } = useApp();
+  const { sid, snapshot, live, openTrace } = useApp();
   const [routine, setRoutine] = useState<RoutinePayload | null>(null);
   const [rungs, setRungs] = useState<Record<number, RungPayload>>({});
   const [showRaw, setShowRaw] = useState(false);
@@ -54,6 +55,26 @@ export function RoutineView({ view }: RoutineViewProps) {
       alive = false;
     };
   }, [sid, view.program, view.routine, snapshot]);
+
+  // Live mode: re-read the ladder ~1.5s so power flow tracks the running cell.
+  // Values update in place (the rung blocks stay mounted, keyed by number), so
+  // no flicker — only contact/coil states change as the machine changes.
+  usePolling(
+    () => {
+      if (!sid || routine?.type !== "RLL" || !routine.rungs) return;
+      Promise.all(
+        routine.rungs.map((rg) =>
+          getRung(sid, view.program, view.routine, rg.number).then(
+            (p) => [rg.number, p] as const
+          )
+        )
+      )
+        .then((entries) => setRungs(Object.fromEntries(entries)))
+        .catch(() => { /* transient poll error — keep last-good values */ });
+    },
+    1500,
+    !!(live && sid && routine?.type === "RLL")
+  );
 
   if (error) return <div className="p-6 text-blocked">{error}</div>;
   if (!routine) return <div className="p-6 text-muted animate-power">loading routine…</div>;

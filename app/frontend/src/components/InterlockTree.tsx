@@ -21,6 +21,7 @@ import {
 import { getTrace, searchTags, type TagHit } from "../lib/api";
 import type { Cite, ConditionNode, TracePayload } from "../lib/types";
 import { useApp } from "../state/store";
+import { usePolling } from "../lib/poll";
 
 // ── small bits ───────────────────────────────────────────────────────────
 
@@ -237,7 +238,7 @@ function TraceInput({ initial, onTrace }: { initial: string; onTrace: (tag: stri
 // ── the panel ────────────────────────────────────────────────────────────
 
 export default function InterlockTree({ tag }: { tag: string }) {
-  const { sid, snapshot, openRoutine, openTrace } = useApp();
+  const { sid, snapshot, live, openRoutine, openTrace } = useApp();
   const [trace, setTrace] = useState<TracePayload | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -253,6 +254,20 @@ export default function InterlockTree({ tag }: { tag: string }) {
       cancelled = true;
     };
   }, [sid, tag, snapshot]);
+
+  // Live mode: re-trace ~1.5s so the interlock tree re-evaluates against the
+  // running cell. setTrace updates the existing tree in place (never back to
+  // null), so the panel doesn't flash a loader on each poll.
+  usePolling(
+    () => {
+      if (!sid) return;
+      getTrace(sid, tag, snapshot)
+        .then((t) => setTrace(t))
+        .catch(() => { /* transient poll error — keep last-good trace */ });
+    },
+    1500,
+    !!(live && sid)
+  );
 
   const onCite = (c: Cite) => openRoutine(c.program, c.routine, c.rung_number);
 

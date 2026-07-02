@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppProvider, useApp } from "./state/store";
 import { Sidebar } from "./components/Sidebar";
 import { Topbar } from "./components/Topbar";
+import { LiveBar } from "./components/LiveBar";
 import { DossierView } from "./components/DossierView";
 import { RoutineView } from "./components/RoutineView";
 import { TraceView } from "./components/TraceView";
@@ -44,6 +45,7 @@ function Shell() {
   return (
     <div className="flex h-full flex-col bg-base">
       <Topbar />
+      <LiveBar />
       <div className="flex min-h-0 flex-1">
         <Sidebar />
         <main className="min-w-0 flex-1 overflow-auto bg-grid">

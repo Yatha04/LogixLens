@@ -24,6 +24,23 @@ export const SNAPSHOTS: SnapshotOption[] = [
   { id: null, label: "no snapshot", tone: "static" },
 ];
 
+/** Sentinel `<select>` value for the live OPC UA source (distinct from any
+ * snapshot id, and from "" which means "no snapshot"). */
+export const LIVE_SOURCE = "__live__";
+
+export interface SourceOption {
+  id: string; // snapshot id, "" == no snapshot, LIVE_SOURCE == live cell
+  label: string;
+  tone: "healthy" | "fault" | "static" | "live";
+}
+
+export const SOURCES: SourceOption[] = [
+  { id: "healthy", label: "healthy", tone: "healthy" },
+  { id: "guard_door_open", label: "guard_door_open", tone: "fault" },
+  { id: "", label: "no snapshot", tone: "static" },
+  { id: LIVE_SOURCE, label: "LIVE (OPC UA)", tone: "live" },
+];
+
 export type View =
   | { kind: "dossier" }
   | { kind: "routine"; program: string; routine: string; highlightRung?: number }
@@ -34,6 +51,7 @@ interface AppState {
   session: SessionResponse | null;
   dossier: Dossier | null;
   snapshot: string | null;
+  live: boolean;
   view: View;
   loading: boolean;
   error: string | null;
@@ -42,6 +60,10 @@ interface AppState {
 
 interface AppApi extends AppState {
   sid: string | null;
+  /** Current source selector value (snapshot id, "" for none, or LIVE_SOURCE). */
+  sourceId: string;
+  /** Switch the value source — a snapshot id, "" (no snapshot), or LIVE_SOURCE. */
+  switchSource: (id: string) => void;
   switchSnapshot: (id: string | null) => void;
   openDossier: () => void;
   openRoutine: (program: string, routine: string, highlightRung?: number) => void;
@@ -64,6 +86,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<SessionResponse | null>(null);
   const [dossier, setDossier] = useState<Dossier | null>(null);
   const [snapshot, setSnapshot] = useState<string | null>("guard_door_open");
+  const [live, setLive] = useState(false);
   const [view, setView] = useState<View>({ kind: "dossier" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,15 +94,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [audience, setAudience] = useState<Audience>("maintenance");
   const [conn, setConn] = useState<ConnState>("connecting");
 
-  const boot = useCallback(async (snap: string | null) => {
+  const boot = useCallback(async (opts: { snapshot?: string | null; live?: boolean }) => {
     setLoading(true);
     setError(null);
     try {
-      const s = await createSession({ snapshot: snap });
+      const s = opts.live
+        ? await createSession({ live: true })
+        : await createSession({ snapshot: opts.snapshot ?? null });
       const d = await getDossier(s.session_id);
       setSession(s);
       setDossier(d);
-      setSnapshot(snap);
+      setLive(!!opts.live);
+      setSnapshot(opts.live ? null : opts.snapshot ?? null);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -88,17 +114,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    void boot("guard_door_open");
+    void boot({ snapshot: "guard_door_open" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const switchSnapshot = useCallback(
-    (id: string | null) => {
-      // Snapshot changes create a fresh session (per spec) so live evaluation
+  const switchSource = useCallback(
+    (id: string) => {
+      // Any source change creates a fresh session (per spec) so live evaluation
       // and the chat context reflect the selected cell state.
-      void boot(id);
+      if (id === LIVE_SOURCE) void boot({ live: true });
+      else void boot({ snapshot: id || null });
     },
     [boot]
+  );
+
+  const switchSnapshot = useCallback(
+    (id: string | null) => switchSource(id ?? ""),
+    [switchSource]
   );
 
   const api = useMemo<AppApi>(
@@ -106,11 +138,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       session,
       dossier,
       snapshot,
+      live,
       view,
       loading,
       error,
       mock: session?.mock ?? false,
       sid: session?.session_id ?? null,
+      sourceId: live ? LIVE_SOURCE : snapshot ?? "",
+      switchSource,
       switchSnapshot,
       openDossier: () => setView({ kind: "dossier" }),
       openRoutine: (program, routine, highlightRung) =>
@@ -124,7 +159,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       conn,
       setConn,
     }),
-    [session, dossier, snapshot, view, loading, error, switchSnapshot, chatPrefill, audience, conn]
+    [session, dossier, snapshot, live, view, loading, error, switchSource, switchSnapshot, chatPrefill, audience, conn]
   );
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
