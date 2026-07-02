@@ -109,6 +109,24 @@ def test_ws_why_question(client):
     assert cites and any(c["routine"] == "R92_SafetyOK" for c in cites[0]["citations"])
 
 
+def test_ws_why_question_citations_prefer_failing_path(client):
+    # The full condition tree for Press_Cycle_Start touches ~20 rungs across
+    # several routines (R31_Hydraulics, R21_Sequence, R90_EstopChain...), but
+    # only Safety_OK / GuardDoor_Closed are actually broken. The citations
+    # frame should carry just the failing-path rungs, not every rung the
+    # tree happened to visit while confirming everything else was fine.
+    sid = _new_session(client, snapshot="guard_door_open")["session_id"]
+    with client.websocket_connect(f"/api/chat/{sid}") as ws:
+        ws.send_json({"message": "why is the press not cycling?", "audience": "maintenance"})
+        frames = _drain_ws(ws)
+    cite_frames = [f for f in frames if f["type"] == "citations"]
+    assert cite_frames
+    routines = {c["routine"] for c in cite_frames[0]["citations"]}
+    assert routines == {"R30_PressCycle", "R92_SafetyOK"}
+    assert "R31_Hydraulics" not in routines
+    assert "R90_EstopChain" not in routines
+
+
 def test_ws_overview_question(client):
     sid = _new_session(client)["session_id"]
     with client.websocket_connect(f"/api/chat/{sid}") as ws:

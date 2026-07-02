@@ -10,6 +10,8 @@ GET  /api/routine/{session_id}/{program}/{routine}   direct routine read for the
 GET  /api/trace/{session_id}/{tag}?snapshot=NAME     interlock trace, optionally live-evaluated
 GET  /api/rung/{session_id}/{program}/{routine}/{number}?snapshot=NAME
                                         nested rung parse structure (+ values) for the ladder renderer
+POST /api/autodoc/{session_id}          propose descriptions for undocumented tags (optional {tags:[...]} scope)
+GET  /api/autodoc/{session_id}/export.csv   CSV of the reviewed autodoc table (tag, current, proposed, confidence)
 
 Run:
     ./.venv/bin/python -m uvicorn app.backend.server:app --port 8000
@@ -22,7 +24,7 @@ from __future__ import annotations
 import os
 import uuid
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 try:
     from dotenv import load_dotenv
@@ -30,7 +32,7 @@ try:
 except Exception:  # pragma: no cover
     pass
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -42,6 +44,7 @@ from .plc_tools import (
 )
 from .chat import run_chat
 from .rung_json import rung_payload
+from .autodoc import generate_autodoc, to_csv, is_mock as autodoc_is_mock
 
 app = FastAPI(title="Ask the PLC", version="0.2.0")
 
@@ -60,6 +63,8 @@ app.add_middleware(
 _SESSIONS: Dict[str, Dict] = {}
 # (l5x, snapshot) -> PLCToolbox  (parse cache)
 _TOOLBOX_CACHE: Dict[tuple, PLCToolbox] = {}
+# session_id -> {tag_name: proposal_row}  (accumulates across /api/autodoc calls)
+_AUTODOC_STATE: Dict[str, Dict[str, Dict]] = {}
 
 
 def _snapshot_path(name: Optional[str]) -> Optional[Path]:
@@ -99,6 +104,10 @@ def _session(session_id: str) -> Dict:
 class SessionRequest(BaseModel):
     l5x: Optional[str] = None
     snapshot: Optional[str] = None
+
+
+class AutodocRequest(BaseModel):
+    tags: Optional[List[str]] = None
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -186,6 +195,42 @@ def get_trace(session_id: str, tag: str, snapshot: Optional[str] = None):
         if sp is not None:
             live_values = StaticSnapshotProvider(sp).get_values()
     return tb.trace_blockers(tag, live_values=live_values)
+
+
+@app.post("/api/autodoc/{session_id}")
+async def post_autodoc(session_id: str, req: Optional[AutodocRequest] = None):
+    """Propose descriptions for undocumented tags (Deliverable: auto-doc mode).
+
+    Body ``{"tags": [...]}`` optionally scopes generation to a subset of
+    undocumented tags (e.g. one batch page at a time); omitted/empty means
+    "every undocumented tag". Proposals are merged into the session's
+    reviewed table, retrievable via ``export.csv``.
+    """
+    sess = _session(session_id)
+    tb: PLCToolbox = sess["toolbox"]
+    tags = req.tags if req is not None else None
+    proposals = await generate_autodoc(tb, tags=tags)
+    store = _AUTODOC_STATE.setdefault(session_id, {})
+    for p in proposals:
+        store[p["tag"]] = p
+    return {
+        "session_id": session_id,
+        "mode": "mock" if autodoc_is_mock() else "real",
+        "total": len(proposals),
+        "proposals": proposals,
+    }
+
+
+@app.get("/api/autodoc/{session_id}/export.csv")
+def get_autodoc_csv(session_id: str):
+    """CSV of the reviewed autodoc table so far (tag, current, proposed, confidence)."""
+    _session(session_id)  # 404s if the session doesn't exist
+    rows = list(_AUTODOC_STATE.get(session_id, {}).values())
+    return Response(
+        content=to_csv(rows),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="autodoc_{session_id}.csv"'},
+    )
 
 
 # ──────────────────────────────────────────────────────────────────────

@@ -10,7 +10,7 @@ const EXAMPLES = [
 ];
 
 export function DossierView() {
-  const { dossier, prefillChat, openTrace } = useApp();
+  const { dossier, prefillChat, openTrace, openAutodoc } = useApp();
   if (!dossier) return null;
   const { controller: c, counts, documentation: doc, aoi_instances, modules } = dossier;
 
@@ -61,6 +61,8 @@ export function DossierView() {
           label="Doc Coverage"
           value={<span className={coverageTone}>{doc.coverage_pct}%</span>}
           sub={`${doc.undocumented_tags} undocumented`}
+          onClick={openAutodoc}
+          title="Open Auto-Doc: draft descriptions for undocumented tags"
         />
         <Stat
           label="Routines"

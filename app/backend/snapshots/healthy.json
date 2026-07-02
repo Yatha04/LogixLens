@@ -13,14 +13,12 @@
     "Cycle_Start_PB": true,
     "Auto_Sequence_Run": true,
     "Press_Cycle_Fault": false,
-
     "Estop_Chain_OK": true,
     "GuardDoor_Closed": true,
     "LightCurtain_Clear": true,
     "SafetyRelay_CH1": true,
     "SafetyRelay_CH2": true,
     "Safety_Reset_Done": true,
-
     "Estop_Active": false,
     "System_Running": true,
     "Fault_InfeedJam": false,
@@ -28,6 +26,7 @@
     "Fault_HydLowPressure": false,
     "Fault_DriveFault": false,
     "Hyd_Pump_Running": true,
-    "Press_Overtemp": false
+    "Press_Overtemp": false,
+    "Master_Stop_PB": true
   }
 }

@@ -27,7 +27,8 @@ export const SNAPSHOTS: SnapshotOption[] = [
 export type View =
   | { kind: "dossier" }
   | { kind: "routine"; program: string; routine: string; highlightRung?: number }
-  | { kind: "trace"; tag: string };
+  | { kind: "trace"; tag: string }
+  | { kind: "autodoc" };
 
 interface AppState {
   session: SessionResponse | null;
@@ -45,6 +46,7 @@ interface AppApi extends AppState {
   openDossier: () => void;
   openRoutine: (program: string, routine: string, highlightRung?: number) => void;
   openTrace: (tag: string) => void;
+  openAutodoc: () => void;
   /** Pre-fill the chat composer (used by the dossier example chips). */
   prefillChat: (text: string) => void;
   chatPrefill: { text: string; nonce: number } | null;
@@ -114,6 +116,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       openRoutine: (program, routine, highlightRung) =>
         setView({ kind: "routine", program, routine, highlightRung }),
       openTrace: (tag) => setView({ kind: "trace", tag }),
+      openAutodoc: () => setView({ kind: "autodoc" }),
       prefillChat: (text) => setChatPrefill({ text, nonce: Date.now() }),
       chatPrefill,
       audience,

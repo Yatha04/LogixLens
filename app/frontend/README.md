@@ -73,18 +73,48 @@ npm run test:integration   # hits a LIVE backend on :8000 (start it first)
 
 ## Layout
 
+- **Top bar** — controller name/processor, snapshot selector
+  (healthy / guard_door_open / no snapshot — switching creates a fresh
+  session), audience toggle (Operator / Maintenance / Controls Eng, sent with
+  every chat message), mock/live chip, and the chat-socket connection dot.
 - **Left sidebar** — controller organizer (programs → routines) + Machine Anatomy
   (components inferred from AOI instances).
-- **Center** — one of: Machine Dossier · Routine view (ladder) · Trace view.
-- **Right** — always-visible, collapsible Chat panel with an audience segmented
-  control and a snapshot switcher (switching creates a fresh session).
+- **Center** — one of: Machine Dossier · Routine view (ladder) · Trace view
+  (interlock tree with tag-autocomplete trace input backed by `/api/tags`).
+- **Right** — collapsible Chat panel: streaming markdown answers, tool
+  breadcrumb chips, clickable citation chips that deep-link the ladder view.
 
 ## The ladder renderer
 
-`src/components/Ladder.tsx` is a pure component: `(elements, values?) -> SVG`.
+`src/components/Ladder.tsx` is a pure component: `(elements, values?, tags?) -> SVG`.
 Left/right rails, `─┤ ├─` / `─┤/├─` contacts, `─( )─` / `(L)` / `(U)` coils,
 recursive parallel branches, and labeled instruction boxes for timers / counters
-/ moves / compares / AOIs. Energization is delegated to the tested
-`src/lib/powerflow.ts` (`energizeChain` / `energizeRung`): conducting wires are
-bright green (animated), the first blocking contact is red, dead/unknown wire is
-grey, and the output coil glows when power reaches it.
+/ moves / compares / AOIs. Tag name above each element, its description
+(from the `/api/rung` `tags` map) truncated below, live value shown next to
+the tag. Energization is delegated to the tested `src/lib/powerflow.ts`
+(`energizeChain` / `energizeRung`): conducting wires are bright green
+(animated), dead/unknown wire is grey, and the output coil glows when power
+reaches it. The **first** blocking element on an otherwise-hot path (per
+branch leg) renders red with a pulse; contacts that are closed but sit on a
+dead path render dim green.
+
+**Symbols vs boxes:**
+
+- Symbols: `XIC`, `XIO`, `OTE`, `OTL`, `OTU`; one-shots (`ONS`/`OSR`/`OSF`)
+  as a compact labelled block on the wire.
+- Boxes: timers/counters (`TON/TOF/RTO/CTU/CTD/RES`), move/math
+  (`MOV/COP/CPS/BTD/ADD/SUB/MUL/DIV/CPT/CLR/MOD`), comparisons
+  (`EQU/NEQ/GRT/GEQ/LES/LEQ/LIM/MEQ` — these gate power), program flow
+  (`JSR/JMP/LBL/...`), and AOI calls (`FB_VALVE(...)` etc.). Box operand rows
+  append live values as `= v`.
+
+**Limitations (honest):**
+
+- RLL only — ST routines render as numbered code, SFC as step/transition
+  lists (matches the parser's coverage).
+- Only `XIC`/`XIO`/comparisons gate power; any other condition-shaped
+  instruction is treated as pass-through. Timer/counter done bits energize
+  via their snapshot values (e.g. `T_InfeedJam.DN`), not by simulating the
+  timer; presets authored as `?` in the demo L5X display as `?`.
+- Indirect addresses (`data[index]`) are looked up verbatim in the values
+  map; unresolved ones render as unknown (grey), never guessed.

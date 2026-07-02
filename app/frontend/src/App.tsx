@@ -5,6 +5,7 @@ import { Topbar } from "./components/Topbar";
 import { DossierView } from "./components/DossierView";
 import { RoutineView } from "./components/RoutineView";
 import { TraceView } from "./components/TraceView";
+import { AutoDocView } from "./components/AutoDocView";
 import { ChatPanel } from "./components/ChatPanel";
 import { PanelRightOpen } from "lucide-react";
 
@@ -17,6 +18,8 @@ function MainView() {
       return <RoutineView key={`${view.program}/${view.routine}`} view={view} />;
     case "trace":
       return <TraceView key={view.tag} tag={view.tag} />;
+    case "autodoc":
+      return <AutoDocView />;
   }
 }
 

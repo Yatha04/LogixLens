@@ -56,6 +56,33 @@ def _collect_citations(obj, out: List[Dict], seen: set) -> None:
             _collect_citations(v, out, seen)
 
 
+def _collect_result_citations(tool: str, result: Dict, out: List[Dict], seen: set) -> None:
+    """Harvest citations for one tool result, noise-reduced for ``trace_blockers``.
+
+    A live-evaluated ``trace_blockers`` tree carries a citation on every node —
+    satisfied branches included — so a naive full-tree harvest buries the one
+    or two rungs that actually matter under a pile of "this contact was fine"
+    citations. When the trace produced failing path(s), cite only the nodes on
+    those failing paths (the root-cause chain); otherwise fall back to
+    harvesting every citation in the result, as before.
+    """
+    if tool == "trace_blockers":
+        paths = result.get("failing_paths")
+        if paths:
+            for p in paths:
+                for n in p.get("nodes", []):
+                    cite = n.get("cite")
+                    if not cite:
+                        continue
+                    key = (cite["program"], cite["routine"], cite["rung_number"])
+                    if key not in seen:
+                        seen.add(key)
+                        out.append({"program": cite["program"], "routine": cite["routine"],
+                                    "rung_number": cite["rung_number"]})
+            return
+    _collect_citations(result, out, seen)
+
+
 def _breadcrumb(tool: str, args: Dict, result: Dict) -> str:
     """A short 'checked X for Y' style breadcrumb for the UI."""
     key = args.get("target") or args.get("tag") or args.get("name") or args.get("query")
@@ -125,7 +152,7 @@ async def _run_real(toolbox: PLCToolbox, message: str, audience: str,
             yield {"type": "tool_call", "tool": tu.name, "args":
                    {k: v for k, v in args.items() if k != "live_values"}}
             result = dispatch(toolbox, tu.name, args)
-            _collect_citations(result, cites, seen)
+            _collect_result_citations(tu.name, result, cites, seen)
             yield _summary_frame(tu.name, args, result)
             tool_results.append({
                 "type": "tool_result",
@@ -169,7 +196,7 @@ async def _run_mock(toolbox: PLCToolbox, message: str, audience: str) -> AsyncIt
         args = {"target": target}
         yield {"type": "tool_call", "tool": "trace_blockers", "args": args}
         result = dispatch(toolbox, "trace_blockers", args)
-        _collect_citations(result, cites, seen)
+        _collect_result_citations("trace_blockers", result, cites, seen)
         yield _summary_frame("trace_blockers", args, result)
 
         # template the failing path into text
@@ -201,7 +228,7 @@ async def _run_mock(toolbox: PLCToolbox, message: str, audience: str) -> AsyncIt
         args: Dict = {}
         yield {"type": "tool_call", "tool": "get_project_summary", "args": args}
         result = dispatch(toolbox, "get_project_summary", args)
-        _collect_citations(result, cites, seen)
+        _collect_result_citations("get_project_summary", result, cites, seen)
         yield _summary_frame("get_project_summary", args, result)
         c = result.get("controller", {})
         counts = result.get("counts", {})

@@ -184,6 +184,25 @@ export interface TracePayload {
   failing_count?: number;
 }
 
+// ── Auto-doc (POST /api/autodoc/..., GET /api/autodoc/.../export.csv) ────
+export type Confidence = "high" | "medium" | "low";
+
+export interface AutodocProposal {
+  tag: string;
+  data_type: string;
+  scope: string;
+  current_description: string;
+  proposed_description: string;
+  confidence: Confidence;
+}
+
+export interface AutodocResponse {
+  session_id: string;
+  mode: "mock" | "real";
+  total: number;
+  proposals: AutodocProposal[];
+}
+
 // ── Chat WebSocket frames ───────────────────────────────────────────────
 export type Audience = "operator" | "maintenance" | "controls_engineer";
 

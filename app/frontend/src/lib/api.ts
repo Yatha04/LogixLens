@@ -13,6 +13,7 @@ import type {
   TracePayload,
   Audience,
   ChatFrame,
+  AutodocResponse,
 } from "./types";
 
 let API_BASE = "";
@@ -96,6 +97,20 @@ export const searchTags = (sid: string, q: string, limit = 15) =>
   getJSON<{ total: number; tags: TagHit[] }>(
     `/api/tags/${enc(sid)}?q=${enc(q)}&limit=${limit}`
   );
+
+// ── Auto-doc ─────────────────────────────────────────────────────────────
+export async function generateAutodoc(sid: string, tags?: string[]): Promise<AutodocResponse> {
+  const res = await fetch(`${API_BASE}/api/autodoc/${enc(sid)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tags: tags ?? undefined }),
+  });
+  if (!res.ok) throw new ApiError(res.status, `/api/autodoc/${sid} -> ${res.status}`);
+  return res.json();
+}
+
+/** Direct download URL for the reviewed autodoc table (browser navigates/opens it). */
+export const autodocExportUrl = (sid: string) => `${API_BASE}/api/autodoc/${enc(sid)}/export.csv`;
 
 // ── Chat WebSocket ──────────────────────────────────────────────────────
 export interface ChatHandle {

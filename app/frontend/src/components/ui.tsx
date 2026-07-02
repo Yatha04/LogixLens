@@ -50,13 +50,33 @@ export function Chip({
   );
 }
 
-export function Stat({ label, value, sub }: { label: string; value: ReactNode; sub?: ReactNode }) {
+export function Stat({
+  label,
+  value,
+  sub,
+  onClick,
+  title,
+}: {
+  label: string;
+  value: ReactNode;
+  sub?: ReactNode;
+  onClick?: () => void;
+  title?: string;
+}) {
+  const Comp = onClick ? "button" : "div";
   return (
-    <div className="rounded-lg border border-line bg-surface px-3 py-2.5">
+    <Comp
+      onClick={onClick}
+      title={title}
+      className={cx(
+        "rounded-lg border border-line bg-surface px-3 py-2.5 text-left",
+        onClick && "cursor-pointer transition-colors hover:border-accent/60 hover:bg-surface2"
+      )}
+    >
       <div className="text-[10px] uppercase tracking-wider text-faint">{label}</div>
       <div className="mt-0.5 text-xl font-semibold tabular-nums text-ink">{value}</div>
       {sub !== undefined && <div className="text-[11px] text-muted">{sub}</div>}
-    </div>
+    </Comp>
   );
 }
 
