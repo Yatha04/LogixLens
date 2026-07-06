@@ -269,7 +269,9 @@ curl -s -X POST "localhost:8000/api/autodoc/$SID" -H 'Content-Type: application/
 curl -s "localhost:8000/api/autodoc/$SID/export.csv"
 ```
 
-Real mode batches ~30 tags per Anthropic API call, each tag carrying its data type,
+Real mode batches ~30 tags per model call — via the Anthropic API or, under
+`make backend-live`, the Claude Agent SDK on your subscription (same prompt, same
+strict-JSON contract, no API key). Each tag carries its data type,
 scope, and cited rung snippets from where it's read/written (reused straight from
 `PLCToolbox.get_tag` / `get_rung` — no separate analysis path). Mock mode
 (`ASKPLC_MOCK=1`) derives a deterministic proposal from the tag name

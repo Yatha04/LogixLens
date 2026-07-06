@@ -56,7 +56,8 @@ def _toolbox(snapshot):
 
 async def _collect(toolbox, question, audience, mock):
     tools_used, text, cites = [], "", []
-    async for f in run_chat(toolbox, question, audience, mock=mock):
+    # mock=None lets run_chat resolve the provider (api / subscription).
+    async for f in run_chat(toolbox, question, audience, mock=True if mock else None):
         t = f["type"]
         if t == "tool_call":
             tools_used.append(f["tool"])
@@ -107,9 +108,10 @@ def _check(q, tools_used, text, cites, mock):
 async def main_async(args):
     data = yaml.safe_load(GOLD.read_text())
     questions = data["questions"]
-    mock = args.mock or not os.environ.get("ANTHROPIC_API_KEY")
-    mode = "MOCK" if mock else "REAL"
-    print(f"=== Ask-the-PLC eval ({mode} model) — {len(questions)} questions ===\n")
+    from app.backend.chat import resolve_provider
+    provider = "mock" if args.mock else resolve_provider()
+    mock = provider == "mock"
+    print(f"=== Ask-the-PLC eval ({provider.upper()} model) — {len(questions)} questions ===\n")
 
     total_checks = passed_checks = 0
     skipped = 0

@@ -69,6 +69,42 @@ def test_sdk_tools_wrap_every_schema_and_dispatch(toolbox):
     assert frame["tool"] == "trace_blockers"
 
 
+def test_autodoc_follows_provider_resolution(monkeypatch):
+    from app.backend import autodoc
+    monkeypatch.setattr(chat.shutil, "which", lambda _: "/usr/local/bin/claude")
+    assert autodoc.is_mock() is False  # subscription => real proposals
+    monkeypatch.setenv("ASKPLC_MOCK", "1")
+    assert autodoc.is_mock() is True
+
+
+def test_autodoc_parse_batch_text_handles_fences_and_junk():
+    from app.backend.autodoc import _parse_batch_text
+    good = '```json\n[{"tag":"T1","proposed_description":"guard door switch","confidence":"high"}]\n```'
+    out = _parse_batch_text(good)
+    assert out["T1"]["confidence"] == "high"
+    assert _parse_batch_text("not json at all") == {}
+    assert _parse_batch_text('{"tag": "not-a-list"}') == {}
+
+
+def test_autodoc_dispatches_to_subscription_batch(toolbox, monkeypatch):
+    from app.backend import autodoc
+
+    async def fake_subscription(tb, batch, model):
+        return {t.name: {"tag": t.name, "proposed_description": "via sdk",
+                         "confidence": "medium"} for t in batch}
+
+    async def boom(tb, batch, model):  # the API path must NOT be hit
+        raise AssertionError("api path used in subscription mode")
+
+    monkeypatch.setenv("ASKPLC_PROVIDER", "subscription")
+    monkeypatch.setattr(autodoc, "_propose_batch_subscription", fake_subscription)
+    monkeypatch.setattr(autodoc, "_propose_batch_real", boom)
+
+    rows = asyncio.run(autodoc.generate_autodoc(toolbox))
+    assert rows and all(r["proposed_description"] == "via sdk" for r in rows)
+    assert all(r["confidence"] == "medium" for r in rows)
+
+
 def test_run_chat_legacy_mock_arg_still_forces_mock(toolbox):
     async def collect():
         frames = []
