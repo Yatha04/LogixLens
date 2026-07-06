@@ -2,11 +2,18 @@
 chat.py – The streaming tool-use loop for Ask the PLC.
 
 ``run_chat`` is an async generator that yields JSON-serializable frames as the
-conversation progresses. It runs a real Claude tool-use loop over a
-:class:`PLCToolbox` (direct Python tool calls — not MCP transport), or, in
-``--mock`` mode (env ``ASKPLC_MOCK=1``), a deterministic fake model that still
-exercises the *entire* real machinery: tool dispatch, frame streaming, citation
-collection. Only the model call itself is faked.
+conversation progresses. Three model providers, all driving the exact same
+tool dispatch / frame / citation machinery:
+
+  api           the Anthropic API (needs ANTHROPIC_API_KEY)
+  subscription  the local Claude Code login via the Claude Agent SDK — real
+                Claude, tools run in-process against this session's toolbox,
+                zero API billing
+  mock          a deterministic fake model (CI / no-network)
+
+Provider resolution (see ``resolve_provider``): ASKPLC_MOCK=1 forces mock;
+ASKPLC_PROVIDER picks explicitly; otherwise an API key means ``api``, an
+installed ``claude`` CLI means ``subscription``, else ``mock``.
 
 Frame protocol (each frame is one dict):
   {"type": "text_delta", "text": str}
@@ -19,9 +26,11 @@ Frame protocol (each frame is one dict):
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import re
+import shutil
 from typing import AsyncIterator, Dict, List, Optional
 
 from .plc_tools import PLCToolbox
@@ -30,10 +39,31 @@ from .tools_schema import TOOL_SCHEMAS, dispatch
 
 DEFAULT_MODEL = os.environ.get("ASKPLC_MODEL", "claude-sonnet-5")
 MAX_TOOL_ITERATIONS = 8
+# The Agent SDK spends turns on its own tool plumbing (e.g. ToolSearch loads),
+# so its budget must be far looser than the API loop's tool-iteration cap.
+SUBSCRIPTION_MAX_TURNS = 30
+
+_SUBSCRIPTION_ALIASES = {"subscription", "claude-cli", "agent-sdk", "agent", "claude_agent"}
+
+
+def resolve_provider() -> str:
+    """Pick the chat model provider: 'mock' | 'api' | 'subscription'."""
+    if os.environ.get("ASKPLC_MOCK") == "1":
+        return "mock"
+    explicit = os.environ.get("ASKPLC_PROVIDER", "").strip().lower()
+    if explicit in _SUBSCRIPTION_ALIASES:
+        return "subscription"
+    if explicit in ("api", "mock"):
+        return explicit
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return "api"
+    if shutil.which("claude"):
+        return "subscription"
+    return "mock"
 
 
 def is_mock() -> bool:
-    return os.environ.get("ASKPLC_MOCK") == "1"
+    return resolve_provider() == "mock"
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -167,6 +197,111 @@ async def _run_real(toolbox: PLCToolbox, message: str, audience: str,
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Subscription loop — Claude Agent SDK over the local Claude Code login.
+# The 11 tools are registered as an in-process SDK MCP server bound to THIS
+# session's toolbox, so uploaded files and snapshots work identically and
+# citations are harvested at dispatch time, exactly like the API loop.
+# ──────────────────────────────────────────────────────────────────────
+
+_SDK_DISALLOWED = [
+    "Bash", "Read", "Write", "Edit", "Glob", "Grep",
+    "WebFetch", "WebSearch", "Task", "TodoWrite", "NotebookEdit",
+]
+
+
+def _sdk_tools(toolbox: PLCToolbox, cites: List[Dict], seen: set,
+               summaries: "asyncio.Queue[Dict]"):
+    """Wrap TOOL_SCHEMAS as SDK tools closing over the session toolbox."""
+    from claude_agent_sdk import tool as sdk_tool
+
+    wrapped = []
+    for schema in TOOL_SCHEMAS:
+        def make(name: str, description: str, input_schema: Dict):
+            @sdk_tool(name, description, input_schema)
+            async def _t(args: Dict) -> Dict:
+                call_args = dict(args or {})
+                result = dispatch(toolbox, name, call_args)
+                _collect_result_citations(name, result, cites, seen)
+                summaries.put_nowait(_summary_frame(name, call_args, result))
+                return {"content": [
+                    {"type": "text", "text": json.dumps(result, default=str)}
+                ]}
+            return _t
+        wrapped.append(make(schema["name"], schema["description"], schema["input_schema"]))
+    return wrapped
+
+
+async def _run_subscription(toolbox: PLCToolbox, message: str, audience: str,
+                            model: str) -> AsyncIterator[Dict]:
+    from claude_agent_sdk import (
+        AssistantMessage,
+        ClaudeAgentOptions,
+        ClaudeSDKClient,
+        ResultMessage,
+        TextBlock,
+        ToolUseBlock,
+        create_sdk_mcp_server,
+    )
+
+    cites: List[Dict] = []
+    seen: set = set()
+    summaries: "asyncio.Queue[Dict]" = asyncio.Queue()
+    final_text = ""
+    stop_reason = "end_turn"
+
+    server = create_sdk_mcp_server(
+        name="plc", tools=_sdk_tools(toolbox, cites, seen, summaries))
+    options = ClaudeAgentOptions(
+        system_prompt=build_system_prompt(audience),
+        mcp_servers={"plc": server},
+        allowed_tools=[f"mcp__plc__{s['name']}" for s in TOOL_SCHEMAS],
+        disallowed_tools=_SDK_DISALLOWED,
+        permission_mode="bypassPermissions",
+        max_turns=SUBSCRIPTION_MAX_TURNS,
+        model=model,
+    )
+
+    async with ClaudeSDKClient(options=options) as client:
+        await client.query(message)
+        async for msg in client.receive_response():
+            # Tool summaries queue up while the SDK runs our tools between
+            # messages — drain them in stream order.
+            while not summaries.empty():
+                yield summaries.get_nowait()
+            if isinstance(msg, AssistantMessage):
+                for block in msg.content:
+                    if isinstance(block, TextBlock):
+                        final_text += block.text
+                        yield {"type": "text_delta", "text": block.text}
+                    elif isinstance(block, ToolUseBlock):
+                        # Only surface OUR tools; SDK plumbing (ToolSearch
+                        # loading the MCP schemas, etc.) is noise in the UI.
+                        if not block.name.startswith("mcp__plc__"):
+                            continue
+                        args = {k: v for k, v in (block.input or {}).items()
+                                if k != "live_values"}
+                        yield {"type": "tool_call",
+                               "tool": block.name.removeprefix("mcp__plc__"),
+                               "args": args}
+            elif isinstance(msg, ResultMessage):
+                stop_reason = "error" if msg.is_error else "end_turn"
+        while not summaries.empty():
+            yield summaries.get_nowait()
+
+    if not final_text.strip():
+        # Turn-limit or transport hiccup: never leave the user a blank bubble.
+        fallback = ("I ran out of turns before writing the answer — the tool "
+                    "breadcrumbs and citations above show what was checked. "
+                    "Ask again (or narrower) and I'll pick it up from there.")
+        final_text = fallback
+        yield {"type": "text_delta", "text": fallback}
+
+    if cites:
+        yield {"type": "citations", "citations": cites}
+    yield {"type": "done", "stop_reason": stop_reason, "text": final_text}
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Mock loop (deterministic; exercises real dispatch + frames)
 # ──────────────────────────────────────────────────────────────────────
 
@@ -256,12 +391,26 @@ def _chunk(text: str, size: int = 48):
 
 async def run_chat(toolbox: PLCToolbox, message: str, audience: str = "maintenance",
                    model: Optional[str] = None,
-                   mock: Optional[bool] = None) -> AsyncIterator[Dict]:
-    """Stream frames for one user message. Mock mode is chosen by ``mock`` arg,
-    else by the ``ASKPLC_MOCK`` env var."""
-    use_mock = is_mock() if mock is None else mock
-    if use_mock:
+                   mock: Optional[bool] = None,
+                   provider: Optional[str] = None) -> AsyncIterator[Dict]:
+    """Stream frames for one user message.
+
+    ``mock=True/False`` (legacy arg) still forces mock / the API loop;
+    otherwise ``provider`` or environment resolution picks the model source.
+    """
+    if mock is True:
+        chosen = "mock"
+    elif mock is False:
+        chosen = "api"
+    else:
+        chosen = provider or resolve_provider()
+
+    if chosen == "mock":
         async for frame in _run_mock(toolbox, message, audience):
+            yield frame
+    elif chosen == "subscription":
+        async for frame in _run_subscription(toolbox, message, audience,
+                                             model or DEFAULT_MODEL):
             yield frame
     else:
         async for frame in _run_real(toolbox, message, audience, model or DEFAULT_MODEL):

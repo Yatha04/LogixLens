@@ -54,7 +54,7 @@ from .plc_tools import (
     DEFAULT_L5X,
     SNAPSHOT_DIR,
 )
-from .chat import run_chat
+from .chat import run_chat, is_mock as chat_is_mock, resolve_provider
 from .rung_json import rung_payload
 from .autodoc import generate_autodoc, to_csv, is_mock as autodoc_is_mock
 
@@ -208,7 +208,8 @@ def create_session(req: SessionRequest):
             "snapshot": None,
             "live": True,
             "opcua_url": opcua_url,
-            "mock": os.environ.get("ASKPLC_MOCK") == "1",
+            "mock": chat_is_mock(),
+        "provider": resolve_provider(),
             "summary": toolbox.get_project_summary(),
         }
 
@@ -222,7 +223,8 @@ def create_session(req: SessionRequest):
         "l5x": l5x,
         "snapshot": req.snapshot,
         "live": False,
-        "mock": os.environ.get("ASKPLC_MOCK") == "1",
+        "mock": chat_is_mock(),
+        "provider": resolve_provider(),
         "summary": toolbox.get_project_summary(),
     }
 
@@ -275,7 +277,8 @@ async def upload_l5x(file: UploadFile = File(...)):
         "snapshot": None,
         "live": False,
         "uploaded": True,
-        "mock": os.environ.get("ASKPLC_MOCK") == "1",
+        "mock": chat_is_mock(),
+        "provider": resolve_provider(),
         "summary": toolbox.get_project_summary(),
     }
 

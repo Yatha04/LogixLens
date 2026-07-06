@@ -38,7 +38,10 @@ DEFAULT_MODEL = os.environ.get("ASKPLC_MODEL", "claude-sonnet-5")
 
 
 def is_mock() -> bool:
-    return os.environ.get("ASKPLC_MOCK") == "1"
+    # Auto-doc batches through the Anthropic API directly (it is not wired to
+    # the Agent SDK), so without an API key it must use the deterministic
+    # heuristic even when the chat runs on the Claude subscription provider.
+    return os.environ.get("ASKPLC_MOCK") == "1" or not os.environ.get("ANTHROPIC_API_KEY")
 
 
 def _lc(s: Optional[str]) -> str:

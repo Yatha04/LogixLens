@@ -145,9 +145,15 @@ export function Topbar() {
             "rounded border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider",
             mock ? "border-warn/40 text-warn" : "border-accent-dim text-accent"
           )}
-          title={mock ? "Deterministic mock model (full pipeline, no API key)" : "Live model"}
+          title={
+            mock
+              ? "Deterministic mock model (full pipeline, no model call)"
+              : session?.provider === "subscription"
+                ? "Real Claude via your local Claude Code login (no API billing)"
+                : "Real Claude via the Anthropic API"
+          }
         >
-          {mock ? "mock" : "live"}
+          {mock ? "mock" : session?.provider === "subscription" ? "claude · sub" : "claude"}
         </span>
 
         {/* chat connection dot */}

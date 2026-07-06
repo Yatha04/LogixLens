@@ -1,13 +1,13 @@
-.PHONY: setup demo-l5x sim backend frontend test test-parser test-backend test-simulator test-frontend gates gate1 gate4 clean
+.PHONY: setup demo-l5x sim backend backend-live frontend test test-parser test-backend test-simulator test-frontend gates gate1 gate4 clean
 
 # All Python commands run through the single shared venv at l5x-copilot/.venv
 # (parser + backend + simulator all import from it — see each requirements.txt).
 PY := ./l5x-copilot/.venv/bin/python
 PIP := ./l5x-copilot/.venv/bin/pip
 
-# Mock mode by default so `make backend` works with zero API key. Override
-# with `make backend ASKPLC_MOCK=0` once ANTHROPIC_API_KEY is set (in .env
-# or the environment) to hit the real model.
+# Mock mode by default so `make backend` works with zero API key.
+# `make backend-live` runs real Claude on the local Claude Code subscription
+# (Agent SDK, no API key); `make backend ASKPLC_MOCK=0` uses ANTHROPIC_API_KEY.
 ASKPLC_MOCK ?= 1
 
 ## setup -- create the venv, install parser + backend + simulator deps, npm install the frontend
@@ -34,6 +34,10 @@ sim:
 ## backend -- run the FastAPI chat backend (mock mode by default; port 8000)
 backend:
 	ASKPLC_MOCK=$(ASKPLC_MOCK) $(PY) -m uvicorn app.backend.server:app --port 8000
+
+## backend-live -- real Claude via the local Claude Code login (subscription; no API key)
+backend-live:
+	ASKPLC_MOCK=0 ASKPLC_PROVIDER=subscription $(PY) -m uvicorn app.backend.server:app --port 8000
 
 ## frontend -- run the Vite dev server (proxies /api to the backend on :8000)
 frontend:

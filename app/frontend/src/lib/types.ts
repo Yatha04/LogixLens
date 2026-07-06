@@ -114,6 +114,8 @@ export interface SessionResponse {
   live?: boolean;
   opcua_url?: string;
   mock: boolean;
+  /** Chat model source: "mock" | "api" | "subscription". */
+  provider?: string;
   summary: {
     controller: Controller;
     counts: Counts;

@@ -195,14 +195,21 @@ needs no other services running).
 
 ## No API key? Use your Claude subscription
 
-The web chat's tool loop calls the Anthropic API (pay-per-token). If you have a
-Claude Pro/Max subscription instead, you get the same brain for free by flipping the
-architecture around: run LogixLens as an **MCP server** and let Claude Code or Claude
-Desktop be the chat window. Claude then calls the exact same 11 `PLCToolbox` tools —
-parse, cross-reference, `trace_blockers`, live values — and your subscription pays for
-the reasoning.
+If you're logged into Claude Code with a Pro/Max subscription, the web chat runs
+**real Claude with zero API billing**:
 
-With Claude Code (from the repo root):
+```bash
+make backend-live        # instead of `make backend`
+```
+
+The backend drives your local Claude Code login through the Claude Agent SDK; the
+11 `PLCToolbox` tools run in-process against the loaded session (uploaded files
+included), so streaming, tool breadcrumbs, and rung citations all work identically
+to API mode. The top-bar badge reads `claude · sub`. (Provider resolution:
+`ASKPLC_MOCK=1` > `ASKPLC_PROVIDER` > API key present > `claude` CLI present > mock.)
+
+The inverse direction also works — run LogixLens as an **MCP server** and let Claude
+Code or Claude Desktop be the chat window. With Claude Code (from the repo root):
 
 ```bash
 claude mcp add logixlens -- ./l5x-copilot/.venv/bin/python -m app.backend.mcp_server \
