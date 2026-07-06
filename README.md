@@ -17,7 +17,9 @@ what that analysis already proved. Every fact in every answer traces back to a
 - [Architecture](#architecture)
 - [Quickstart](#quickstart)
 - [The money shot](#the-money-shot-why-is-the-machine-down)
+- [Validated against 260 real-world programs](#validated-against-260-real-world-programs)
 - [Test matrix](#test-matrix)
+- [No API key? Use your Claude subscription](#no-api-key-use-your-claude-subscription)
 - [MCP — point any agent at it](#mcp--point-any-agent-at-it)
 - [Auto-doc mode](#auto-doc-mode-the-leave-behind)
 - [Honest limitations](#honest-limitations)
@@ -75,7 +77,7 @@ Requires Python 3.11+ and Node 22. Everything Python-side shares one venv at
 `sys.path` directly by every entry point).
 
 ```bash
-git clone <repo> && cd LogixLens
+git clone https://github.com/Yatha04/LogixLens.git && cd LogixLens
 make setup                 # venv + parser/backend/simulator deps + npm install
 make demo-l5x               # generate demo_cell/build/PressLine_3.L5X from its YAML spec
 ```
@@ -146,14 +148,35 @@ citations: [P300_Press/R30_PressCycle:9, P900_Safety/R92_SafetyOK:1]
 In the UI this renders as the ladder rung with live power flow — green up to the open
 `GuardDoor_Closed` contact, grey/dead past it.
 
+## Validated against 260 real-world programs
+
+"Works on our demo file" is not the same claim as "works on yours," so the parser and
+diagnosis engine are validated against a corpus of **260 real L5X files** fetched from
+public GitHub repositories — 17 full controller projects (a working grain elevator,
+FRC robot code, industrial function-block libraries), plus AOI, UDT, and routine
+exports, spanning firmware v20 through v37. Current results:
+
+- **100% pass rate** on every pipeline stage: load, full parse, rung parsing, diagnosis
+- **2,758 / 2,761 real ladder rungs parse** (99.89% — the 3 misses are
+  deliberately-invalid strings from someone's parser-test file, recorded as
+  degradations rather than crashes)
+- Diagnosis (`build_condition_tree`) runs clean on written tags of **all 17** full
+  controller projects
+
+The corpus is a permanent regression gate: `l5x-copilot/tests/test_corpus.py`
+parametrizes over every file, so any parser change that breaks a single real-world
+program fails the suite. The L5X files themselves are never redistributed (gitignored);
+`corpus/manifest.json` records the exact provenance of each, and the fetch scripts
+rebuild the corpus reproducibly. See `corpus/README.md`.
+
 ## Test matrix
 
 | Suite | Command | Result |
 |---|---|---|
-| Parser (`l5x-copilot/src`) | `make test-parser` | **164 passed**, 11 skipped |
-| Backend (`app/backend`) | `make test-backend` | **57 passed** |
+| Parser + corpus gate (`l5x-copilot/src`) | `make test-parser` | **432 passed**, 11 skipped |
+| Backend (`app/backend`) | `make test-backend` | **62 passed** |
 | Simulator (`app/simulator`) | `make test-simulator` | **23 passed** |
-| Frontend unit (`app/frontend`) | `npm test -- --run` | **30 passed** (27 base + 3 auto-doc) |
+| Frontend unit (`app/frontend`) | `npm test -- --run` | **48 passed** |
 | Frontend integration (live backend) | `npm run test:integration` | **8 passed** |
 | Gate 1 — static diagnosis regression | `make gate1` | PASS |
 | Gate 4 — live OPC UA end-to-end | `make gate4` | PASS |
@@ -161,6 +184,44 @@ In the UI this renders as the ladder rung with live power flow — green up to t
 `make test` runs parser + backend + simulator + frontend unit in one shot; `make gates`
 runs both gate scripts (gate4 starts and tears down its own simulator subprocess, so it
 needs no other services running).
+
+## No API key? Use your Claude subscription
+
+The web chat's tool loop calls the Anthropic API (pay-per-token). If you have a
+Claude Pro/Max subscription instead, you get the same brain for free by flipping the
+architecture around: run LogixLens as an **MCP server** and let Claude Code or Claude
+Desktop be the chat window. Claude then calls the exact same 11 `PLCToolbox` tools —
+parse, cross-reference, `trace_blockers`, live values — and your subscription pays for
+the reasoning.
+
+With Claude Code (from the repo root):
+
+```bash
+claude mcp add logixlens -- ./l5x-copilot/.venv/bin/python -m app.backend.mcp_server \
+  --l5x demo_cell/build/PressLine_3.L5X --snapshot guard_door_open
+```
+
+then just ask, in a `claude` session: *"why is the machine down?"* — point `--l5x` at
+any L5X export to interrogate your own program.
+
+With Claude Desktop, add the same command to `claude_desktop_config.json` (use
+absolute paths):
+
+```json
+{
+  "mcpServers": {
+    "logixlens": {
+      "command": "/abs/path/LogixLens/l5x-copilot/.venv/bin/python",
+      "args": ["-m", "app.backend.mcp_server", "--l5x", "/abs/path/Your.L5X"],
+      "cwd": "/abs/path/LogixLens"
+    }
+  }
+}
+```
+
+Everything else — the web UI's dossier, interlock tree, ladder power-flow renderer,
+and the deterministic `/api/trace` diagnosis — needs no model at all and runs fully
+offline (`ASKPLC_MOCK=1`, the default).
 
 ## MCP — point any agent at it
 
@@ -215,17 +276,13 @@ a **Generate** button that fills in proposed descriptions with confidence badges
   references) — the engine flags these explicitly rather than guessing a value.
 - **Rockwell/Allen-Bradley only.** The parser is built against the L5X schema; Siemens,
   Beckhoff, and CODESYS are unexplored surface, not "almost done."
-- **Base assumptions.** `PressLine_3` is a synthetic-but-schema-plausible demo file
-  (real customer L5X files are proprietary and can't ship); the diagnosis engine has
-  only ever been proven against it plus the parser's own regression corpus, not a
-  large corpus of real-world programs.
-- **Live OPC UA is Python-native today, not yet a session option over REST.**
-  `PLCToolbox.OpcUaProvider` (used by `gate4_live_smoke.py`, fully tested end-to-end
-  against the running simulator) reads live tag values over OPC UA; the REST
-  `/api/session` endpoint currently only attaches a static JSON snapshot
-  (`StaticSnapshotProvider`) as its live-value source. Wiring OpcUaProvider through the
-  session API — so the running web UI diagnoses off a live-cycling simulator instead of
-  a pinned snapshot — is the natural next increment, not a design dead end.
+- **The demo cell is synthetic.** `PressLine_3` is a schema-plausible generated file
+  (real customer L5X files are proprietary and can't ship). The parser and diagnosis
+  engine, however, are validated against 260 real public programs — see the corpus
+  section above.
+- **AI answer quality is unevaluated on real programs.** The gold-QA eval currently
+  runs against the synthetic demo cell; a troubleshooting eval over the real-world
+  corpus is the next milestone.
 - **"Isn't this just RSLogix cross-reference?"** RSLogix needs a license, a laptop at
   the panel, and someone who reads ladder. This needs a browser and a sentence — and an
   MCP endpoint any agent (not just a human at a keyboard) can query.
@@ -233,12 +290,16 @@ a **Generate** button that fills in proposed descriptions with confidence badges
 ## Repo layout
 
 ```
-l5x-copilot/            The parser + diagnosis engine (untouched by this stage)
+l5x-copilot/            The parser + diagnosis engine (pure Python, zero app deps)
   src/parser/            L5X loader, tag/module/routine/UDT/AOI extractors,
                           rung parser, member-level cross-reference
   src/analysis/           condition_tree.py — build_condition_tree / evaluate_tree /
                           failing_paths (the backward-chaining diagnosis core)
-  tests/                  164 tests, run against the generated PressLine_3.L5X
+  tests/                  432 tests: unit suites against the generated PressLine_3.L5X
+                          + the 260-file real-world corpus regression gate
+
+corpus/                  Real-world validation corpus (fetch scripts, harness,
+                          manifest with per-file provenance; L5X files gitignored)
 
 demo_cell/               PressLine_3 — the demo program + simulator's shared source
   pressline3.yaml         single source of truth: stations, devices, interlocks, logic
