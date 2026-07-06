@@ -77,6 +77,23 @@ export async function createSession(opts: {
   return res.json();
 }
 
+/** Upload an .L5X file; the backend parses it and returns a ready session. */
+export async function uploadL5x(file: File): Promise<SessionResponse> {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch(`${API_BASE}/api/upload`, { method: "POST", body: form });
+  if (!res.ok) {
+    let detail = res.statusText;
+    try {
+      detail = (await res.json()).detail ?? detail;
+    } catch {
+      /* ignore */
+    }
+    throw new ApiError(res.status, detail);
+  }
+  return res.json();
+}
+
 // ── Live cell (status + chaos proxy) ─────────────────────────────────────
 export const getLiveStatus = (sid: string) =>
   getJSON<LiveStatus>(`/api/live/${enc(sid)}/status`);

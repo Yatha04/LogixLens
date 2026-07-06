@@ -37,11 +37,21 @@ interface UserMsg {
 
 type ChatItem = AssistantMsg | UserMsg;
 
-const SUGGESTIONS = [
-  "Why is the press not cycling?",
-  "What does this machine do?",
-  "What would it take for Press_Cycle_Start to go true?",
-];
+// Suggestions are machine-specific on the demo cell, derived for uploads.
+function suggestionsFor(controllerName: string | undefined, firstAoi?: string): string[] {
+  if (controllerName === "PressLine_3") {
+    return [
+      "Why is the press not cycling?",
+      "What does this machine do?",
+      "What would it take for Press_Cycle_Start to go true?",
+    ];
+  }
+  return [
+    "What does this machine do?",
+    ...(firstAoi ? [`What is ${firstAoi} and where is it used?`] : []),
+    "What are the main interlocks in this program?",
+  ];
+}
 
 export function ChatPanel({ onCollapse }: { onCollapse?: () => void }) {
   const {
@@ -208,7 +218,10 @@ export function ChatPanel({ onCollapse }: { onCollapse?: () => void }) {
                 <Sparkles size={10} /> try asking
               </div>
               <div className="flex flex-col gap-1.5">
-                {SUGGESTIONS.map((s) => (
+                {suggestionsFor(
+                  dossier?.controller?.name,
+                  Object.entries(dossier?.aoi_instances ?? {}).find(([, v]) => v.length > 0)?.[0]
+                ).map((s) => (
                   <button
                     key={s}
                     onClick={() => send(s)}

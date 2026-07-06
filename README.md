@@ -90,7 +90,13 @@ make backend                # FastAPI :8000, mock mode by default (no API key ne
 make frontend                # Vite dev server :5173 (proxies /api to :8000)
 ```
 
-Open `http://localhost:5173`. To use the real Claude model instead of the deterministic
+Open `http://localhost:5173` — then **drag any Rockwell `.L5X` export onto the
+window** (or use *Open .L5X* in the top bar) to load your own program: dossier,
+ladder rendering, cross-reference, interlock tracing, and auto-doc all work on
+uploaded files, statically. Every view is URL-addressable
+(`#/routine/<program>/<routine>/r<rung>`), so you can deep-link a colleague to a rung.
+
+To use the real Claude model instead of the deterministic
 mock, copy `.env.example` to `.env`, set `ANTHROPIC_API_KEY`, and run
 `make backend ASKPLC_MOCK=0`.
 
@@ -174,9 +180,9 @@ rebuild the corpus reproducibly. See `corpus/README.md`.
 | Suite | Command | Result |
 |---|---|---|
 | Parser + corpus gate (`l5x-copilot/src`) | `make test-parser` | **432 passed**, 11 skipped |
-| Backend (`app/backend`) | `make test-backend` | **62 passed** |
+| Backend (`app/backend`) | `make test-backend` | **68 passed** |
 | Simulator (`app/simulator`) | `make test-simulator` | **23 passed** |
-| Frontend unit (`app/frontend`) | `npm test -- --run` | **48 passed** |
+| Frontend unit (`app/frontend`) | `npm test -- --run` | **57 passed** |
 | Frontend integration (live backend) | `npm run test:integration` | **8 passed** |
 | Gold Q&A eval, real model (Claude subscription, no API key) | `python -m app.backend.eval.run_eval_cli` | **13/13 PASS** |
 | Real-corpus Q&A eval — 3 real machines | `run_eval_cli --questions .../corpus_questions.yaml` | **11/11 PASS** |

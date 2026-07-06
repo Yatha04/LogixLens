@@ -107,6 +107,9 @@ export interface Dossier {
 export interface SessionResponse {
   session_id: string;
   l5x: string;
+  /** Original filename of an uploaded L5X (uploads only). */
+  filename?: string;
+  uploaded?: boolean;
   snapshot: string | null;
   live?: boolean;
   opcua_url?: string;

@@ -10,8 +10,33 @@ const EXAMPLES = [
 ];
 
 export function DossierView() {
-  const { dossier, prefillChat, openTrace, openAutodoc } = useApp();
-  if (!dossier) return null;
+  const { dossier, prefillChat, openTrace, openAutodoc, loadDemo, loading } = useApp();
+  if (!dossier) {
+    // Never a blank pane: no project loaded means the upload front door.
+    return (
+      <div className="grid h-full place-items-center p-8" data-testid="dossier-empty">
+        <div className="max-w-md rounded-xl border border-dashed border-line bg-surface p-8 text-center">
+          <Cpu size={26} className="mx-auto text-accent" />
+          <h2 className="mt-3 text-lg font-semibold text-ink">
+            {loading ? "Parsing L5X…" : "No project loaded"}
+          </h2>
+          <p className="mt-2 text-sm text-muted">
+            Drag a Rockwell <span className="font-mono text-ink">.L5X</span> export anywhere
+            onto this window, use <span className="text-accent">Open .L5X</span> in the top
+            bar, or start with the demo cell.
+          </p>
+          {!loading && (
+            <button
+              onClick={loadDemo}
+              className="mt-4 rounded border border-accent-dim bg-accent/10 px-3 py-1.5 text-sm text-accent hover:bg-accent/20"
+            >
+              Load PressLine_3 demo
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
   const { controller: c, counts, documentation: doc, aoi_instances, modules } = dossier;
 
   const anatomy = Object.entries(aoi_instances).filter(([, v]) => v.length > 0);
@@ -39,11 +64,19 @@ export function DossierView() {
         </div>
       </div>
 
-      {/* Example chips row -> pre-fill chat */}
+      {/* Example chips row -> pre-fill chat. The canned examples only make
+          sense on the demo cell; for anyone's uploaded program, derive them. */}
       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-accent-dim/40 bg-accent/5 px-4 py-3">
         <MessageSquareWarning size={16} className="text-accent" />
         <span className="text-sm text-ink">Ask the PLC:</span>
-        {EXAMPLES.map((q) => (
+        {(c.name === "PressLine_3"
+          ? EXAMPLES
+          : [
+              "What does this machine do?",
+              ...(anatomy[0] ? [`What is ${anatomy[0][0]} and where is it used?`] : []),
+              "What are the main interlocks in this program?",
+            ]
+        ).map((q) => (
           <button
             key={q}
             onClick={() => prefillChat(q)}

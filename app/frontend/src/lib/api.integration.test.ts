@@ -95,13 +95,15 @@ describe("backend integration (mock mode)", () => {
       return el.type === "instruction" ? el.operands[0]?.value : undefined;
     });
     expect(legTags).toEqual(["Master_Start_PB", "System_Running"]);
-    // The healthy snapshot deliberately omits Master_Stop_PB (an NC panel
-    // input), so the rung must evaluate INDETERMINATE — unknown propagates
-    // honestly instead of guessing green: the branch is true (System_Running
-    // seals in) but the stop contact's value is unknown.
+    // Master_Stop_PB is an NC panel input: healthy means the contact reads
+    // TRUE (button not pressed), and the snapshot says so explicitly. With
+    // System_Running sealed in, the whole rung conducts. Master_Start_PB is
+    // deliberately absent — unknown OR true must resolve true (unknowns are
+    // absorbed, never guessed).
     expect(rung.values).toBeDefined();
-    expect(rung.values!["Master_Stop_PB"]).toBeUndefined();
-    expect(energizeRung(rung.elements, rung.values).state).toBe("indeterminate");
+    expect(rung.values!["Master_Stop_PB"]).toBe(true);
+    expect(rung.values!["Master_Start_PB"]).toBeUndefined();
+    expect(energizeRung(rung.elements, rung.values).state).toBe("conducting");
     // tag descriptions ride along for the renderer's sub-labels
     expect(Object.keys(rung.tags)).toContain("System_Running");
   });

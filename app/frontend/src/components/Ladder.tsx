@@ -77,12 +77,20 @@ function boxWidth(instr: InstructionElement): number {
   return Math.min(240, Math.max(CELL_W, 44 + longest * 7.2));
 }
 
+/** Contacts/coils widen with their tag name (real programs have names like
+ * Treater_Pump[Active_Pump_Index]) so labels stay readable instead of
+ * truncating at a fixed cell. Mono label is fontSize 11 ≈ 6.8px/char. */
+function contactWidth(instr: InstructionElement): number {
+  const tag = instr.operands[0]?.value ?? "";
+  return Math.min(230, Math.max(CELL_W, tag.length * 6.8 + 26));
+}
+
 function itemWidth(it: EnergizedElement): number {
   if (it.kind === "branch") {
     return Math.max(CELL_W, ...it.legs.map(chainWidth));
   }
   const instr = it.element;
-  if (isContact(instr) || isCoil(instr)) return CELL_W;
+  if (isContact(instr) || isCoil(instr)) return contactWidth(instr);
   return boxWidth(instr);
 }
 function itemLanes(it: EnergizedElement): number {
@@ -137,7 +145,7 @@ function descLabel(ctx: Ctx, cx: number, y: number, tag: string) {
       fontSize={8.5}
       fill="var(--color-faint)"
     >
-      {truncate(desc, 24)}
+      {truncate(desc, 32)}
       <title>{desc}</title>
     </text>
   );
@@ -177,7 +185,7 @@ function tagLabel(ctx: Ctx, cx: number, y: number, tag: string, valueText?: stri
       style={clickable ? { cursor: "pointer" } : undefined}
       onClick={clickable ? () => ctx.onTagClick!(tag) : undefined}
     >
-      {truncate(tag, 16)}
+      {truncate(tag, 30)}
       <title>{tag}</title>
     </text>
   );

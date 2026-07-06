@@ -32,3 +32,4 @@ env/
 .DS_Store
 Thumbs.db
 app/backend/eval/transcripts/
+uploads/

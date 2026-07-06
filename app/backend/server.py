@@ -24,7 +24,9 @@ Mock mode (no API key needed):
 
 from __future__ import annotations
 
+import hashlib
 import os
+import re
 import uuid
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -38,7 +40,10 @@ try:
 except Exception:  # pragma: no cover
     pass
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Response
+from fastapi import (
+    FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Response,
+    UploadFile, File,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -72,6 +77,14 @@ _SESSIONS: Dict[str, Dict] = {}
 _TOOLBOX_CACHE: Dict[tuple, PLCToolbox] = {}
 # session_id -> {tag_name: proposal_row}  (accumulates across /api/autodoc calls)
 _AUTODOC_STATE: Dict[str, Dict[str, Dict]] = {}
+
+# Uploaded L5X files land here (gitignored), content-addressed so re-uploads
+# of the same file reuse the same path and hit the toolbox parse cache.
+UPLOAD_DIR = Path(
+    os.environ.get("ASKPLC_UPLOAD_DIR")
+    or Path(__file__).resolve().parents[2] / "uploads"
+)
+MAX_UPLOAD_BYTES = 64 * 1024 * 1024
 
 # Defaults for a locally-run PressLine_3 simulator (OPC UA :4840, chaos :8090).
 # Overridable via env for non-standard deployments / parallel test stacks.
@@ -209,6 +222,59 @@ def create_session(req: SessionRequest):
         "l5x": l5x,
         "snapshot": req.snapshot,
         "live": False,
+        "mock": os.environ.get("ASKPLC_MOCK") == "1",
+        "summary": toolbox.get_project_summary(),
+    }
+
+
+@app.post("/api/upload")
+async def upload_l5x(file: UploadFile = File(...)):
+    """Upload an L5X export and get a ready session for it.
+
+    The file is content-addressed into UPLOAD_DIR, parsed immediately (a file
+    the parser rejects is deleted and reported as a 400 with the parse error),
+    and a static session is created — same response shape as /api/session.
+    """
+    name = Path(file.filename or "upload.L5X").name
+    if not name.lower().endswith((".l5x", ".xml")):
+        raise HTTPException(
+            status_code=400,
+            detail=f"'{name}' is not an .L5X export (expected .L5X or .xml)")
+    data = await file.read()
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File exceeds {MAX_UPLOAD_BYTES // (1024 * 1024)} MB limit")
+    if not data.strip():
+        raise HTTPException(status_code=400, detail="File is empty")
+
+    digest = hashlib.sha256(data).hexdigest()[:16]
+    safe = re.sub(r"[^A-Za-z0-9._-]", "_", name)
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    dest = UPLOAD_DIR / f"{digest}_{safe}"
+    if not dest.exists():
+        dest.write_bytes(data)
+
+    try:
+        toolbox = _get_toolbox(str(dest), None)
+    except Exception as exc:
+        _TOOLBOX_CACHE.pop((str(dest), ""), None)
+        dest.unlink(missing_ok=True)
+        raise HTTPException(
+            status_code=400, detail=f"Could not parse '{name}': {exc}")
+
+    session_id = uuid.uuid4().hex[:12]
+    _SESSIONS[session_id] = {
+        "toolbox": toolbox, "l5x": str(dest), "snapshot": None,
+        "live": False, "provider": None, "filename": name,
+    }
+    return {
+        "session_id": session_id,
+        "l5x": str(dest),
+        "filename": name,
+        "snapshot": None,
+        "live": False,
+        "uploaded": True,
         "mock": os.environ.get("ASKPLC_MOCK") == "1",
         "summary": toolbox.get_project_summary(),
     }

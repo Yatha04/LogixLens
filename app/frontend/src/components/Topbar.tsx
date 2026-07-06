@@ -1,7 +1,8 @@
 import { SOURCES, LIVE_SOURCE, useApp } from "../state/store";
 import type { Audience } from "../lib/types";
 import { cx } from "./ui";
-import { Cpu, Activity, Camera, Radio } from "lucide-react";
+import { UploadButton } from "./Upload";
+import { Cpu, Activity, Camera, Radio, FileCode2 } from "lucide-react";
 
 const AUDIENCES: { id: Audience; label: string }[] = [
   { id: "operator", label: "Operator" },
@@ -12,17 +13,20 @@ const AUDIENCES: { id: Audience; label: string }[] = [
 export function Topbar() {
   const {
     dossier,
+    session,
     mock,
     openDossier,
     sourceId,
     switchSource,
     live,
     loading,
+    loadDemo,
     audience,
     setAudience,
     conn,
   } = useApp();
   const ctrl = dossier?.controller;
+  const uploaded = !!session?.uploaded;
   const connColor =
     conn === "connected"
       ? "bg-live shadow-[0_0_6px_var(--color-live)]"
@@ -44,6 +48,23 @@ export function Topbar() {
             Ask&nbsp;the&nbsp;PLC
           </span>
         </button>
+        <UploadButton />
+        {uploaded && (
+          <span
+            className="flex items-center gap-1.5 rounded border border-line bg-surface2 px-2 py-1 font-mono text-[11px] text-ink"
+            title={session?.l5x}
+          >
+            <FileCode2 size={12} className="text-accent" />
+            {session?.filename}
+            <button
+              onClick={loadDemo}
+              className="ml-1 text-[10px] uppercase tracking-wider text-faint hover:text-accent"
+              title="Return to the PressLine_3 demo cell"
+            >
+              demo
+            </button>
+          </span>
+        )}
       </div>
 
       <div className="flex items-center gap-4 text-xs">
@@ -59,7 +80,17 @@ export function Topbar() {
             </span>
           </div>
         )}
-        {/* value-source selector: static snapshots + the live OPC UA cell */}
+        {/* value-source selector: static snapshots + the live OPC UA cell.
+            Snapshots and the simulator belong to the demo cell — for an
+            uploaded program the analysis is static, so hide the selector. */}
+        {uploaded ? (
+          <span
+            className="flex items-center gap-1.5 rounded border border-line bg-surface2 px-2 py-1 font-mono text-[11px] text-muted"
+            title="Uploaded programs are analyzed statically (no live values attached)"
+          >
+            <Camera size={12} className="text-faint" /> static analysis
+          </span>
+        ) : (
         <label
           className={cx(
             "flex items-center gap-1.5 rounded border px-2 py-1",
@@ -86,6 +117,7 @@ export function Topbar() {
             ))}
           </select>
         </label>
+        )}
 
         {/* audience toggle */}
         <div

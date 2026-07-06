@@ -8,6 +8,7 @@ import { RoutineView } from "./components/RoutineView";
 import { TraceView } from "./components/TraceView";
 import { AutoDocView } from "./components/AutoDocView";
 import { ChatPanel } from "./components/ChatPanel";
+import { DropOverlay, UploadErrorBar } from "./components/Upload";
 import { PanelRightOpen } from "lucide-react";
 
 function MainView() {
@@ -21,6 +22,9 @@ function MainView() {
       return <TraceView key={view.tag} tag={view.tag} />;
     case "autodoc":
       return <AutoDocView />;
+    default:
+      // Unknown view state must never render an empty pane.
+      return <DossierView />;
   }
 }
 
@@ -45,7 +49,9 @@ function Shell() {
   return (
     <div className="flex h-full flex-col bg-base">
       <Topbar />
+      <UploadErrorBar />
       <LiveBar />
+      <DropOverlay />
       <div className="flex min-h-0 flex-1">
         <Sidebar />
         <main className="min-w-0 flex-1 overflow-auto bg-grid">
