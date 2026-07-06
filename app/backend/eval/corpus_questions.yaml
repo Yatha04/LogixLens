@@ -1,0 +1,92 @@
+# Real-world corpus eval — troubleshooting questions against programs we did
+# NOT write, fetched from public GitHub repos (see corpus/manifest.json).
+# Ground truth for every assertion was extracted from the parsed
+# cross-reference, so a passing answer is provably grounded, not plausible.
+#
+# No live snapshots exist for these machines, so "why won't X run" questions
+# test the no-live-values register: the engine must enumerate the required
+# conditions honestly instead of pretending to know the machine state.
+#
+# Run: ./l5x-copilot/.venv/bin/python -m app.backend.eval.run_eval_cli \
+#          --questions app/backend/eval/corpus_questions.yaml
+
+questions:
+  # ---- WaterTreatment_Main (jbcre8iv/LogixWeave) -------------------------
+  - id: wt_overview
+    l5x: corpus/files/10018939b99abe4e_WaterTreatment_Main.L5X
+    question: "What does this machine do? Give me the one-minute overview."
+    expect:
+      tools_any: [get_project_summary]
+      answer_contains_any: ["water", "treatment"]
+
+  - id: wt_writers_pump1
+    l5x: corpus/files/10018939b99abe4e_WaterTreatment_Main.L5X
+    question: "What writes Pump1_RunRequest?"
+    expect:
+      tools_any: [find_writers]
+      answer_contains: ["LevelControl"]
+
+  - id: wt_backwash_pump
+    l5x: corpus/files/10018939b99abe4e_WaterTreatment_Main.L5X
+    question: "Under what conditions does Backwash_Pump turn on?"
+    expect:
+      tools_any: [trace_blockers, find_writers]
+      answer_contains: ["BackwashSequence"]
+
+  - id: wt_aoi_pumpcontrol
+    l5x: corpus/files/10018939b99abe4e_WaterTreatment_Main.L5X
+    question: "What is AOI_PumpControl and where is it used?"
+    expect:
+      tools_any: [get_aoi]
+      answer_contains: ["pump"]
+
+  - id: wt_hallucination_probe
+    l5x: corpus/files/10018939b99abe4e_WaterTreatment_Main.L5X
+    question: "What writes Conveyor_Speed_Setpoint?"
+    expect:
+      tools_any: [find_writers, search_tags, get_tag]
+      answer_contains_any: ["exist", "not found", "no tag", "couldn't find",
+                            "could not find", "isn't", "is not", "no such"]
+
+  # ---- NWGG grain treater pumps (GTMichelli-Dev/northwest-grain-growers) --
+  - id: pumps_treater_not_running
+    l5x: corpus/files/df4368153ca78264_Pumps_Program.L5X
+    question: "The treater pump won't start. Walk me through what has to be true for Treater_Pump to run."
+    expect:
+      tools_any: [trace_blockers, find_writers]
+      answer_contains: ["Auto_Start_Pump"]
+
+  - id: pumps_fault_writers
+    l5x: corpus/files/df4368153ca78264_Pumps_Program.L5X
+    question: "What sets Pumps_In_Fault?"
+    expect:
+      tools_any: [find_writers]
+      answer_contains: ["Check_Pump_Fault"]
+
+  - id: pumps_aoi_rate_calc
+    l5x: corpus/files/df4368153ca78264_Pumps_Program.L5X
+    question: "Explain the Pump_Rate_Calc AOI — what goes in and what comes out?"
+    expect:
+      tools_any: [get_aoi]
+      answer_contains: ["pump"]
+
+  # ---- ALD_miami vacuum/deposition tool (ghanemja/senior-design) ---------
+  - id: ald_overview
+    l5x: corpus/files/5eadab0bca680254_ALD_miami.L5X
+    question: "Give me an overview of this program and its main sequence."
+    expect:
+      tools_any: [get_project_summary]
+
+  - id: ald_mstart
+    l5x: corpus/files/5eadab0bca680254_ALD_miami.L5X
+    question: "What writes mstart, and what does starting it appear to do?"
+    expect:
+      tools_any: [find_writers]
+      answer_contains: ["MainRoutine"]
+
+  - id: ald_vacpumps
+    l5x: corpus/files/5eadab0bca680254_ALD_miami.L5X
+    question: "Why would the vacuum pumps not turn on? Trace the logic for vacpumps."
+    expect:
+      tools_any: [trace_blockers, find_writers]
+      answer_contains: ["MainRoutine"]

@@ -178,6 +178,8 @@ rebuild the corpus reproducibly. See `corpus/README.md`.
 | Simulator (`app/simulator`) | `make test-simulator` | **23 passed** |
 | Frontend unit (`app/frontend`) | `npm test -- --run` | **48 passed** |
 | Frontend integration (live backend) | `npm run test:integration` | **8 passed** |
+| Gold Q&A eval, real model (Claude subscription, no API key) | `python -m app.backend.eval.run_eval_cli` | **13/13 PASS** |
+| Real-corpus Q&A eval — 3 real machines | `run_eval_cli --questions .../corpus_questions.yaml` | **11/11 PASS** |
 | Gate 1 — static diagnosis regression | `make gate1` | PASS |
 | Gate 4 — live OPC UA end-to-end | `make gate4` | PASS |
 
@@ -280,9 +282,12 @@ a **Generate** button that fills in proposed descriptions with confidence badges
   (real customer L5X files are proprietary and can't ship). The parser and diagnosis
   engine, however, are validated against 260 real public programs — see the corpus
   section above.
-- **AI answer quality is unevaluated on real programs.** The gold-QA eval currently
-  runs against the synthetic demo cell; a troubleshooting eval over the real-world
-  corpus is the next milestone.
+- **The answer-quality eval is evidence-based, not exhaustive.** Both eval sets
+  (13 gold questions on the demo cell, 11 troubleshooting questions on three real
+  corpus machines — a grain-treater pump skid, a water-treatment plant, an ALD
+  vacuum tool) assert grounded evidence: the right tool called, the true writer
+  routine named, fabricated tags refused. All pass on the real model, but 24
+  questions is a scoreboard, not a guarantee.
 - **"Isn't this just RSLogix cross-reference?"** RSLogix needs a license, a laptop at
   the panel, and someone who reads ladder. This needs a browser and a sentence — and an
   MCP endpoint any agent (not just a human at a keyboard) can query.
